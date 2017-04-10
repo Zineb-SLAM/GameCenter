@@ -11,7 +11,7 @@ public class Product implements Serializable, Comparable<Product>
 	private String description;
 	private double price;
 	private int quantity;
-	//private ConsoleType type;
+	private ConsoleType type;
 	/**
 	 * @param id
 	 * @param description
@@ -25,7 +25,7 @@ public class Product implements Serializable, Comparable<Product>
 		this.price = price;
 		this.name = name;
 		this.quantity = qtty;
-		//this.type = ConsoleType(stype);
+		this.type = new ConsoleType(stype);
 	}
 	/**
 	 * 

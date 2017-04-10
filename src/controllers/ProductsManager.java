@@ -58,11 +58,12 @@ public class ProductsManager extends HttpServlet {
 							return;
 						}
 							
-						
+						//String sql = "SELECT PRODUCTS.name as name, PRODUCTS.maingenre as genre, CONSOLTYPES.name as console, PRODUCTS.agemin as agemin, PRODUCTS.price as price, PUBLISHERS.name as publisher, PRODUCTS.releasedate as releasedate FROM PRODUCTS, PUBLISHERS, CONSOLTYPES WHERE PRODUCTS.consoleid = GAMETYPES.id AND PRODUCTS.publisherid = PUBLISHERS.id"
 						Statement stmt=con.createStatement();  
-						ResultSet res=stmt.executeQuery("SELECT PRODUCTS.name as name, PRODUCTS.maingenre as genre, GAMETYPES.name as console, PRODUCTS.agemin as agemin, PRODUCTS.price as price,"
-								+ " PUBLISHERS.name as publisher, PRODUCTS.releasedate as releasedate FROM PRODUCTS, PUBLISHERS, GAMETYPES "
-								+ "WHERE PRODUCTS.gametypeid = GAMETYPES.id AND PRODUCTS.publisherid = PUBLISHERS.id");
+						ResultSet res=stmt.executeQuery("SELECT PRODUCTS.name as name, PRODUCTS.maingenre as genre, CONSOLTYPES.name as console, "
+								+ "PRODUCTS.agemin as agemin, PRODUCTS.price as price, PUBLISHERS.name as publisher, "
+								+ "PRODUCTS.releasedate as releasedate FROM PRODUCTS, PUBLISHERS, CONSOLTYPES "
+								+ "WHERE PRODUCTS.consoleid = CONSOLTYPES.id AND PRODUCTS.publisherid = PUBLISHERS.id");
 					
 						while (res.next()) 
 						{

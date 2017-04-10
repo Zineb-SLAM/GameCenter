@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.sql.*;  
 
-
 /**
  * Servlet implementation class CustomersManager
  */
@@ -102,9 +101,9 @@ public class CustomersManager extends HttpServlet {
 	      // Allocate a output writer to write the response message into the network socket
 	      PrintWriter out = response.getWriter();
 
-			try 
-			{	
-				Class.forName("com.mysql.jdbc.Driver");
+				
+				
+				/*Class.forName("com.mysql.jdbc.Driver");
 				Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root","YASSINE97"); 
 				if(con == null)
 				{
@@ -131,18 +130,8 @@ public class CustomersManager extends HttpServlet {
 		                            // out.println("\n");//Move to the next line to print the next row.           
 			    }
 				out.println("Done");
-				con.close();  
+				con.close(); */ 
 						
-			}catch (SQLException e) {
-				e.printStackTrace();
-			}catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
 	}
 	
 	 // Filter the string for special HTML characters to prevent

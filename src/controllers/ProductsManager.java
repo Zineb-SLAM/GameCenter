@@ -60,15 +60,20 @@ public class ProductsManager extends HttpServlet {
 							
 						
 						Statement stmt=con.createStatement();  
-						ResultSet res=stmt.executeQuery("SELECT PRODUCTS.name as name, PRODUCTS.maingenre, PRODUCTS.name, GAMETYPES.name, PUBLISHERS.agemin  "
-								+ "FROM PRODUCTS, PUBLISHERS, GAMETYPES,  "
+						ResultSet res=stmt.executeQuery("SELECT PRODUCTS.name as name, PRODUCTS.maingenre as genre, GAMETYPES.name as console, PRODUCTS.agemin as agemin, PRODUCTS.price as price,"
+								+ " PUBLISHERS.name as publisher, PRODUCTS.releasedate as releasedate FROM PRODUCTS, PUBLISHERS, GAMETYPES "
 								+ "WHERE PRODUCTS.gametypeid = GAMETYPES.id AND PRODUCTS.publisherid = PUBLISHERS.id");
-
 					
 						while (res.next()) 
 						{
 								  out.println(
-				                			 res.getString("name")); 
+				                			 res.getString("name") + "\t" +
+				                			 res.getString("genre") + "\t" +
+				                			 res.getString("console") + "\t" +
+				                			 res.getString("publisher") + "\t" +
+				                			 res.getDate("releasedate") + "\t" +
+				                			 res.getInt("agemin") + "\t" +
+				                			 res.getFloat("price")); 
 				                            
 				                           
 				                           

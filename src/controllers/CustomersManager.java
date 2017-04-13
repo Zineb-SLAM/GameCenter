@@ -5,10 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Enumeration;
-import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,11 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.sql.*;  
 
-
 /**
  * Servlet implementation class CustomersManager
  */
-//@WebServlet("/echocust")
+
 public class CustomersManager extends HttpServlet {
        
     /**
@@ -85,8 +81,6 @@ public class CustomersManager extends HttpServlet {
 	         {
 	            out.println("<p>Gender: female</p>");
 	         }
-	           
-	       doPost(request, response);
 	      } finally 
 	      {
 	         out.close();  // Always close the output writer
@@ -107,27 +101,23 @@ public class CustomersManager extends HttpServlet {
 	      // Allocate a output writer to write the response message into the network socket
 	      PrintWriter out = response.getWriter();
 
-			try 
-			{	
-				Class.forName("com.mysql.jdbc.Driver");
+				
+				
+				/*Class.forName("com.mysql.jdbc.Driver");
 				Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root","YASSINE97"); 
 				if(con == null)
 				{
 					response.getWriter().append("CONNECTION TO DB FAILED \n");
+					return;
 					
 				}
 				DBTablePrinter.printTable(con, "CUSTOMERS");
-				/*Statement stmt=con.createStatement();  
+				
+				Statement stmt=con.createStatement();  
 				ResultSet res=stmt.executeQuery("SELECT * from CUSTOMERS");
-				ResultSetMetaData rsmd = res.getMetaData();
-				int columnsNumber = rsmd.getColumnCount();                     
-
+			
 				while (res.next()) 
 				{
-					
-					for(int i = 1 ; i <= columnsNumber; i++)
-					{
-
 						  out.println(
 		                			 res.getInt("id") +  "\t" + 
 		                             res.getString("lastname") + "\t" +
@@ -136,28 +126,12 @@ public class CustomersManager extends HttpServlet {
 		                             res.getString("username") + "\t" +
 		                             res.getString("email") + "\t" +
 		                             res.getString("password"));
-		                             res.getString("\n"); //Print one element of a row
-
-					}
-
-					  System.out.println();//Move to the next line to print the next row.           
-
-			    }*/
-		
-	              
+		                           
+		                            // out.println("\n");//Move to the next line to print the next row.           
+			    }
 				out.println("Done");
-				con.close();  
+				con.close(); */ 
 						
-			}catch (SQLException e) {
-				e.printStackTrace();
-			}catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
 	}
 	
 	 // Filter the string for special HTML characters to prevent

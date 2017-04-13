@@ -15,9 +15,9 @@ public final class ConnectionBDD {
 	private ConnectionBDD() {
 		try {
 			
-			Properties p = new Properties();
+			/*Properties p = new Properties();
 			p.load(Thread.currentThread().getContextClassLoader().
-						getResourceAsStream("confBDD.properties"));
+						getResourceAsStream("confBDD.properties"));*/
 
 			Class.forName("com.mysql.jdbc.Driver");  
 			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root@localhost","YASSINE97"); 			
@@ -25,9 +25,6 @@ public final class ConnectionBDD {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	} 

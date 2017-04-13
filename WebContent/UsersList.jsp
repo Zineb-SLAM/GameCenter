@@ -40,8 +40,8 @@ Sort :
 	%>
 			<tr>
 				<td><%=u.getId()%></td>
-				<td><%=u.getfirstname()%></td>
-				<td><%=u.getlastname()%></td>
+				<td><%=u.getFirstname()%></td>
+				<td><%=u.getLastname()%></td>
 				<td><%=u.getEmail()%></td>
 				<td>
 					<a href="GestionUsers?action=Delete&id=<%=u.getId()%>">Delete</a>

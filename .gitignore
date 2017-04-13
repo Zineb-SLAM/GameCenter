@@ -101,3 +101,8 @@ derby.log
 ######################
 
 .factorypath
+
+######################
+# Config files
+######################
+src/confBDD.properties

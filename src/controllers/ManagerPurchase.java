@@ -13,8 +13,8 @@ import beans.Order;
 import beans.LineOrder;
 import beans.Product;
 import beans.Customer;
-import dao.ProductDao;
-import dao.CustomerDao;
+import dao.ProductsDao;
+import dao.CustomersDao;
 
 /**
  * Servlet implementation class ManagerPurchase
@@ -41,7 +41,7 @@ public class ManagerPurchase extends HttpServlet {
 						
 			if(action.equals("showForm")){
 				//recuperer la liste Products
-				List<Product> lp = ProductDao.findAll();
+				List<Product> lp = ProductsDao.findAll();
 				request.setAttribute("listeP", lp);
 				//montrer la page achat
 				request.getRequestDispatcher("achatForm.jsp").forward(request, response);
@@ -88,7 +88,7 @@ public class ManagerPurchase extends HttpServlet {
 		//ajouter ligne de Order dans le panier
 		LineOrder lc = new LineOrder();
 		lc.setQte(qte);
-		lc.setProd(ProductDao.find(idProduct));
+		lc.setProd(ProductsDao.find(idProduct));
 		
 		Order panier = null;
 		Object obj = request.getSession().getAttribute("panier");
@@ -107,7 +107,7 @@ public class ManagerPurchase extends HttpServlet {
 		}
 		request.getSession().setAttribute("panier", panier);
 		
-		List<Product> lp = ProductDao.findAll();
+		List<Product> lp = ProductsDao.findAll();
 		request.setAttribute("listeP", lp);
 		//montrer la page achat
 		request.getRequestDispatcher("achatForm.jsp").forward(request, response);

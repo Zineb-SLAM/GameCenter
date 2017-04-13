@@ -3,10 +3,12 @@ import java.io.Serializable;
 
 public class ConsoleType implements Serializable
 {
-		private String type;
+		private int id;
+		private String name;
 		
-		public ConsoleType(String type) {
-			this.type = type;
+		public ConsoleType(int id, String type) {
+			this.id = id;
+			this.name = type;
 		}
 		
 		
@@ -14,14 +16,19 @@ public class ConsoleType implements Serializable
 	
 		}
 		
-		public String getType()
+		public String getName()
 		{
-			return type;
+			return name;
 		}
 		
-		public void setType(String type)
+		public void setName(String type)
 		{
-			this.type = type;
+			this.name = type;
+		}
+		
+		public int getId()
+		{
+			return id;
 		}
 		
 }

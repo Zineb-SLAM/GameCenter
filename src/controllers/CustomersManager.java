@@ -2,17 +2,16 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.DriverManager;
-
+import java.util.List;
+import java.sql.*;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.sql.*;  
+import beans.Customer;
+import dao.CustomersDao; 
 
 /**
  * Servlet implementation class CustomersManager
@@ -35,57 +34,17 @@ public class CustomersManager extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException 
 	{
+		response.setContentType("text/html; charset=UTF-8");
+		 String errorString = null;
+	       List<Customer> listC = null;
 		 
-		// TODO Auto-generated method stub
-		 response.setContentType("text/html; charset=UTF-8");
-	      // Allocate a output writer to write the response message into the network socket
-	      PrintWriter out = response.getWriter();
-	      out.println("<Hello Get\n>");
-	      // Allocate a output writer to write the response message into the network socket
-	      // Write the response message, in an HTML page
-	     
-	      try 
-	      {
-	         out.println("<body><h2>You have entered</h2>");
-	 
-	         // Retrieve the value of the query parameter "username" (from text field)
-	         String username = request.getParameter("username");
-	         // Get null if the parameter is missing from query string.
-	         // Get empty string or string of white spaces if user did not fill in
-	         if (username == null
-	               || (username = htmlFilter(username.trim())).length() == 0) {
-	            out.println("<p>Name: MISSING</p>");
-	         } else {
-	            out.println("<p>Name: " + username + "</p>");
-	         }
-	 
-	         // Retrieve the value of the query parameter "password" (from password field)
-	         String password = request.getParameter("password");
-	         if (password == null
-	               || (password = htmlFilter(password.trim())).length() == 0) {
-	            out.println("<p>Password: MISSING</p>");
-	         } else {
-	            out.println("<p>Password: " + password + "</p>");
-	         }
-	 
-	         // Retrieve the value of the query parameter "gender" (from radio button)
-	         String gender = request.getParameter("gender");
-	         // Get null if the parameter is missing from query string.
-	         if (gender == null) 
-	         {
-	            out.println("<p>Gender: MISSING</p>");
-	         } else if (gender.equals("m")) 
-	         {
-	            out.println("<p>Gender: male</p>");
-	         } else 
-	         {
-	            out.println("<p>Gender: female</p>");
-	         }
-	      } finally 
-	      {
-	         out.close();  // Always close the output writer
-	      }
+		listC =  CustomersDao.findAll();
+		request.setAttribute("CustomersList", listC);
 		
+		
+		// Forward to /WEB-INF/views/productListView.jsp
+        RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/Views/CustomersListView.jsp");
+        dispatcher.forward(request, response);
 	}
 
 	/**
@@ -99,43 +58,10 @@ public class CustomersManager extends HttpServlet {
 		
 		response.setContentType("text/html; charset=UTF-8");
 	      // Allocate a output writer to write the response message into the network socket
-	      PrintWriter out = response.getWriter();
-
-				
-				
-				/*Class.forName("com.mysql.jdbc.Driver");
-				Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root","YASSINE97"); 
-				if(con == null)
-				{
-					response.getWriter().append("CONNECTION TO DB FAILED \n");
-					return;
-					
-				}
-				DBTablePrinter.printTable(con, "CUSTOMERS");
-				
-				Statement stmt=con.createStatement();  
-				ResultSet res=stmt.executeQuery("SELECT * from CUSTOMERS");
-			
-				while (res.next()) 
-				{
-						  out.println(
-		                			 res.getInt("id") +  "\t" + 
-		                             res.getString("lastname") + "\t" +
-		                             res.getString("firstname") + "\t" +
-		                             res.getString("gender") + "\t" +
-		                             res.getString("username") + "\t" +
-		                             res.getString("email") + "\t" +
-		                             res.getString("password"));
-		                           
-		                            // out.println("\n");//Move to the next line to print the next row.           
-			    }
-				out.println("Done");
-				con.close(); */ 
+	    
 						
 	}
 	
-	 // Filter the string for special HTML characters to prevent
-	   // command injection attack
 	   private static String htmlFilter(String message) 
 	   {
 	      if (message == null) return null;

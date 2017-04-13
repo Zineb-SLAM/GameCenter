@@ -5,27 +5,38 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class Product implements Serializable, Comparable<Product>
 {
-
 	private int id;
 	private String name;
-	private String description;
-	private double price;
+	private String maingenre;
+	private Publisher publisher;
+	private int agemin;
+	private ConsoleType console;
+	private String releasedate;
+	private float price;
 	private int quantity;
-	private ConsoleType type;
+	private String description;
+	
+	
+	
 	/**
 	 * @param id
 	 * @param description
 	 * @param price
 	 */
-	public Product(int id, String name, String description, double price, int qtty, String stype)
+	public Product(int id, String name, String genre, String publ, int agemin, String console,
+			String date, float price, int qtty, String desc)
 	{
 		super();
 		this.id = id;
-		this.description = description;
-		this.price = price;
 		this.name = name;
+		this.maingenre = genre;
+		this.publisher = new Publisher(0, publ);
+		this.agemin = agemin;
+		this.console = new ConsoleType(0, console);
+		this.price = price;
 		this.quantity = qtty;
-		this.type = new ConsoleType(stype);
+		this.description = desc;
+		
 	}
 	/**
 	 * 
@@ -37,10 +48,6 @@ public class Product implements Serializable, Comparable<Product>
 		return id;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
 	public String getName()
 	{
 		return name;
@@ -50,6 +57,39 @@ public class Product implements Serializable, Comparable<Product>
 	{
 		this.name = name;
 	}
+	
+	public int getAgeming()
+	{
+		return this.agemin;
+	}
+	
+	public void setAgemin(int agemin)
+	{
+		this.agemin = agemin;
+	}
+	
+	public String getConsole()
+	{
+		return this.console.getName();
+		
+	}
+	
+	public void setConsole(String console)
+	{
+		this.console.setName(console);
+		
+	}
+	
+	public String getPublisher()
+	{
+		return this.publisher.getName();
+	}
+	
+	public void setPublisher(String publisher)
+	{
+		this.publisher.setName(publisher);
+	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -59,7 +99,7 @@ public class Product implements Serializable, Comparable<Product>
 	public double getPrice() {
 		return price;
 	}
-	public void setprice(double price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 	
@@ -72,6 +112,8 @@ public class Product implements Serializable, Comparable<Product>
 	{
 		this.quantity = qtty; 
 	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

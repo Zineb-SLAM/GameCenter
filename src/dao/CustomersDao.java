@@ -30,11 +30,11 @@ public class CustomersDao {
 			
 			System.out.println(res);
 			
-			//Customer(int id, String fname, String lname, String email, String pwd)
-			/*while(res.next()){
+			//public Customer(int id, String fname, String lname, String email, String username, String pwd)
+			while(res.next()){
 				lu.add(new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"), res.getString("email"),
-						res.getString("usernmae"), res.getString("password")));
-			}*/
+						res.getString("usernaMe"), res.getString("password")));
+			}
 			
 			res.close();
 			ConnectionBDD.getInstance().closeCnx();			
@@ -42,10 +42,39 @@ public class CustomersDao {
 			e.printStackTrace();
 	}
 
-
 		return lu;
 	}
+
 	
+	public static Customer find(String username) 
+	{
+
+		Customer lu = null;
+		
+		Connection cnx=null;
+		try 
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+
+			String sql = "SELECT id,description,prix FROM CUSTOMERS WHERE username=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setString(1, username);
+			
+			ResultSet res = ps.executeQuery();
+			//public Customer(int id, String fname, String lname, String email, String username, String pwd)
+			while(res.next()){
+				lu = new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"), 
+					     res.getString("email"), res.getString("username"),res.getString("password"));
+			}
+			
+			res.close();
+			ConnectionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return lu;
+	}
 
 		
 }

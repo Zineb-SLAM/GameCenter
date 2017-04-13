@@ -12,15 +12,17 @@ public final class ConnectionBDD {
 	private static volatile ConnectionBDD instance;
 	private Connection cnx; 
 	
-	private ConnectionBDD() {
-		try {
+	private ConnectionBDD() 
+	{
+		try 
+		{
 			
 			/*Properties p = new Properties();
 			p.load(Thread.currentThread().getContextClassLoader().
 						getResourceAsStream("confBDD.properties"));*/
 
 			Class.forName("com.mysql.jdbc.Driver");  
-			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root@localhost","YASSINE97"); 			
+			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root","YASSINE97"); 			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

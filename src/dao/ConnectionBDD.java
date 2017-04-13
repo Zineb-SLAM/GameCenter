@@ -1,5 +1,5 @@
 package dao;
-
+import java.io.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,8 +21,13 @@ public final class ConnectionBDD {
 			p.load(Thread.currentThread().getContextClassLoader().
 						getResourceAsStream("confBDD.properties"));*/
 
-			Class.forName("com.mysql.jdbc.Driver");  
-			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root","YASSINE97"); 			
+			Class.forName("com.mysql.jdbc.Driver");
+			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			InputStream input = classLoader.getResourceAsStream("foo.properties");
+			// ...
+			Properties properties = new Properties();
+			properties.load(input);
+			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root", properties.getProperty("password")); 			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

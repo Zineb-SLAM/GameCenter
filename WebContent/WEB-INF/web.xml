@@ -10,26 +10,7 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
-  <servlet>
-    <servlet-name>CustomersManager</servlet-name>
-    <servlet-class>controllers.CustomersManager</servlet-class>
-  </servlet>
-    <servlet>
-    <servlet-name>ProductsManager</servlet-name>
-    <servlet-class>controllers.ProductsManager</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>CustomersManager</servlet-name>
-    <url-pattern>/customers</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-    <servlet-name>ProductsManager</servlet-name>
-    <url-pattern>/products</url-pattern>
-  </servlet-mapping>
-  
-    <servlet> 
+  <servlet> 
 	<servlet-name>javax.ws.rs.core.Application</servlet-name> 
   </servlet> 
   

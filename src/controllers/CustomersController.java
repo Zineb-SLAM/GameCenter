@@ -12,7 +12,7 @@ import dao.CustomersDao;
 
 public class CustomersController {
 	@GET 
-	@Path("/users") 
+	@Path("") 
 	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Customer> getCustomers(){ 
 	      return CustomersDao.findAll();

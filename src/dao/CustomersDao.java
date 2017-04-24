@@ -75,6 +75,33 @@ public class CustomersDao {
 		}
 		return lu;
 	}
+	
+	public static Customer create_customer(int id , String gender ,String first_name, String last_name, String email, String username, String pwd) {
+		Connection cnx=null;
+		
+		try 
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+			
+			String sql = "INSERT INTO CUSTOMERS (lastname, firstname, gender, username, email, password) VALUES (?,?,?,?,?,?)";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			
+			ps.setString(1, last_name);
+			ps.setString(2, first_name);
+			ps.setString(3, gender);
+			ps.setString(4, username);
+			ps.setString(5, email);
+			ps.setString(6, pwd);
+			//Execution et traitement de la réponse
+			int res = ps.executeUpdate();
+			
+			System.out.println(res);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new Customer();
+	}
 
 		
 }

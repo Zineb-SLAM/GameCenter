@@ -22,7 +22,7 @@ public final class ConnectionBDD {
 						getResourceAsStream("confBDD.properties"));*/
 
 			Class.forName("com.mysql.jdbc.Driver");  
-			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root","123456789"); 			
+			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root","YASSINE97"); 			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

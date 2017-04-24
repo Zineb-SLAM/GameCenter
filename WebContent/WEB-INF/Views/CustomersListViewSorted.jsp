@@ -20,7 +20,6 @@
           <th>Lastname</th>
           <th>Username</th>
           <th>Email</th>
-          <th>Status</th>
        </tr>
       <%
 		Object obj = request.getAttribute("CustomersList");
@@ -36,7 +35,6 @@
 				<td><%=u.getLastname()%></td>
 				<td><%=u.getUsername()%></td>
 				<td><%=u.getEmail()%></td>
-				<td><%=u.getStatus()%></td>
 				<td>
 					<a href="customers?action=doDelete&id=<%=u.getId()%>">Delete</a>
 					<a href="customers?action=doEdit&id=<%=u.getId()%>">Edit</a>	

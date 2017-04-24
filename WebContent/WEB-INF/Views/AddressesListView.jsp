@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<%@page import="beans.Customer"%>
 <%@page import="beans.Address"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -20,12 +19,10 @@
           <th>Lastname</th>
           <th>Username</th>
           <th>Email</th>
-          <th>Status</th>
           <th>address</th>
           <th>zipcode</th>
           <th>city</th>
           <th>country</th>
-          <th>Status</th>
        </tr>
       <%
 		Object obj = request.getAttribute("CustomersList");
@@ -41,12 +38,10 @@
 				<td><%=u.getCustomer().getLastname()%></td>
 				<td><%=u.getCustomer().getUsername()%></td>
 				<td><%=u.getCustomer().getEmail()%></td>
-				<td><%=u.getCustomer().getStatus()%></td>
-				<td><%=u.getCustomer().getStatus()%></td>
 				<td><%=u.getAddress()%></td>
 				<td><%=u.getZipcode()%></td>
 				<td><%=u.getCity()%></td>
-				<td><%=u.getZipcode()%></td>
+				<td><%=u.getCountry()%></td>
 				<td>
 					<a href="customersdelete?action=get&id=<%=u.getId()%>">Delete</a>
 					<a href="customersedit?action=get&id=<%=u.getId()%>">Edit</a>	

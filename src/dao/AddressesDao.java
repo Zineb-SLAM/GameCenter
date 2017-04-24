@@ -51,7 +51,7 @@ public class AddressesDao
 				lu.add(new Address(res.getInt("id"), res.getString("address"), res.getString("zipcode"), res.getString("city"),
 						res.getString("country"), res.getString("type"), res.getBoolean("a.status"), 
 						res.getInt("c.id"), res.getString("firstname"), res.getString("lastname"), res.getString("gender"),
-						res.getString("email"), res.getString("usernmae"), res.getString("password"), res.getBoolean("c.status")));
+						res.getString("email"), res.getString("username"), res.getString("password"), res.getBoolean("c.status")));
 			}
 			
 			res.close();
@@ -61,5 +61,27 @@ public class AddressesDao
 	}
 
 		return lu;
+	}
+	
+	
+	public static void delete(String id)
+	{
+		Connection cnx=null;
+		try
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+			String sql = "UPDATE ADDRESSES SET status=0 WHERE id=" + id;
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			
+			ConnectionBDD.getInstance().closeCnx();	
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
 	}
 };

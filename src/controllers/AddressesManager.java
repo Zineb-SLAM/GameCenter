@@ -42,9 +42,11 @@ public class AddressesManager extends HttpServlet {
 		request.setAttribute("CustomersList", listA);
 		
 		
+		
+		
 		// Forward to /WEB-INF/views/productListView.jsp
-        RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/Views/AddressesListView.jsp");
-        dispatcher.forward(request, response);
+      RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/Views/AddressesListView.jsp");
+      dispatcher.forward(request, response);
 	}
 
 	/**

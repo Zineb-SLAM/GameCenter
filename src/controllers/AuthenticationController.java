@@ -24,7 +24,7 @@ public class AuthenticationController {
 			@FormParam("username") String username,
 			@FormParam("pwd") String pwd) {
 		try {
-			return CustomersDao.create_customer(gender, first_name, last_name, email, username, pwd);
+			return CustomersDao.create(gender, first_name, last_name, email, username, pwd);
 		}
 		catch (Exception e) {
 			return new Customer();	

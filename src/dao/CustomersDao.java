@@ -76,7 +76,7 @@ public class CustomersDao {
 		return lu;
 	}
 	
-	public static Customer create_customer(String gender ,String first_name, String last_name, String email, String username, String pwd) throws Exception {
+	public static Customer create(String gender ,String first_name, String last_name, String email, String username, String pwd) throws Exception {
 		Connection cnx=null;
 		
 		cnx = ConnectionBDD.getInstance().getCnx();

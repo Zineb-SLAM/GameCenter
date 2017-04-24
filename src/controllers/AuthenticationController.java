@@ -1,5 +1,6 @@
 package controllers;
 
+//import org.json.simple.JSONObject;
 import java.util.List; 
 import javax.ws.rs.GET; 
 import javax.ws.rs.POST;
@@ -22,7 +23,11 @@ public class AuthenticationController {
 			@FormParam("email") String email, 
 			@FormParam("username") String username,
 			@FormParam("pwd") String pwd) {
-		
-		return CustomersDao.create_customer(5 ,gender, first_name, last_name, email, username, pwd);
+		try {
+			return CustomersDao.create_customer(gender, first_name, last_name, email, username, pwd);
+		}
+		catch (Exception e) {
+			return new Customer();	
+		}
 	}
 }

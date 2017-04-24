@@ -7,20 +7,22 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 
-public final class ConnectionBDD {
+public final class DBConnection {
 
-	private static volatile ConnectionBDD instance;
+	private static volatile DBConnection instance;
 	private Connection cnx; 
 	
-	private ConnectionBDD() 
-	{
-		try 
-		{
+	private DBConnection() {
+		try {
 			
-			/*Properties p = new Properties();
+			Properties p = new Properties();
 			p.load(Thread.currentThread().getContextClassLoader().
-						getResourceAsStream("confBDD.properties"));*/
-
+						getResourceAsStream("confBDD.properties"));
+				
+			// chargement du driver
+			//Class.forName(p.getProperty("driver"));
+			//cnx = DriverManager.getConnection(p.getProperty("url"),
+			//		p.getProperty("user"), p.getProperty("pwd"));
 			Class.forName("com.mysql.jdbc.Driver");  
 			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root","123456789"); 			
 			
@@ -28,12 +30,15 @@ public final class ConnectionBDD {
 			e.printStackTrace();
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	} 
 	
-	public static synchronized ConnectionBDD getInstance() {
+	public static synchronized DBConnection getInstance() {
 		if(instance==null)
-			instance = new ConnectionBDD();
+			instance = new DBConnection();
 		
 		return instance;
 	}

@@ -1,4 +1,5 @@
 # Directories #
+WebContent/WEB-INF/lib/
 build/
 bin/
 target/

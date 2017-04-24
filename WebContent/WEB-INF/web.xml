@@ -19,7 +19,6 @@
     <servlet-class>controllers.ProductsManager</servlet-class>
   </servlet>
   
-  
   <servlet-mapping>
     <servlet-name>CustomersManager</servlet-name>
     <url-pattern>/customers</url-pattern>
@@ -30,6 +29,13 @@
     <url-pattern>/products</url-pattern>
   </servlet-mapping>
   
+    <servlet> 
+	<servlet-name>javax.ws.rs.core.Application</servlet-name> 
+  </servlet> 
   
+  <servlet-mapping> 
+    <servlet-name>javax.ws.rs.core.Application</servlet-name> 
+    <url-pattern>/*</url-pattern> 
+  </servlet-mapping> 
   
 </web-app>

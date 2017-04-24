@@ -21,6 +21,12 @@
     <servlet-name>CustomersDelete</servlet-name>
     <servlet-class>controllers.CustomersDelete</servlet-class>
   </servlet>
+  
+   <servlet>
+    <servlet-name>AddressesManager</servlet-name>
+    <servlet-class>controllers.AddressesManager</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>CustomersManager</servlet-name>
     <url-pattern>/customers</url-pattern>
@@ -33,4 +39,23 @@
     <servlet-name>CustomersDelete</servlet-name>
     <url-pattern>/customersdelete</url-pattern>
   </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>AddressesManager</servlet-name>
+    <url-pattern>/addresses2</url-pattern>
+  </servlet-mapping>
+  
+    
+  <servlet> 
+	<servlet-name>javax.ws.rs.core.Application</servlet-name> 
+  </servlet> 
+  
+  <servlet-mapping> 
+    <servlet-name>javax.ws.rs.core.Application</servlet-name> 
+    <url-pattern>/web-services/*</url-pattern> 
+  </servlet-mapping> 
+  
+  
+  
+  
 </web-app>

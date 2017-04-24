@@ -1,31 +1,45 @@
 package beans;
 import java.io.Serializable;
 
+
+
 public class Customer implements Serializable, Comparable<Customer>
 {
-
 		private int id;
 		private String firstname;
 		private String lastname;
-		private char gender;
+		private String gender;
 		private String email;
 		private String username;
 		private String pwd;
+		private boolean status;
 		
+		public Customer(){}
 		
-		
-		public Customer() {
-	
-		}
-		
-		public Customer(int id, String fname, String lname, String email, String username, String pwd) {
+		public Customer(int id, String fname, String lname, String gender, String email, String username, String pwd) 
+		{
 			super();
+			this.id = id;
 			this.firstname = fname;
 			this.lastname = lname;
+			this.gender = gender;
 			this.email = email;
 			this.username = username;
 			this.pwd = pwd;
+			this.status = true; 
+		}
+		
+		public Customer(int id, String fname, String lname, String gender,  String email, String username, String pwd, boolean stat) 
+		{
+			super();
 			this.id = id;
+			this.firstname = fname;
+			this.lastname = lname;
+			this.gender = gender;
+			this.email = email;
+			this.username = username;
+			this.pwd = pwd;
+			this.status = stat; 
 		}
 		
 		public int getId() {
@@ -39,7 +53,7 @@ public class Customer implements Serializable, Comparable<Customer>
 			return lastname;
 		}
 		
-		public char getGender(){
+		public String getGender(){
 			return gender;
 		}
 		
@@ -54,6 +68,11 @@ public class Customer implements Serializable, Comparable<Customer>
 		
 		public String getPwd() {
 			return pwd;
+		}
+		
+		public boolean getStatus()
+		{
+			return status;
 		}
 		
 		public void setFirstname(String name) {
@@ -76,6 +95,7 @@ public class Customer implements Serializable, Comparable<Customer>
 		}
 		
 		
+		
 		public void setPwd(String pwd) throws Exception {
 			if(pwd.length()<4)
 				throw new Exception("Erreur : longeur de mot de passe <4");
@@ -89,8 +109,6 @@ public class Customer implements Serializable, Comparable<Customer>
 		public int compareTo(Customer o) {
 			return this.lastname.compareTo(o.lastname);
 		}
+				
 		
-		
-		
-		
-}
+};

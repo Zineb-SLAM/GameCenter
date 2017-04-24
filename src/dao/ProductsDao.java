@@ -28,9 +28,9 @@ public class ProductsDao {
 
 			
 			//Requete
-			String sql = "SELECT PRODUCTS.id as id, PRODUCTS.name as name, PRODUCTS.maingenre as genre, CONSOLTYPES.name as console, "
-					+ "PRODUCTS.agemin as agemin, PRODUCTS.price as price, PUBLISHERS.name as publisher, "
-					+ "PRODUCTS.releasedate as releasedate FROM PRODUCTS, PUBLISHERS, CONSOLTYPES "
+			String sql = "SELECT PRODUCTS.id as id, PRODUCTS.name as name, PRODUCTS.maingenre as genre, PUBLISHERS.name as publisher, "
+					+ "PRODUCTS.agemin as agemin,  CONSOLTYPES.name as console, PRODUCTS.releasedate as releasedate, PRODUCTS.price as price,"
+					+ " PRODUCTS.quantity as quantity, PRODUCTS.description as description FROM PRODUCTS, PUBLISHERS, CONSOLTYPES "
 					+ "WHERE PRODUCTS.consoleid = CONSOLTYPES.id AND PRODUCTS.publisherid = PUBLISHERS.id";
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
@@ -42,7 +42,7 @@ public class ProductsDao {
 			{
 					  lu.add(new Product(res.getInt("id"), res.getString("name"), 
 							     res.getString("genre"), res.getString("publisher"), res.getInt("agemin"),
-	                			 res.getString("cosnsole"), res.getDate("releasedate").toString(),
+	                			 res.getString("console"), res.getDate("releasedate").toString(),
 	                			 res.getFloat("price"), res.getInt("quantity"), res.getString("description")
 	                			 )); 
 	                            

@@ -16,5 +16,12 @@ public class CustomersController {
 	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Customer> getCustomers(){ 
 	      return CustomersDao.findAll();
-	}  
+	} 
+	
+//	@GET
+//	@Path("{id}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Customer getCustomer(@PathParam("")){
+//		return
+//	}
 }

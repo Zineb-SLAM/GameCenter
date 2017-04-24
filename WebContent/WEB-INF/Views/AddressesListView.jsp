@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@page import="beans.Customer"%>
+<%@page import="beans.Address"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -11,19 +12,7 @@
     <title>Customers List</title>
  </head>
  <body>
-    <h4>Sort by</h4>
-Sort :
-<form method="get" action="customers">
-	<input name="sortType" type="radio" value="1"/>firstname
-	<input name="sortType" type="radio" value="1"/>lastname
-	<input name="sortType" type="radio" value="2"/>username
-	<input type="hidden" name="action" valce="sort" />
-	<input type="submit" value="Trier" />
-</form>
-    
- 
-    <p style="color: red;">${errorString}</p>
- 
+
     <table border="1" cellpadding="5" cellspacing="1" >
        <tr>
           <th>Id</th>
@@ -32,22 +21,32 @@ Sort :
           <th>Username</th>
           <th>Email</th>
           <th>Status</th>
+          <th>address</th>
+          <th>zipcode</th>
+          <th>city</th>
+          <th>country</th>
+          <th>Status</th>
        </tr>
       <%
 		Object obj = request.getAttribute("CustomersList");
 		if(obj!=null)
 		{
-			List<Customer> lc = (List<Customer>)obj;
-			for(Customer u : lc)
+			List<Address> lc = (List<Address>)obj;
+			for(Address u : lc)
 			{
 	%>
 			<tr>
-				<td><%=u.getId()%></td>
-				<td><%=u.getFirstname()%></td>
-				<td><%=u.getLastname()%></td>
-				<td><%=u.getUsername()%></td>
-				<td><%=u.getEmail()%></td>
-				<td><%=u.getStatus()%></td>
+				<td><%=u.getCustomer().getId()%></td>		
+				<td><%=u.getCustomer().getFirstname()%></td>
+				<td><%=u.getCustomer().getLastname()%></td>
+				<td><%=u.getCustomer().getUsername()%></td>
+				<td><%=u.getCustomer().getEmail()%></td>
+				<td><%=u.getCustomer().getStatus()%></td>
+				<td><%=u.getCustomer().getStatus()%></td>
+				<td><%=u.getAddress()%></td>
+				<td><%=u.getZipcode()%></td>
+				<td><%=u.getCity()%></td>
+				<td><%=u.getZipcode()%></td>
 				<td>
 					<a href="customersdelete?action=get&id=<%=u.getId()%>">Delete</a>
 					<a href="customersedit?action=get&id=<%=u.getId()%>">Edit</a>	

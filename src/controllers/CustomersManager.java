@@ -35,8 +35,10 @@ public class CustomersManager extends HttpServlet {
 			throws ServletException, IOException 
 	{
 		response.setContentType("text/html; charset=UTF-8");
-		 String errorString = null;
-	       List<Customer> listC = null;
+		
+		
+	    List<Customer> listC = null;
+	    
 		 
 		listC =  CustomersDao.findAll();
 		request.setAttribute("CustomersList", listC);
@@ -47,20 +49,42 @@ public class CustomersManager extends HttpServlet {
         dispatcher.forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
+	protected void delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		   String id = (String) request.getParameter("id");
+		 
+		    CustomersDao.delete(id);
+		 
+
+		    List<Customer> listC = null;
+		    
+			 
+			listC =  CustomersDao.findAll();
+			request.setAttribute("CustomersList", listC);
+			
+			
+			// Forward to /WEB-INF/views/productListView.jsp
+	        RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/Views/CustomersListView.jsp");
+	        dispatcher.forward(request, response);
+	}
+
+	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException 
 	{
-		// TODO Auto-generated method stub
-		//doGet(request, response);
 		
 		response.setContentType("text/html; charset=UTF-8");
 	      // Allocate a output writer to write the response message into the network socket
 	    
 						
 	}
+	
+	
+
+	
 	
 	   private static String htmlFilter(String message) 
 	   {

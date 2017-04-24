@@ -15,9 +15,7 @@ public class Product implements Serializable, Comparable<Product>
 	private float price;
 	private int quantity;
 	private String description;
-	
-	
-	
+		
 	/**
 	 * @param id
 	 * @param description
@@ -36,11 +34,8 @@ public class Product implements Serializable, Comparable<Product>
 		this.price = price;
 		this.quantity = qtty;
 		this.description = desc;
-		
 	}
-	/**
-	 * 
-	 */
+
 	public Product() {
 		super();
 	}
@@ -58,7 +53,16 @@ public class Product implements Serializable, Comparable<Product>
 		this.name = name;
 	}
 	
-	public int getAgeming()
+	public String getMaingenre()
+	{
+		return this.maingenre;
+	}
+	
+	public void setMaingenre(String genre)
+	{
+		this.maingenre = genre;
+	}
+	public int getAgemin()
 	{
 		return this.agemin;
 	}
@@ -88,6 +92,17 @@ public class Product implements Serializable, Comparable<Product>
 	public void setPublisher(String publisher)
 	{
 		this.publisher.setName(publisher);
+	}
+	
+	
+	public String getReleasedate()
+	{
+		return this.releasedate;
+	}
+	
+	public void setReleasedate(String date)
+	{
+		 this.releasedate = date;
 	}
 	
 	public String getDescription() {

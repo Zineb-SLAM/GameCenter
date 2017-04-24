@@ -22,18 +22,19 @@ public class CustomersDao {
 
 
 			//Requete
-			String sql = "SELECT * FROM CUSTOMERS";
+			String sql = "SELECT * FROM CUSTOMERS WHERE status=1";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
 			
-			System.out.println(res);
+			//System.out.println(res);
 			
 			//public Customer(int id, String fname, String lname, String email, String username, String pwd)
 			while(res.next()){
-				lu.add(new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"), res.getString("email"),
-						res.getString("usernaMe"), res.getString("password")));
+				lu.add(new Customer(res.getInt("id"), res.getString("firstname"),
+						res.getString("lastname"), res.getString("gender"), res.getString("email"),
+						res.getString("username"), res.getString("password")));
 			}
 			
 			res.close();
@@ -44,6 +45,53 @@ public class CustomersDao {
 
 		return lu;
 	}
+	
+	public static List<Customer> findAll(String sort) 
+	{
+		List<Customer> lu = new ArrayList<Customer>();
+		Connection cnx=null;
+		try 
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
+
+			String sql = "SELECT * FROM CUSTOMERS WHERE status=1" ;
+
+			switch(sort)
+			{
+				case "1":
+					sql = "SELECT * FROM CUSTOMERS WHERE status=1 ORDER BY firstname";
+					break;
+				case "2":
+					sql = "SELECT * FROM CUSTOMERS WHERE status=1 ORDER BY lastname";
+					break;
+				case "3":
+					sql = "SELECT * FROM CUSTOMERS WHERE status=1 ORDER BY username";
+			
+			}
+			
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			
+			//Execution et traitement de la réponse
+			ResultSet res = ps.executeQuery();
+			
+			//System.out.println(res);
+			
+			//public Customer(int id, String fname, String lname, String email, String username, String pwd)
+			while(res.next()){
+				lu.add(new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"), res.getString("gender"),
+						res.getString("email"), res.getString("username"), res.getString("password")));
+			}
+			
+			res.close();
+			ConnectionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+	}
+
+		return lu;
+	}
+	
 
 	
 	public static Customer find(String username) 
@@ -63,7 +111,7 @@ public class CustomersDao {
 			ResultSet res = ps.executeQuery();
 			//public Customer(int id, String fname, String lname, String email, String username, String pwd)
 			while(res.next()){
-				lu = new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"), 
+				lu = new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"),res.getString("gender"), 
 					     res.getString("email"), res.getString("username"),res.getString("password"));
 			}
 			
@@ -76,5 +124,26 @@ public class CustomersDao {
 		return lu;
 	}
 
+	
+	public static void delete(String id)
+	{
+		Connection cnx=null;
+		try
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+			String sql = "UPDATE CUSTOMERS SET status=0 WHERE id=" + id;
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			
+			ConnectionBDD.getInstance().closeCnx();	
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+	}
 		
 }

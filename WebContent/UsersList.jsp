@@ -14,12 +14,12 @@
 <h1>Users List</h1>
 <h4>Sort by</h4>
 Sort :
-<form method="post" action="GestionUsers">
+<form method="post" action="CustomersManager">
 	<input name="sortType" type="radio" value="1"/>firstname
 	<input name="sortType" type="radio" value="1"/>lastname
 	<input name="sortType" type="radio" value="2"/>username
 	<input type="hidden" name="action" valce="sort" />
-	<input type="submit" value="Trier" />
+	<input type="submit" value="Sort" />
 </form>
 
 <table border="1">
@@ -33,7 +33,7 @@ Sort :
 	<th>ACTIONS</th>
 </tr>
 	<%
-		Object obj = request.getAttribute("listeU");
+		Object obj = request.getAttribute("listeC");
 		if(obj!=null){
 			List<Customer> lc = (List<Customer>)obj;
 			for(Customer u : lc){
@@ -42,10 +42,11 @@ Sort :
 				<td><%=u.getId()%></td>
 				<td><%=u.getFirstname()%></td>
 				<td><%=u.getLastname()%></td>
+				<td><%=u.getUsername()%></td>
 				<td><%=u.getEmail()%></td>
 				<td>
-					<a href="GestionUsers?action=Delete&id=<%=u.getId()%>">Delete</a>
-					<a href="GestionUsers?action=Edit&id=<%=u.getId()%>">Edit</a>	
+					<a href="CustomersManager?action=Delete&id=<%=u.getId()%>">Delete</a>
+					<a href="CustomersManager?action=Edit&id=<%=u.getId()%>">Edit</a>	
 				</td>
 			</tr>
 	<%

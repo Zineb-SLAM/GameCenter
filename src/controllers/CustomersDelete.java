@@ -1,12 +1,8 @@
 package controllers;
+import beans.Customer;
+import dao.CustomersDao; 
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -16,20 +12,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import beans.Product;
-import dao.ProductsDao;
-
 /**
- * Servlet implementation class ProductsManager
+ * Servlet implementation class CustomersDelete
  */
-@WebServlet("/ProductsManager")
-public class ProductsManager extends HttpServlet {
+@WebServlet("/CustomersDelete")
+public class CustomersDelete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductsManager() {
+    public CustomersDelete() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,14 +34,20 @@ public class ProductsManager extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
-	       List<Product> listP = null;
+		   String id = (String) request.getParameter("id");
+		 
+		    CustomersDao.delete(id);
+		 
+
+		    List<Customer> listC = null;
+		    
 			 
-			listP =  ProductsDao.findAll();
-			request.setAttribute("ProductsList", listP);
+			listC =  CustomersDao.findAll();
+			request.setAttribute("CustomersList", listC);
 			
 			
 			// Forward to /WEB-INF/views/productListView.jsp
-	        RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/Views/ProductsListView.jsp");
+	        RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/Views/CustomersListView.jsp");
 	        dispatcher.forward(request, response);
 	}
 
@@ -57,13 +56,7 @@ public class ProductsManager extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-				//doGet(request, response);
-				
-				response.setContentType("text/html; charset=UTF-8");
-			      // Allocate a output writer to write the response message into the network socket
-			      PrintWriter out = response.getWriter();
-
-					
+		doGet(request, response);
 	}
 
 }

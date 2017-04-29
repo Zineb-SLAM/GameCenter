@@ -31,6 +31,7 @@ public class Product implements Serializable, Comparable<Product>
 		this.publisher = new Publisher(0, publ);
 		this.agemin = agemin;
 		this.console = new ConsoleType(0, console);
+		this.releasedate = date;
 		this.price = price;
 		this.quantity = qtty;
 		this.description = desc;

@@ -175,6 +175,34 @@ public class CustomersDao {
 		}
 		
 	}
+	
+	public static boolean exists(int id)
+	{
+		Connection cnx=null;
+
+		try
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+			String sql = "SELECT * FROM CUSTOMERS WHERE status= 1 AND id=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, id);
+			
+			ResultSet res = ps.executeQuery();
+			
+			if(res.next())
+				return true;
+			
+			ps.close();
+			
+			
+			ConnectionBDD.getInstance().closeCnx();	
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	
+		return false;
+	}
 
 	
 	private static void missing_exception(String param, String param_name) throws Exception {

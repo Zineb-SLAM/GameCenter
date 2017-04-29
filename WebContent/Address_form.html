@@ -1,0 +1,35 @@
+<html>
+<body>
+	<h1>Address Form</h1>
+
+	<form action="http://localhost:8080/GameCenter/web-services/customers/4/addresses/add" method="post">
+	
+		<p>
+			Name : <input type="text" name="address" />
+		</p>
+		
+		
+		<p>
+			Zipcode : <input type="text" name="zipcode" />
+		</p>
+		
+		<p>
+			City : <input type="text" name="city" />
+		</p>	
+		
+		<p>
+			Country : <input type="text" name="country" />
+		</p>
+		
+		<p>
+			<select name="type">
+  				<option value="shipping">Shipping</option>
+  				<option value="billing">Billing</option>
+  				<option value="both">Both</option>
+  			</select>
+		</p>
+		<input type="submit" value="Add Address" />
+	</form>
+
+</body>
+</html>

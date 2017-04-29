@@ -38,7 +38,7 @@ public class AddressesManager extends HttpServlet {
 		List<Address> listA = null;
 	    
 		 
-		listA =  AddressesDao.findAll();
+		//listA =  AddressesDao.findAll();
 		request.setAttribute("CustomersList", listA);
 		
 		

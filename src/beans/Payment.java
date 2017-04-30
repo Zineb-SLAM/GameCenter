@@ -5,62 +5,64 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class Payment implements Serializable, Comparable<Payment>
 {
-	public enum CardType {visa, Mastercard, american_express, discover}
+	//public enum CardType {visa, Mastercard, american_express, discover}
 
 	int id;
-	CardType type;
-	String number;
-	String code;
+	String type;
+	String pan;
+	String cvv;
+	String expiration;
 	Customer customer;
 	boolean status;
 	
 
-	Payment(int id, CardType t, String nb, String c)
+	public Payment(int id, String t, String nb, String c)
 	{
 		this.id = id;
 		this.type = t;
-		this.number = nb;
-		this.code = c;
+		this.pan = nb;
+		this.cvv = c;
 		customer = new Customer();
 	}
 	
-	Payment(int id, CardType t, String nb, String c, int idcust, String fname, String lname, String gender, String email, String username, String pwd)
+	public Payment(int id, String t, String pan, String cvv, int idcust, String fname, String lname, String gender, String email, String username, String pwd)
 	{
 		this.id = id;
 		this.type = t;
-		this.number = nb;
-		this.code = c;
+		this.pan = pan;
+		this.cvv = cvv;
 		customer = new Customer(idcust, fname, lname, gender, email, username, pwd);
 	}
 	
 	
-	int getId()
+	public int getId()
 	{
 		return id;
 	}
 	
-	CardType getType()
+	public String getType()
 	{
 		return type;
 	}
-	String getNumber()
+	
+	public String getPan()
 	{
-		return number;
+		return pan;
 	}
 	
-	String getCode()
+	public String getCvv()
 	{
-		return code;
+		return cvv;
 	}
 	
-	void disableCard()
+	public void disableCard()
 	{
 		status = false;
 	}
 	
 	@Override
 	public int compareTo(Payment o) {
-		return (this.number.compareTo(o.number));
+		return (this.cvv.compareTo(o.cvv));
 	}
 	
 	

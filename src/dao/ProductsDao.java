@@ -329,6 +329,62 @@ public class ProductsDao {
 		return lu;
 	}
 	
+	private static int getIdPublisher(String name)
+	{
+		int id = -1;
+		Connection cnx=null;
+		try 
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+			String sql = "SELECT publisherid FROM PRODUCTS WHERE name= ?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setString(1, name);
+			
+			ResultSet res = ps.executeQuery();
+			while (res.next()) 
+			{
+				id = res.getInt("publisherid");
+			}
+			
+			
+			res.close();
+			ConnectionBDD.getInstance().closeCnx();	
+		
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return id;
+	}
+	
+	private static String getMaingenre(String name)
+	{
+		Connection cnx = null;
+		String maingenre = "null";
+		try
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+			String sql = "SELECT maingenre FROM PRODUCTS WHERE name = ?";
+			
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setString(1, name);
+			
+			ResultSet res = ps.executeQuery();
+			
+			while (res.next()) 
+			{
+				maingenre = res.getString("maingenre");
+			}
+				
+			res.close();
+			ConnectionBDD.getInstance().closeCnx();	
+			
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}		
+		return maingenre;
+	}
 	
 	public static void add(String name, String genre, String publisher, int agemin, String console, String date,
 			float price, int quantity, String description)
@@ -336,8 +392,23 @@ public class ProductsDao {
 		Connection cnx=null;
 		try
 		{
-			int idpub = PublisherDao.getId(publisher);
+			
+			 int idpub = getIdPublisher(name);
+			 if(idpub == -1)
+			 {
+				 idpub = PublisherDao.getId(publisher);
+			 }
+			 
+			 String maingenre_exis = getMaingenre(name);
+			 if(maingenre_exis != "null")
+			 {
+				 genre = maingenre_exis;
+			 }
+			
 			int idconsole = ConsoleTypeDao.getId(console);
+			
+			if(idpub == -1 || idconsole == -1)
+				return;
 			
 			cnx = ConnectionBDD.getInstance().getCnx();
 			
@@ -370,7 +441,29 @@ public class ProductsDao {
 	}
 	
 	
-	public static void editQuantity(String id, String name, String genre, String publisher, int age, String console, String date, float price, int qtty, String desc)
+	public static void editName(int id, String name)
+	{
+		Connection cnx=null;
+		try
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+			
+			String sql = "UPDATE PRODUCTS SET name=? WHERE id=?";
+			
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setInt(2, id);
+			ps.executeUpdate();
+			ps.close();
+			
+			ConnectionBDD.getInstance().closeCnx();	
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	public static void editQuantity(int id, int quantity)
 	{
 		Connection cnx=null;
 		try
@@ -380,8 +473,8 @@ public class ProductsDao {
 			String sql = "UPDATE PRODUCTS SET quantity=? WHERE id=?";
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setInt(1, qtty);
-			ps.setString(2, id);
+			ps.setInt(1, quantity);
+			ps.setInt(2, id);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -393,7 +486,8 @@ public class ProductsDao {
 		
 	}
 	
-	public static void editPrice(String id, float price)
+	
+	public static void editPrice(int id, float price)
 	{
 		Connection cnx=null;
 		try
@@ -404,7 +498,7 @@ public class ProductsDao {
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setFloat(1, price);
-			ps.setString(2, id);
+			ps.setInt(2, id);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -416,19 +510,76 @@ public class ProductsDao {
 		
 	}
 	
-	
-	public static void editAgemin(String id, int age)
+	private static String getName(int id)
 	{
+		String name ="";
 		Connection cnx=null;
 		try
 		{
 			cnx = ConnectionBDD.getInstance().getCnx();
 			
-			String sql = "UPDATE PRODUCTS SET agemin=? WHERE id=?";
+			String sql = "SELECT name FROM PRODUCTS WHERE id= ?";
+			
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet res = ps.executeQuery();
+			while(res.next())
+			{
+				name = res.getString("name");
+			}
+			
+			ps.close();			
+			ConnectionBDD.getInstance().closeCnx();	
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return name;		
+	}
+	
+	
+	//all main genre of that game should be updates --> MAKES MORE SENSE, DOESN'T IT??!
+	public static void editMaingenre(int id, String maingenre)
+	{
+		Connection cnx=null;
+		try
+		{
+			String name = getName(id);
+			cnx = ConnectionBDD.getInstance().getCnx();
+			
+			String sql = "UPDATE PRODUCTS SET maingenre=? WHERE name=?";
+			
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setString(1, maingenre);
+			ps.setString(2, name);
+			ps.executeUpdate();
+			ps.close();
+			
+			ConnectionBDD.getInstance().closeCnx();	
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return;
+	}
+		
+	
+	//all ages for all the consoles of that game should be updated!!!
+	public static void editAgemin(int id, int age)
+	{
+		Connection cnx=null;
+		try
+		{
+			String name = getName(id);
+			cnx = ConnectionBDD.getInstance().getCnx();
+			
+			String sql = "UPDATE PRODUCTS SET agemin=? WHERE name=?";
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1, age);
-			ps.setString(2, id);
+			ps.setString(2, name);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -440,18 +591,55 @@ public class ProductsDao {
 	}
 	
 	
-	public static void ediMainGenre(String id, String genre)
+
+	//all main genre of that game should be updates --> MAKES MORE SENSE, DOESN'T IT??!
+		
+	public static void editPublisher(int id, String publisher)
 	{
+		int idpub = PublisherDao.getId(publisher);
+		if(idpub == -1)
+			return;
 		Connection cnx=null;
 		try
 		{
+				String name = getName(id);
+				cnx = ConnectionBDD.getInstance().getCnx();
+				
+				String sql = "UPDATE PRODUCTS SET publisherid=? WHERE name=?";
+				
+				PreparedStatement ps = cnx.prepareStatement(sql);
+				ps.setInt(1, idpub);
+				ps.setString(2, name);
+				ps.executeUpdate();
+				ps.close();
+				
+				ConnectionBDD.getInstance().closeCnx();	
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+			
+	return;
+		
+	}
+	
+	
+	public static void editConsole(int id, String console)
+	{
+		int idconsole = PublisherDao.getId(console);
+		if(idconsole == -1)
+			return;
+		Connection cnx=null;
+		try
+		{
+			
 			cnx = ConnectionBDD.getInstance().getCnx();
 			
-			String sql = "UPDATE PRODUCTS SET maingenre=? WHERE id=?";
+			String sql = "UPDATE PRODUCTS SET consoleid=? WHERE id=?";
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setString(1, genre);
-			ps.setString(2, id);
+			ps.setInt(1, idconsole);
+			ps.setInt(2, id);
 			ps.executeUpdate();
 			ps.close();
 			

@@ -1,10 +1,7 @@
 package dao;
-import beans.Customer;
-import beans.Address.AddressType;
 import beans.Address;
 import dao.CustomersDao;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -147,41 +144,7 @@ public class AddressesDao
 		
 	}
 	
-	public static void edit(int idcust, int idadd, String address, String zipcode, String city, String type) throws Exception
-	{
-		Connection cnx=null;
-		try
-		{
-			if(!AddressesDao.exists(idcust, idadd))
-			{
-				throw new Exception("ERROR: UPDATE failed, address or customer not found "+ idcust);
-			}
-			
-			cnx = ConnectionBDD.getInstance().getCnx();
 	
-			String sql = "UPDATE ADDRESSES SET address=? AND zipcode=? AND city=? AND type=? "
-					+ "WHERE customer=? AND id=? AND customer=?";
-			
-			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setString(1, address );
-			ps.setString(2, zipcode );
-			ps.setString(3, city );
-			ps.setString(4, type );
-			ps.setInt(5, idadd );
-			ps.setInt(6, idcust );
-			ps.executeUpdate();
-			ps.close();
-			
-			
-			ConnectionBDD.getInstance().closeCnx();	
-		}catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
-		
-		return;
-	}
-
 	public static void edit(int idcust, int idadd, String address) throws Exception
 	{
 		Connection cnx=null;
@@ -194,7 +157,7 @@ public class AddressesDao
 			
 			cnx = ConnectionBDD.getInstance().getCnx();
 	
-			String sql = "UPDATE ADDRESSES SET address=? WHERE customer=? AND id=? AND customer=?";
+			String sql = "UPDATE ADDRESSES SET address=? WHERE customer=? AND id=?";
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, address );

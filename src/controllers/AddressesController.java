@@ -59,23 +59,11 @@ public class AddressesController {
 	}
 	
 
-	@PUT 
-	@Path("/edit/") 
-	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Address> editAddress(@NotNull @FormParam("id") int idcust, @NotNull @FormParam("idaddress") int idaddress,
-			@NotNull @FormParam("address") String address, @NotNull @FormParam("zipcode") String zipcode, 
-			@NotNull @FormParam("city") String city, @FormParam("type") String type) 
-			throws Exception
-	{	
-		AddressesDao.edit(idcust, idaddress, address, zipcode, city, type);
-		return AddressesDao.findCustAddress(idcust, -1);
-	}
-
 	
 	@PUT 
 	@Path("/edit/") 
 	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Address> editAddress(@NotNull @FormParam("id") int idcust, @NotNull @FormParam("idaddress") int idaddress,
+	public List<Address> editAddress(@NotNull @PathParam("id") int idcust, @NotNull @FormParam("idaddress") int idaddress,
 			 @FormParam("address") String address) 
 			throws Exception
 	{	

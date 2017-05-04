@@ -51,6 +51,7 @@ public class PaymentsDao
 			while(res.next())
 			{
 				lu.add(new Payment(res.getInt("p.id"), res.getString("p.type"), res.getString("p.pan"), res.getString("p.cvv"),
+						res.getDate("p.expiration").toString(),
 						res.getInt("c.id"), res.getString("c.firstname"), res.getString("c.lastname"), res.getString("c.gender"),
 						res.getString("c.email"), res.getString("c.username"), res.getString("c.password")));
 			}
@@ -172,6 +173,29 @@ public class PaymentsDao
 		return;
 	}
 	
-	
+	public static void editExpiration(int idcust, int idpay, String exp)
+	{
+		Connection cnx=null;
+		try
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+			String sql = "UPDATE PAYMENTS SET expiration=? WHERE customer=? AND id=?";
+			
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setString(1, exp);
+			ps.setInt(2, idcust);
+			ps.setInt(3, idpay);
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			ConnectionBDD.getInstance().closeCnx();	
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return;
+	}
 	
 }

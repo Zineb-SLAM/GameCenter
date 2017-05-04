@@ -70,7 +70,7 @@ public class PaymentsController
 		}
 		if(expiration!=null)
 		{
-			
+			PaymentsDao.editExpiration(idcust, idpay, expiration);
 		}
 		return PaymentsDao.findCustPayments(idcust, idpay);
 	}
@@ -82,8 +82,10 @@ public class PaymentsController
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Payment> addPayment(@NotNull @PathParam("id") int idcust, 
 			@FormParam("type") String type, @FormParam("pan") String pan,
-			@FormParam("cvv") String cvv, @FormParam("expiration") String expiration) throws Exception
+			@FormParam("cvv") String cvv, @FormParam("day") String day, 
+			@FormParam("month") String month, @FormParam("year") String year) throws Exception
 	{
+		String expiration = year + "-" + month + "-" + day;
 		PaymentsDao.add(type, pan, cvv, expiration, idcust);
 		
 		return PaymentsDao.findCustPayments(idcust, -1);

@@ -1,5 +1,10 @@
 package beans;
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.List;
+
+import dao.OrderDao;
+import dao.PaymentsDao;
 
 
 
@@ -15,6 +20,18 @@ public class Customer implements Serializable, Comparable<Customer>
 		private boolean status;
 		
 		public Customer(){}
+		
+		public Customer(int id, String fname, String lname, String gender, String email, String username) 
+		{
+			super();
+			this.id = id;
+			this.firstname = fname;
+			this.lastname = lname;
+			this.gender = gender;
+			this.email = email;
+			this.username = username;
+			this.status = true; 
+		}
 		
 		public Customer(int id, String fname, String lname, String gender, String email, String username, String pwd) 
 		{
@@ -103,12 +120,29 @@ public class Customer implements Serializable, Comparable<Customer>
 				this.pwd = pwd;
 		}
 		
+		public Payment payments(int payment_id) {
+			try {
+				return PaymentsDao.findCustPayments(this.id, payment_id).get(0);
+			} catch (Exception e){
+				e.printStackTrace();
+				return null;
+				
+			}
+				
+		}
+		
+//		public List<Order> getOrders() {
+//			return OrderDao.findAll(this);
+//		}
+		
 	
 
 		@Override
 		public int compareTo(Customer o) {
 			return this.lastname.compareTo(o.lastname);
 		}
+		
+		
 				
 		
 };

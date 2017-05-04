@@ -23,14 +23,14 @@ public class CustomersController {
 	      return CustomersDao.findAll();
 	} 
 	
-	@GET 
-	@Path("/{id}") 
-	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Customer> deleteCustomer(@PathParam("id") String id)
-	{
-		CustomersDao.delete(id);
-		return CustomersDao.findAll();
-	}
+//	@GET 
+//	@Path("/{id}") 
+//	@Produces(MediaType.APPLICATION_JSON) 
+//	public List<Customer> deleteCustomer(@PathParam("id") String id)
+//	{
+//		CustomersDao.delete(id);
+//		return CustomersDao.findAll();
+//	}
 	
 //	@GET
 //	@Path("{id}")

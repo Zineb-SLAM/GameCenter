@@ -92,11 +92,17 @@ public class CustomersDao {
 		return lu;
 	}
 	
+	public static Customer find(String username){
+		return refactorFind(username, "username");
+	}
 
+	public static Customer find(int id) {
+		return refactorFind(id + "", "id");
+	}
 	
-	public static Customer find(String username) 
+	private static Customer refactorFind(String string, String filter) 
 	{
-
+		System.out.print("----------------------------String: " + string);
 		Customer lu = null;
 		
 		Connection cnx=null;
@@ -104,15 +110,23 @@ public class CustomersDao {
 		{
 			cnx = ConnectionBDD.getInstance().getCnx();
 
-			String sql = "SELECT id,description,prix FROM CUSTOMERS WHERE username=?";
+			// Remplacer par un switch
+			String sql = "SELECT id, lastname, firstname, gender, username, email, status FROM CUSTOMERS WHERE "; 
+			if (filter == "username")
+				sql = sql + "username=?";
+			else 
+				if (filter == "id")
+					sql = sql + "id=?";
+			
+			
 			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setString(1, username);
+			ps.setString(1, string);
 			
 			ResultSet res = ps.executeQuery();
 			//public Customer(int id, String fname, String lname, String email, String username, String pwd)
 			while(res.next()){
 				lu = new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"),res.getString("gender"), 
-					     res.getString("email"), res.getString("username"),res.getString("password"));
+					     res.getString("email"), res.getString("username"));
 			}
 			
 			res.close();

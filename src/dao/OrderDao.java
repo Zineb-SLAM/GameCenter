@@ -8,39 +8,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.Order;
+import beans.Customer;
 
+import dao.PaymentsDao;
+import beans.Payment;
 public class OrderDao {
 
-	public static List<Order> findAll() 
+	public static List<Order> findAll(Customer customer) throws Exception 
 	{
 		List<Order> lu = new ArrayList<Order>();
 		Connection cnx=null;
-		try 
-		{
+		//try 
+		//{
 			cnx = ConnectionBDD.getInstance().getCnx();
 			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
 
 
 			//Requete
-			String sql = "SELECT * FROM LINE_ORDERS";
+			String sql = "SELECT * FROM ORDERS WHERE customerid = ?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, customer.getId());
 			
+			System.out.print("------------------Customer:" + customer.getId() + "---------------------");
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
 			
-			System.out.println(res);
-			
 			//Order(int id, String fname, String lname, String email, String pwd)
-			/*while(res.next()){
-				lu.add(new Order(res.getInt("id"), res.getString("firstname"), res.getString("lastname"), res.getString("email"),
-						res.getString("usernmae"), res.getString("password")));
-			}*/
+			while(res.next()){
+				System.out.println("/////" + res.getInt("id"));
+				lu.add(new Order(res.getInt("id"),customer , (res.getString("paid") == "True" || res.getString("paid") == "1"), new Payment(1, "temp", "temp", "temp")));
+						//customer.payments(Integer.parseInt(res.getString("paymentid")))));
+			}
 			
 			res.close();
 			ConnectionBDD.getInstance().closeCnx();			
-		} catch (SQLException e) {
-			e.printStackTrace();
-	}
+		//} catch (SQLException e) {
+		//	e.printStackTrace();
+		//}
 
 
 		return lu;

@@ -50,6 +50,25 @@ public class OrderDao {
 		return lu;
 	}
 	
+	public static String create(Customer customer) throws Exception {
+		Connection cnx=null;
+		
+		cnx = ConnectionBDD.getInstance().getCnx();
+		
+		String sql = "INSERT INTO ORDERS (customerid,paid) VALUES (?,?)";
+		PreparedStatement ps = cnx.prepareStatement(sql);
 
+		
+		ps.setInt(1, customer.getId());
+		ps.setInt(2, 0);
+		//Execution et traitement de la réponse
+		int res = ps.executeUpdate();
+		
+		System.out.println("Inserted: " + res);
+		if (res == 1)
+			return "created";
+		else
+			throw new Exception("DataBase Insertion Error with customer: " + customer.getEmail());
+	}
 		
 }

@@ -111,7 +111,7 @@ VALUES  ("Assassin's Creed", "action", 1, 18, 3, '2015-12-27', 55.99, 12, "Assas
 			id INT AUTO_INCREMENT,
 			customerid INT NOT NULL,
 			paid BOOLEAN NOT NULL,
-			paymentid INT NOT NULL,
+			paymentid INT,
 			PRIMARY KEY(id),
 			FOREIGN KEY(customerid) REFERENCES CUSTOMERS(id),
 			FOREIGN KEY(paymentid) REFERENCES PAYMENTS(id)

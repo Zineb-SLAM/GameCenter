@@ -1,7 +1,8 @@
 package controllers;
 
 import java.util.List; 
-import javax.ws.rs.GET; 
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.FormParam;
@@ -32,5 +33,13 @@ public class OrdersController {
 	    	return null;
 	    }
 		
-	} 
+	}
+	
+	@GET // TODO: Mettre en POST
+	@Path("create")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String createOrder(@PathParam("customer_id") int customer_id) throws Exception{
+		Customer customer = CustomersDao.find(customer_id);
+		return OrderDao.create(customer);
+	}
 }

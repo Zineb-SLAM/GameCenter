@@ -15,7 +15,7 @@ public class PaymentsDao
 	{
 		if(!CustomersDao.exists(idcust))
 		{
-			throw new Exception("ERROR: Insertion failed, customer not found "+ idcust);
+			throw new Exception("ERROR: customer not found "+ idcust);
 		}
 		
 		List<Payment> lu = new ArrayList<Payment>();
@@ -37,7 +37,8 @@ public class PaymentsDao
 			}
 			else
 			{
-				sql = "SELECT * FROM CUSTOMERS c, PAYMENTS p WHERE c.status = 1 AND p.status = 1 AND c.id = p.customer AND c.id = ? AND p.id = ?";
+				sql = "SELECT * FROM CUSTOMERS c, PAYMENTS p WHERE c.status = 1 AND p.status = 1 "
+						+ "AND c.id = p.customer AND c.id = ? AND p.id = ?";
 				
 				ps = cnx.prepareStatement(sql);
 				ps.setInt(1, idcust);

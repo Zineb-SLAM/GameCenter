@@ -16,7 +16,7 @@ import com.sun.istack.internal.NotNull;
 import beans.Address;
 import dao.AddressesDao;
 
-@Path("/customers/{id}/addresses") 
+@Path("/customers/{customer_id}/addresses") 
 
 public class AddressesController {
 	
@@ -24,32 +24,33 @@ public class AddressesController {
 	@GET 
 	@Path("") 
 	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Address> getAddresses(@PathParam("id") int idcust) throws Exception
+	public List<Address> getAddresses(@PathParam("customer_id") int customer_id) throws Exception
 	{ 
-	      return AddressesDao.findCustAddress(idcust, -1);
+	      return AddressesDao.findCustAddress(customer_id, -1);
 	} 
 	
 	
 	@GET 
-	@Path("/{idadd}") 
+	@Path("/{id}") 
 	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Address> getAddress(@PathParam("id") int idcust, @PathParam("idadd") int idadd) throws Exception
+	public List<Address> getAddress(@PathParam("customer_id") int customer_id, @PathParam("id") int id) throws Exception
 	{ 
-	      return AddressesDao.findCustAddress(idcust, idadd);
+		 System.out.print(customer_id + ", " + id);
+	     return AddressesDao.findCustAddress(customer_id, id);
 	} 
 	
 	
 	@DELETE 
-	@Path("/delete/{idadd}") 
+	@Path("{id}") 
 	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Address> deleteAddress(@PathParam("id") int idcust, @PathParam("idadd") int idadd) throws Exception
+	public List<Address> deleteAddress(@PathParam("customer_id") int customer_id, @PathParam("id") int id) throws Exception
 	{
-		AddressesDao.delete(idcust, idadd);
-		return AddressesDao.findCustAddress(idcust, -1);
+		AddressesDao.delete(customer_id, id);
+		return AddressesDao.findCustAddress(customer_id, -1);
 	}
 	
 	@POST
-	@Path("/add")
+	@Path("/new")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Address> addAddress(@PathParam("id") int idcust, @NotNull @FormParam("address") String address, @NotNull @FormParam("zipcode") String zipcode, 
 			@NotNull @FormParam("city") String city, @NotNull @FormParam("country") String country, @NotNull @FormParam("type") String type) throws Exception
@@ -61,14 +62,14 @@ public class AddressesController {
 
 	
 	@PUT 
-	@Path("/edit/") 
+	@Path("/{id}/edit") 
 	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Address> editAddress(@NotNull @PathParam("id") int idcust, @NotNull @FormParam("idaddress") int idaddress,
+	public List<Address> editAddress(@NotNull @PathParam("customer_id") int customer_id, @NotNull @FormParam("id") int id,
 			 @FormParam("address") String address) 
 			throws Exception
 	{	
-		AddressesDao.edit(idcust, idaddress,address);
-		return AddressesDao.findCustAddress(idcust, -1);
+		AddressesDao.edit(customer_id, id,address);
+		return AddressesDao.findCustAddress(customer_id, -1);
 	}
 	
 };

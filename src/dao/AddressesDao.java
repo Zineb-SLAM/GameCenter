@@ -33,14 +33,14 @@ public class AddressesDao
 			PreparedStatement ps;
 			if(idadd == -1) //find all the addresses of the customer
 			{
-				sql = "SELECT * FROM Customers c, Addresses a WHERE c.status=1 AND a.status=1 "
+				sql = "SELECT * FROM CUSTOMERS c, ADDRESSES a WHERE c.status=1 AND a.status=1 "
 						+ "AND c.id = a.customer AND c.id = ?";
 				ps = cnx.prepareStatement(sql);
 				ps.setInt(1, idcust);
 			}
 			else //find a particular address for the customer
 			{
-				sql = "SELECT * FROM Customers c, Addresses a WHERE c.status=1 AND a.status=1"
+				sql = "SELECT * FROM CUSTOMERS c, ADDRESSES a WHERE c.status=1 AND a.status=1"
 						+ " AND c.id = a.customer AND c.id = ? AND a.id = ?";
 				ps = cnx.prepareStatement(sql);
 				ps.setInt(1, idcust);

@@ -16,7 +16,7 @@ import com.sun.istack.internal.NotNull;
 import beans.Payment;
 import dao.PaymentsDao;
 
-@Path("/customers/{id}/payments") 
+@Path("/customers/{customer_id}/payments") 
 
 public class PaymentsController 
 {
@@ -25,26 +25,26 @@ public class PaymentsController
 	@Produces(MediaType.APPLICATION_JSON)
 	/*Payment(int id, String t, String nb, String c, int idcust, String fname, String lname, 
 	 * String gender, String email, String username, String pwd)*/
-	public List<Payment> getPayments(@NotNull @PathParam("id") int id ) throws Exception
+	public List<Payment> getPayments(@NotNull @PathParam("customer_id") int customer_id ) throws Exception
 	{
-		return PaymentsDao.findCustPayments(id, -1);
+		return PaymentsDao.findCustPayments(customer_id, -1);
 	}
 	
 	@GET
-	@Path("/{idp}")
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	/*Payment(int id, String t, String nb, String c, int idcust, String fname, String lname, 
 	 * String gender, String email, String username, String pwd)*/
-	public List<Payment> getPayments(@NotNull @PathParam("id") int idcust, @NotNull @PathParam("idp") int idp)
+	public List<Payment> getPayments(@NotNull @PathParam("customer_id") int customer_id, @NotNull @PathParam("idp") int payment_id)
 	throws Exception
 	{
-		return PaymentsDao.findCustPayments(idcust, idp);
+		return PaymentsDao.findCustPayments(customer_id, payment_id);
 	}
 	
 	
 
 	@DELETE 
-	@Path("/delete/{idpay}") 
+	@Path("{id}") 
 	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Payment> deletePayment(@NotNull @PathParam("id") int idcust, @NotNull @PathParam("idpay") int idpay) throws Exception
 	{
@@ -54,7 +54,7 @@ public class PaymentsController
 	
 	
 	@PUT
-	@Path("")
+	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Payment> editPayment(@NotNull @PathParam("id") int idcust, @NotNull @FormParam("idpay") int idpay, 
 			@FormParam("pan") String pan, @NotNull @FormParam("cvv") String cvv,
@@ -78,7 +78,7 @@ public class PaymentsController
 	
 
 	@POST
-	@Path("/add")
+	@Path("/new")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Payment> addPayment(@NotNull @PathParam("id") int idcust, 
 			@FormParam("type") String type, @FormParam("pan") String pan,

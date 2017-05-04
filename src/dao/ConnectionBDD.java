@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-
+import java.io.InputStream;
 
 public final class ConnectionBDD {
 
@@ -17,17 +17,24 @@ public final class ConnectionBDD {
 		try 
 		{
 			
-			/*Properties p = new Properties();
-			p.load(Thread.currentThread().getContextClassLoader().
-						getResourceAsStream("confBDD.properties"));*/
+//			Properties p = new Properties();
+//			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+//			InputStream input = classLoader.getResourceAsStream("conf.properties");
+//			p.load(input);
+//			System.out.print("---------------------------------------------------------------------");
+//			System.out.print(p.getProperty("database") + p.getProperty("dbUser") + p.getProperty("password"));
+//			System.out.print("---------------------------------------------------------------------");
 
 			Class.forName("com.mysql.jdbc.Driver");  
-			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root","YASSINE97"); 			
-			
+			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03", "root", "123456789");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
+//		} catch (IOException e) {
+//			System.out.print("ERROR: Configuration properties not found...");
+//			e.printStackTrace();
 		}
 	} 
 	

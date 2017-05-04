@@ -12,6 +12,7 @@ import dao.CustomersDao;
 @Path("/auth")
 public class AuthenticationController {
 
+	
 	@POST
 	@Path("/register")
 	@Produces(MediaType.APPLICATION_JSON)

@@ -16,21 +16,23 @@ public class Payment implements Serializable, Comparable<Payment>
 	boolean status;
 	
 
-	public Payment(int id, String t, String nb, String c)
+	public Payment(int id, String t, String nb, String c, String expiration)
 	{
 		this.id = id;
 		this.type = t;
 		this.pan = nb;
 		this.cvv = c;
+		this.expiration = expiration;
 		customer = new Customer();
 	}
 	
-	public Payment(int id, String t, String pan, String cvv, int idcust, String fname, String lname, String gender, String email, String username, String pwd)
+	public Payment(int id, String t, String pan, String cvv, String expiration, int idcust, String fname, String lname, String gender, String email, String username, String pwd)
 	{
 		this.id = id;
 		this.type = t;
 		this.pan = pan;
 		this.cvv = cvv;
+		this.expiration = expiration;
 		customer = new Customer(idcust, fname, lname, gender, email, username, pwd);
 	}
 	

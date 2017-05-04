@@ -39,10 +39,10 @@ INSERT INTO ADDRESSES (address, zipcode, city, country, type, customer, status)
 			("green house","20001","washington dc","USA","shipping", 2, 1);
 
 
-CREATE TABLE PAYMENTS( id int NOT NULL,
+CREATE TABLE PAYMENTS( id int NOT NULL AUTO_INCREMENT,
 					  type ENUM('visa', 'mastercard', 'american_express', 'discover') NOT NULL,
-					  cardnumber varchar(16),
-					  code varchar(3),
+					  cardnumber varchar(16) NOT NULL UNIQUE,
+					  code varchar(3) NOT NULL,
 					  customer int NOT NULL,
 					  status boolean,
 					  PRIMARY KEY (id),
@@ -54,6 +54,7 @@ CREATE TABLE PAYMENTS( id int NOT NULL,
 CREATE TABLE CONSOLTYPES (id int NOT NULL AUTO_INCREMENT, 
 						name varchar(50) NOT NULL, 
 						PRIMARY KEY (id));
+						
 INSERT INTO CONSOLTYPES (name)
 	VALUES ("wii"), ("wiiu"), ("xbox"), ("psp"), ("playstation"), ("game cube");
 
@@ -98,11 +99,40 @@ VALUES  ("Assassin's Creed", "action", 1, 18, 3, '2015-12-27', 55.99, 12, "Assas
 		("Just Dance", "dancing", 1, 3, 1, '2012-10-09', 45, 2, "Rhythm, Dance. ... Just Dance is a dance video game developed by Ubisoft Milan and Ubisoft Paris and published by Ubisoft."),
 		("Just Dance", "dancing", 1, 3, 3, '2012-10-09', 45, 6, "Rhythm, Dance. ... Just Dance is a dance video game developed by Ubisoft Milan and Ubisoft Paris and published by Ubisoft."),
 		("Just Dance 2 ", "dancing", 1, 3, 1, '2017-12-07', 60, 2, "Rhythm, Dance. ... Just Dance is a dance video game developed by Ubisoft Milan and Ubisoft Paris and published by Ubisoft.");
+		
+		
+		INSERT INTO PAYMENTS (type,cardnumber,code,customer, status) VALUES
+			('visa', "1234567891234560", "487", 1, TRUE),
+			('visa', "9234567891234569", "467", 1, FALSE),
+			('visa', "9234567789234569", "777", 1, TRUE);
+			
+		
+		CREATE TABLE ORDERS (
+			id INT AUTO_INCREMENT,
+			customerid INT NOT NULL,
+			paid BOOLEAN NOT NULL,
+			paymentid INT NOT NULL,
+			PRIMARY KEY(id),
+			FOREIGN KEY(customerid) REFERENCES CUSTOMERS(id),
+			FOREIGN KEY(paymentid) REFERENCES PAYMENTS(id)
+		);
+		
+		CREATE TABLE ORDER_LINES (
+			id INT AUTO_INCREMENT,
+			orderid INT NOT NULL,
+			productid INT NOT NULL,
+			quantity INT NOT NULL,
+			PRIMARY KEY (id),
+			FOREIGN KEY (productid) REFERENCES PRODUCTS(id),
+			FOREIGN KEY (orderid) REFERENCES ORDERS(id)
+		);
 
+		INSERT INTO ORDERS (customerid, paid, paymentid) VALUES 
+			(1, true, 1),
+			(1, true, 1),
+			(1, false, 1);
+		
+		INSERT INTO ORDER_LINES (orderid, productid, quantity) VALUES 
+			(1,1,1),
+			(1,2,2);
 
-
-
-
-
-
-)

@@ -22,10 +22,26 @@ public class AuthenticationController {
 			@FormParam("username") String username,
 			@FormParam("pwd") String pwd) {
 		try {
-			return CustomersDao.create(gender, first_name, last_name, email, username, pwd);
+				return CustomersDao.create(gender, first_name, last_name, email, username, pwd);
 		}
 		catch (Exception e) {
 			return new Customer();	
 		}
+	}
+	
+	@POST
+	@Path("/login") // To be tested
+	@Produces(MediaType.APPLICATION_JSON)
+	public Customer login(@FormParam("username") String username, @FormParam("email") String email, @FormParam("pwd") String pwd){
+		try {
+			Customer customer = CustomersDao.find(username);
+			if (customer.getPwd() == pwd)
+				return customer;
+			else
+				return new Customer();
+		} catch (Exception e) {
+			return new Customer(); // TODO: Set a real error handler
+		}
+		
 	}
 }

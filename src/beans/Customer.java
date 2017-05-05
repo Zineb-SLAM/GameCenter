@@ -42,6 +42,18 @@ public class Customer implements Serializable, Comparable<Customer>
 			this.status = stat; 
 		}
 		
+		public Customer(Customer cust)
+		{
+			this.id        = cust.getId();
+			this.username  = cust.getUsername();
+			this.firstname = cust.getFirstname();
+			this.lastname  = cust.getLastname();
+			this.gender    = cust.getGender();
+			this.email     = cust.getGender();
+			this.pwd       = cust.getPwd();
+			this.status    = cust.getStatus();
+		}
+		
 		public int getId() {
 			return id;
 		}

@@ -92,9 +92,39 @@ public class CustomersDao {
 		return lu;
 	}
 	
-
 	
-	public static Customer find(String username) 
+	public static Customer findId(int id) 
+	{
+
+		Customer lu = null;
+		
+		Connection cnx=null;
+		try 
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+
+			String sql = "SELECT * FROM CUSTOMERS WHERE id=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, id);
+			
+			ResultSet res = ps.executeQuery();
+			//public Customer(int id, String fname, String lname, String email, String username, String pwd)
+			while(res.next()){
+				lu = new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"),res.getString("gender"), 
+					     res.getString("email"), res.getString("username"),res.getString("password"));
+			}
+			
+			res.close();
+			ConnectionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return lu;
+	}
+	
+	
+	public static Customer findUsername(String username) 
 	{
 
 		Customer lu = null;
@@ -150,7 +180,7 @@ public class CustomersDao {
 		
 		System.out.println("Inserted: " + res);
 		if (res == 1)
-			return CustomersDao.find(username);
+			return CustomersDao.findUsername(username);
 		else
 			throw new Exception("DataBase Insertion Error with customer: " + username);
 	}

@@ -1,5 +1,6 @@
 package dao;
 import beans.Address;
+import beans.Customer;
 import dao.CustomersDao;
 
 import java.sql.Connection;
@@ -15,13 +16,14 @@ import java.util.List;
 public class AddressesDao
 {
 	
-	public static List<Address> findCustAddress(int idcust, int idadd) throws Exception
+	public static List<Address> findCustAddresses(int idcust, int idadd) throws Exception
 	{
 		if(!CustomersDao.exists(idcust))
 		{
 			throw new Exception("ERROR: Insertion failed, customer not found "+ idcust);
 		}
 		
+		Customer customer = CustomersDao.findId(idcust);
 		
 		List<Address> lu = new ArrayList<Address>();
 		Connection cnx=null;
@@ -53,10 +55,9 @@ public class AddressesDao
 			//int idc, String fname, String lname, String gender, String email, String username, String pwd, boolean status
 			while(res.next())
 			{
-				lu.add(new Address(res.getInt("a.id"), res.getString("address"), res.getString("zipcode"), res.getString("city"),
-						res.getString("country"), res.getString("type"), res.getBoolean("a.status"), 
-						res.getInt("c.id"), res.getString("firstname"), res.getString("lastname"), res.getString("gender"),
-						res.getString("email"), res.getString("username"), res.getString("password"), res.getBoolean("c.status")));
+				lu.add(new Address(res.getInt("a.id"), res.getString("address"), res.getString("zipcode"), 
+						res.getString("city"), res.getString("country"), res.getString("type"), 
+						res.getBoolean("a.status"), customer));
 			}
 			
 			res.close();

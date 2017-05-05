@@ -1,6 +1,6 @@
 package dao;
 import beans.Payment;
-
+import beans.Customer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,10 +18,11 @@ public class PaymentsDao
 			throw new Exception("ERROR: customer not found "+ idcust);
 		}
 		
+		Customer customer = CustomersDao.findId(idcust);
+		
 		List<Payment> lu = new ArrayList<Payment>();
 		Connection cnx = null;
-		
-		
+
 		try
 		{
 			cnx = ConnectionBDD.getInstance().getCnx();
@@ -32,6 +33,7 @@ public class PaymentsDao
 			{
 				sql = "SELECT * FROM CUSTOMERS c, PAYMENTS p WHERE c.status = 1 AND p.status = 1 "
 						+ "AND c.id = p.customer AND c.id = ?";
+				
 				ps = cnx.prepareStatement(sql);
 				ps.setInt(1, idcust);
 			}
@@ -50,12 +52,10 @@ public class PaymentsDao
 			String lname, String gender, String email, String username, String pwd)*/
 			while(res.next())
 			{
-				lu.add(new Payment(res.getInt("p.id"), res.getString("p.type"), res.getString("p.pan"), res.getString("p.cvv"),
-						res.getDate("p.expiration").toString(),
-						res.getInt("c.id"), res.getString("c.firstname"), res.getString("c.lastname"), res.getString("c.gender"),
-						res.getString("c.email"), res.getString("c.username"), res.getString("c.password")));
+				lu.add(new Payment(res.getInt("p.id"), res.getString("p.type"), res.getString("p.pan"), 
+						res.getString("p.cvv"),
+						res.getInt("p.month"), res.getInt("p.year"), customer));
 			}
-			
 			
 			res.close();
 			ConnectionBDD.getInstance().closeCnx();			
@@ -68,21 +68,32 @@ public class PaymentsDao
 	}
 
 	
-	public static void add(String type, String pan, String cvv, String expiration, int idcust)
+	public static void add(String type, String pan, String cvv, int month, int year, int idcust) throws Exception
 	{
+		if(!CustomersDao.exists(idcust))
+		{
+			throw new Exception("ERROR: customer not found "+ idcust);
+		}
+		
+		if(year < 2017)
+		{
+			throw new Exception("ERROR: Expired Payment card ");
+		}
+		
 		Connection cnx=null;
 		try
 		{
 			cnx = ConnectionBDD.getInstance().getCnx();
-			String sql = "INSERT INTO PAYMENTS(type,pan,cvv,expiration,customer,status)"
-					+ " VALUES(?, ?, ?, ?, ?, 1)";
+			String sql = "INSERT INTO PAYMENTS(type,pan,cvv,month,year,customer,status)"
+					+ " VALUES(?, ?, ?, ?, ?, ?,  1)";
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, type );
 			ps.setString(2, pan);
 			ps.setString(3, cvv);
-			ps.setString(4, expiration);
-			ps.setInt(5, idcust);
+			ps.setInt(4, month);
+			ps.setInt(5, year);
+			ps.setInt(6, idcust);
 			
 			ps.executeUpdate();
 			ps.close();
@@ -173,18 +184,19 @@ public class PaymentsDao
 		return;
 	}
 	
-	public static void editExpiration(int idcust, int idpay, String exp)
+	public static void editExpiration(int idcust, int idpay, int month, int year)
 	{
 		Connection cnx=null;
 		try
 		{
 			cnx = ConnectionBDD.getInstance().getCnx();
-			String sql = "UPDATE PAYMENTS SET expiration=? WHERE customer=? AND id=?";
+			String sql = "UPDATE PAYMENTS SET month=?  AND year=? WHERE customer=? AND id=?";
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setString(1, exp);
-			ps.setInt(2, idcust);
-			ps.setInt(3, idpay);
+			ps.setInt(1, month);
+			ps.setInt(2, year);
+			ps.setInt(3, idcust);
+			ps.setInt(4, idpay);
 			ps.executeUpdate();
 			ps.close();
 			

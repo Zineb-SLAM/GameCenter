@@ -35,7 +35,8 @@ public class PaymentsController
 	@Produces(MediaType.APPLICATION_JSON)
 	/*Payment(int id, String t, String nb, String c, int idcust, String fname, String lname, 
 	 * String gender, String email, String username, String pwd)*/
-	public List<Payment> getPayments(@NotNull @PathParam("customer_id") int customer_id, @NotNull @PathParam("idp") int payment_id)
+	public List<Payment> getPayments(@NotNull @PathParam("customer_id") int customer_id, 
+			@NotNull @PathParam("idp") int payment_id)
 	throws Exception
 	{
 		return PaymentsDao.findCustPayments(customer_id, payment_id);
@@ -58,7 +59,7 @@ public class PaymentsController
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Payment> editPayment(@NotNull @PathParam("id") int idcust, @NotNull @FormParam("idpay") int idpay, 
 			@FormParam("pan") String pan, @NotNull @FormParam("cvv") String cvv,
-			@NotNull @FormParam("expiration") String expiration) throws Exception
+			@NotNull @FormParam("month") int month, @NotNull @FormParam("year") int year) throws Exception
 	{
 		if(pan != null)
 		{
@@ -68,9 +69,9 @@ public class PaymentsController
 		{
 			PaymentsDao.editCvv(idcust, idpay, cvv);
 		}
-		if(expiration!=null)
+		if(month<12 && year!=9999 && year>2017 && month>0)
 		{
-			PaymentsDao.editExpiration(idcust, idpay, expiration);
+			PaymentsDao.editExpiration(idcust, idpay, month, year);
 		}
 		return PaymentsDao.findCustPayments(idcust, idpay);
 	}
@@ -83,10 +84,9 @@ public class PaymentsController
 	public List<Payment> addPayment(@NotNull @PathParam("id") int idcust, 
 			@FormParam("type") String type, @FormParam("pan") String pan,
 			@FormParam("cvv") String cvv, @FormParam("day") String day, 
-			@FormParam("month") String month, @FormParam("year") String year) throws Exception
+			@FormParam("month") int month, @FormParam("year") int year) throws Exception
 	{
-		String expiration = year + "-" + month + "-" + day;
-		PaymentsDao.add(type, pan, cvv, expiration, idcust);
+		PaymentsDao.add(type, pan, cvv, month, year, idcust);
 		
 		return PaymentsDao.findCustPayments(idcust, -1);
 		

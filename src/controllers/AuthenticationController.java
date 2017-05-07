@@ -34,7 +34,7 @@ public class AuthenticationController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Customer login(@FormParam("username") String username, @FormParam("email") String email, @FormParam("pwd") String pwd){
 		try {
-			Customer customer = CustomersDao.find(username);
+			Customer customer = CustomersDao.findUsername(username);
 			if (customer.getPwd() == pwd)
 				return customer;
 			else

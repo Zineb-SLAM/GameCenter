@@ -50,7 +50,7 @@ public class OrderLineDao {
 	}
 	
 	// TODO: FIX this method to use objects and not raw attributes
-	public static String create(int order_id, int product_id, int quantity) throws Exception {
+	public static String addToCart(int order_id, int product_id, int quantity) throws Exception {
 		Connection cnx=null;
 		
 		cnx = ConnectionBDD.getInstance().getCnx();

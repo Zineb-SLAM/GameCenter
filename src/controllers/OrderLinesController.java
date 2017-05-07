@@ -21,6 +21,6 @@ public class OrderLinesController {
 	@Path("/add_to_cart")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String addOrderLine(@PathParam("order_id") int order_id, @QueryParam("product_id") int product_id, @QueryParam("quantity") int quantity) throws Exception{
-		return OrderLineDao.create(order_id, product_id, quantity);
+		return OrderLineDao.addToCart(order_id, product_id, quantity);
 	}
 }

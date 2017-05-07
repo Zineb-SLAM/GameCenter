@@ -22,11 +22,10 @@ public class OrdersController {
 	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Order> getCustomers(@PathParam("customer_id") int customer_id)
 	{ 
-		Customer customer = CustomersDao.find(customer_id);
+		Customer customer = CustomersDao.findId(customer_id);
 		System.out.print("Customer: ------------ " + customer.getFirstname() + "--------------");
 	    try {
 	    	List<Order> list = OrderDao.findAll(customer);
-	    	int a = 0;
 	    	return list;
 	    } catch (Exception e){
 	    	e.printStackTrace();
@@ -39,7 +38,7 @@ public class OrdersController {
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String createOrder(@PathParam("customer_id") int customer_id) throws Exception{
-		Customer customer = CustomersDao.find(customer_id);
+		Customer customer = CustomersDao.findId(customer_id);
 		return OrderDao.create(customer);
 	}
 	

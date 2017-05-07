@@ -36,10 +36,11 @@ public class OrdersController {
 	}
 	
 	@GET // TODO: Mettre en POST
-	@Path("create")
+	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String createOrder(@PathParam("customer_id") int customer_id) throws Exception{
 		Customer customer = CustomersDao.find(customer_id);
 		return OrderDao.create(customer);
 	}
+	
 }

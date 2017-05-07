@@ -22,10 +22,18 @@ public class Order implements Serializable{
 	public Order(int attr_id, Customer attr_customer, boolean attr_paid, Payment attr_payment) {
 		super();
 		this.id = attr_id;
-		customer = attr_customer;
-		paid = attr_paid;
-		payment = attr_payment;
-		lignes = new ArrayList<OrderLine>();
+		this.customer = attr_customer;
+		this.paid = attr_paid;
+		this.payment = attr_payment;
+		this.lignes = new ArrayList<OrderLine>();
+	}
+	
+	public Order(int attr_id, Customer attr_customer, boolean attr_paid) {
+		super();
+		this.id = attr_id;
+		this.customer = attr_customer;
+		this.paid = attr_paid;
+		this.lignes = new ArrayList<OrderLine>();
 	}
 	
 	public Customer getCustomer() {
@@ -60,9 +68,9 @@ public class Order implements Serializable{
 		return total;
 	}
 
-	public String getId() {
+	public int getId() {
 		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 	
 }

@@ -35,8 +35,7 @@ public class OrderDao {
 			
 			//Order(int id, String fname, String lname, String email, String pwd)
 			while(res.next()){
-				System.out.println("/////" + res.getInt("id"));
-				lu.add(new Order(res.getInt("id"),customer , (res.getString("paid") == "True" || res.getString("paid") == "1"), new Payment(1, "temp", "temp", "temp")));
+				lu.add(new Order(res.getInt("id"),customer , (res.getString("paid") == "True" || res.getString("paid") == "1")));
 						//customer.payments(Integer.parseInt(res.getString("paymentid")))));
 			}
 			
@@ -70,5 +69,6 @@ public class OrderDao {
 		else
 			throw new Exception("DataBase Insertion Error with customer: " + customer.getEmail());
 	}
+	
 		
 }

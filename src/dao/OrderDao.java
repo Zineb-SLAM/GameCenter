@@ -70,5 +70,62 @@ public class OrderDao {
 			throw new Exception("DataBase Insertion Error with customer: " + customer.getEmail());
 	}
 	
+	public static Order findId(Customer customer, int id) 
+	{
+
+		Order lu = null;
+		
+		Connection cnx=null;
+		try 
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+
+			String sql = "SELECT * FROM ORDERS WHERE id=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, id);
+			
+			ResultSet res = ps.executeQuery();
+			//public Customer(int id, String fname, String lname, String email, String username, String pwd)
+			while(res.next()){
+				lu = new Order(res.getInt("id"), customer, res.getBoolean("paid"));
+			}
+			
+			res.close();
+			ConnectionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return lu;
+	}
+
+	public static Order findOrCreateCart(Customer customer) throws Exception {
+		
+		Order lu = null;
+		
+		Connection cnx=null;
+		cnx = ConnectionBDD.getInstance().getCnx();
+
+		String sql = "SELECT * FROM ORDERS WHERE (paid = 0 OR paid = NULL) AND customerid = ?";
+		PreparedStatement ps = cnx.prepareStatement(sql);
+		ps.setInt(1, customer.getId());
+		
+		ResultSet res = ps.executeQuery();
+		while(res.next()){
+			lu = new Order(res.getInt("id"), customer, res.getBoolean("paid"));
+		}
+		
+		res.close();
+		ConnectionBDD.getInstance().closeCnx();
+		if(lu == null){
+			create(customer);
+			System.out.print("-------------------------CREATE------------------------");
+			return findOrCreateCart(customer);
+		}
+		System.out.print("Found : " + lu.getId());
+		return lu;
+	}
+	
+	
 		
 }

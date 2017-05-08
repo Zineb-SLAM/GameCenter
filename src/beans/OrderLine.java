@@ -5,15 +5,19 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class OrderLine implements Serializable{
 
+	private int id;
 	private Product prod;
 	private int qte;
+	private Order order;
 	/**
 	 * @param prod
 	 * @param qte
 	 */
 	
-	public OrderLine(Product prod, int qte) {
+	public OrderLine(int id, Order order, Product prod, int qte) {
 		super();
+		this.id = id;
+		this.order = order;
 		this.prod = prod;
 		this.qte = qte;
 	}
@@ -64,6 +68,10 @@ public class OrderLine implements Serializable{
 			//l'equals di Product che abbiamo ridefinito in precedenza
 			return false;
 		return true;
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	

@@ -1,10 +1,11 @@
+USE SR03;
 CREATE TABLE CUSTOMERS (id int NOT NULL AUTO_INCREMENT, 
-                        lastname varchar(30) UNIQUE NOT NULL, 
+                        lastname varchar(30) NOT NULL, 
                         firstname varchar(30) NOT NULL , 
                         gender varchar(1) NOT NULL, 
                         username varchar(30) NOT NULL UNIQUE,               
                         email varchar(100) NOT NULL UNIQUE, 
-                        password varchar(15) NOT NULL,
+                        password varchar(50) NOT NULL,
                         status boolean,
                         PRIMARY KEY (id));
                        
@@ -123,6 +124,35 @@ VALUES  ("Assassin's Creed", "action", 1, 18, 3, '2015-12-27', 55.99, 12, "Assas
 		("Just Dance 2 ", "dancing", 1, 3, 1, '2017-12-07', 60, 2, "Rhythm, Dance. ... Just Dance is a dance video game developed by Ubisoft Milan and Ubisoft Paris and published by Ubisoft.");
 
 
+
+		CREATE TABLE ORDERS (
+			id INT AUTO_INCREMENT,
+			customerid INT NOT NULL,
+			paid BOOLEAN NOT NULL,
+			paymentid INT,
+			PRIMARY KEY(id),
+			FOREIGN KEY(customerid) REFERENCES CUSTOMERS(id),
+			FOREIGN KEY(paymentid) REFERENCES PAYMENTS(id)
+		);
+		
+		CREATE TABLE ORDER_LINES (
+			id INT AUTO_INCREMENT,
+			orderid INT NOT NULL,
+			productid INT NOT NULL,
+			quantity INT NOT NULL,
+			PRIMARY KEY (id),
+			FOREIGN KEY (productid) REFERENCES PRODUCTS(id),
+			FOREIGN KEY (orderid) REFERENCES ORDERS(id)
+		);
+
+		INSERT INTO ORDERS (customerid, paid, paymentid) VALUES 
+			(1, true, 1),
+			(1, true, 1),
+			(1, false, 1);
+		
+		INSERT INTO ORDER_LINES (orderid, productid, quantity) VALUES 
+			(1,1,1),
+			(1,2,2);
 
 
 

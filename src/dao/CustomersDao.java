@@ -1,5 +1,6 @@
 package dao;
 
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -161,7 +162,7 @@ public class CustomersDao {
 		
 		cnx = ConnectionBDD.getInstance().getCnx();
 		
-		String sql = "INSERT INTO CUSTOMERS (lastname, firstname, gender, username, email, password) VALUES (?,?,?,?,?,?)";
+		String sql = "INSERT INTO CUSTOMERS (lastname, firstname, gender, username, email, password, status) VALUES (?,?,?,?,?,?,true)";
 		PreparedStatement ps = cnx.prepareStatement(sql);
 
 		missing_exception(last_name, "last_name");
@@ -170,14 +171,28 @@ public class CustomersDao {
 		missing_exception(username, "username");
 		missing_exception(email, "email");
 		missing_exception(pwd, "pwd");
-		
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(pwd.getBytes());
+
+        byte byteData[] = md.digest();
+
+        //convert the byte to hex format method 1
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        System.out.println("Digest(in hex format):: " + sb.toString());
 		ps.setString(1, last_name);
 		ps.setString(2, first_name);
 		ps.setString(3, gender);
 		ps.setString(4, username);
 		ps.setString(5, email);
-		ps.setString(6, pwd);
+		ps.setString(6, sb.toString());
 		//Execution et traitement de la réponse
+        System.out.println(ps);
+
 		int res = ps.executeUpdate();
 		
 		System.out.println("Inserted: " + res);

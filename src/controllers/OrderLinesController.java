@@ -28,7 +28,7 @@ public class OrderLinesController {
 		Order order;
 		try{
 			customer = CustomersDao.findId(customer_id);
-			order = OrderDao.findOrCreateCart(customer);
+			order = OrderDao.findOrCreateCart(customer, true);
 			return OrderLineDao.addToCart(order, product_id, quantity);
 		} catch (Exception e){
 			e.printStackTrace();
@@ -46,7 +46,7 @@ public class OrderLinesController {
 		Order order;
 		try{
 			customer = CustomersDao.findId(customer_id);
-			order = OrderDao.findOrCreateCart(customer);
+			order = OrderDao.findOrCreateCart(customer, false);
 			OrderLine order_line = OrderLineDao.findId(order, order_line_id);
 			return OrderLineDao.removeOrderLine(order_line, order);
 		} catch (Exception e){

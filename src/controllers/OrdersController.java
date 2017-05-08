@@ -5,6 +5,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces; 
 import javax.ws.rs.core.MediaType;
@@ -35,11 +36,12 @@ public class OrdersController {
 	}
 	
 	@GET // TODO: Mettre en POST
-	@Path("/create")
+	@Path("/pay")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String createOrder(@PathParam("customer_id") int customer_id) throws Exception{
+	public Order createOrder(@PathParam("customer_id") int customer_id, @QueryParam("payment_id") int payment_id) throws Exception{
 		Customer customer = CustomersDao.findId(customer_id);
-		return OrderDao.create(customer);
+		Order order = OrderDao.findOrCreateCart(customer, false);
+		return OrderDao.payOrder(customer, order, payment_id);
 	}
 	
 }

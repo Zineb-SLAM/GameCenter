@@ -99,7 +99,7 @@ public class OrderDao {
 		return lu;
 	}
 
-	public static Order findOrCreateCart(Customer customer) throws Exception {
+	public static Order findOrCreateCart(Customer customer, boolean allow_create) throws Exception {
 		
 		Order lu = null;
 		
@@ -118,14 +118,38 @@ public class OrderDao {
 		res.close();
 		ConnectionBDD.getInstance().closeCnx();
 		if(lu == null){
-			create(customer);
-			System.out.print("-------------------------CREATE------------------------");
-			return findOrCreateCart(customer);
+			if(allow_create) {
+				create(customer);
+				System.out.print("-------------------------CREATE------------------------");
+				return findOrCreateCart(customer, true);
+			}else{
+					throw new Exception("Your cart is empty");
+			}
 		}
 		System.out.print("Found : " + lu.getId());
 		return lu;
 	}
 	
-	
+	public static Order payOrder(Customer customer, Order order, int payment_id) throws Exception {
+		Connection cnx=null;
+		
+		cnx = ConnectionBDD.getInstance().getCnx();
+		
+		String sql = "UPDATE ORDERS SET paid = 1, paymentid = ? WHERE id = ?";
+		PreparedStatement ps = cnx.prepareStatement(sql);
+
+		ps.setInt(1, payment_id);
+		ps.setInt(2, order.getId());
+		//Execution et traitement de la réponse
+		int res = ps.executeUpdate();
+		
+		System.out.println("Inserted: " + res);
+		if (res == 1) {
+			Order paid_order = findId(customer, order.getId());
+			return paid_order;
+		}
+		else
+			throw new Exception("DataBase Insertion Error with customer: " + order.getId());
+	}
 		
 }

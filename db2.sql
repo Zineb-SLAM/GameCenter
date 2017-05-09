@@ -22,6 +22,13 @@ INSERT INTO CUSTOMERS (lastname,firstname,gender,username,password,email,status)
 INSERT INTO CUSTOMERS (lastname,firstname,gender,username,password,email,status) VALUES ("Fatima","Rogan","m","Tucker P. Camacho","SAS98NRY9AL","adipiscing.non.luctus@est.net",1),("Scott","Jeremy","m","Moana S. Lucas","NOA33XBU7HY","volutpat.nunc@maurisIntegersem.org",1),("Kaden","Alana","f","Astra T. Poole","PJE70SYG0SZ","non@cubilia.net",1),("Wilma","Inez","m","Jennifer A. Ellison","JKL25TJL5SO","tempor@dignissimMaecenas.com",1),("Audra","Wade","m","Meghan U. Waters","XIK17JFX4ID","Donec.vitae@habitant.ca",1),("Reagan","Lesley","f","Martina K. Jordan","XVP11WPM8BQ","non.vestibulum@porttitorerosnec.org",1),("Brandon","Samantha","f","Jasper M. Gross","IKJ91PMM4YE","elit.sed.consequat@nisia.ca",1),("Kareem","Beck","m","Maggie G. Hendricks","RYN09OQN3RY","Cras.convallis@pharetraQuisque.com",1),("Grady","Ria","f","Paki L. Lowery","EWV68NDV9ID","pellentesque.tellus@estMauriseu.com",1),("Jorden","Natalie","f","Gil J. Pittman","GWC73XPR2OC","ac@dictum.net",1);
 
 
+CREATE TABLE ADMIN (id int NOT NULL AUTO_INCREMENT,
+customer int NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (customer) REFERENCES CUSTOMERS(id));
+
+
+INSERT INTO ADMIN (customer) VALUES (42), (54), (12), (100);
 
 
 

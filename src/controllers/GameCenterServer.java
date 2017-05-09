@@ -14,6 +14,15 @@ public class GameCenterServer extends Application {
     public GameCenterServer() {
         singletons.add(new AuthenticationFilter());
         singletons.add(new CustomersController());
+        singletons.add(new AdminsController());
+        singletons.add(new OrderLinesController());
+        singletons.add(new OrdersController());
+        singletons.add(new AddressesController());
+        singletons.add(new AuthenticationController());
+        singletons.add(new GamesController());
+        singletons.add(new PaymentsController());
+        singletons.add(new ProductsController());
+        
     }
 
     @Override

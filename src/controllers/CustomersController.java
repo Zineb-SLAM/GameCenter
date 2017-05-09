@@ -11,12 +11,14 @@ import beans.Address;
 import beans.Customer;
 import dao.AddressesDao;
 import dao.CustomersDao;
+import services.NeedAuthentication;
+import controllers.GameCenterServer;
 
 @Path("/customers") 
-
 public class CustomersController {
 	@GET 
-	@Path("") 
+	@Path("")
+	@NeedAuthentication
 	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Customer> getCustomers()
 	{ 

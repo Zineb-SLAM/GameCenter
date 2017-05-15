@@ -4,6 +4,7 @@ package controllers;
 import javax.ws.rs.POST;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces; 
@@ -15,14 +16,32 @@ import dao.CustomersDao;
 public class AuthenticationController {
 
 	
-	@GET
+	//@GET
+	//@Path("/register")
+	//@Produces(MediaType.APPLICATION_JSON)
+	//public Customer register(@QueryParam("gender") String gender, @QueryParam("first_name") String first_name,
+	//		@QueryParam("last_name") String last_name,
+	//		@QueryParam("email") String email, 
+	//		@QueryParam("username") String username,
+	//		@QueryParam("pwd") String pwd) {
+	//	try {
+	//			return CustomersDao.create(gender, first_name, last_name, email, username, pwd);
+	//	}
+	//	catch (Exception e) {
+	//		return new Customer();	
+	//	}
+	//}
+	
+	
+	
+	@POST
 	@Path("/register")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Customer register(@QueryParam("gender") String gender, @QueryParam("first_name") String first_name,
-			@QueryParam("last_name") String last_name,
-			@QueryParam("email") String email, 
-			@QueryParam("username") String username,
-			@QueryParam("pwd") String pwd) {
+	public Customer register(@PathParam("gender") String gender, @PathParam("first_name") String first_name,
+			@PathParam("last_name") String last_name,
+			@PathParam("email") String email, 
+			@PathParam("username") String username,
+			@PathParam("pwd") String pwd) {
 		try {
 				return CustomersDao.create(gender, first_name, last_name, email, username, pwd);
 		}

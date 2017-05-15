@@ -23,7 +23,29 @@ public class CustomersController {
 	public List<Customer> getCustomers()
 	{ 
 	      return CustomersDao.findAll();
+
+			
 	} 
+	
+
+		@GET 
+		@Path("/{sort}") 
+		@Produces(MediaType.APPLICATION_JSON) 
+		public List<Customer> getCustomers(@PathParam("sort") String sort)
+		{ 
+
+				return CustomersDao.findAll(sort);
+				
+		} 
+		
+	@GET 
+	@Path("/{id}") 
+	@Produces(MediaType.APPLICATION_JSON) 
+	public Customer getCustomerId(@PathParam("id") int id)
+	{
+		return CustomersDao.findId(id);
+		
+	}
 	
 //	@GET 
 //	@Path("/{id}") 
@@ -40,4 +62,14 @@ public class CustomersController {
 //	public Customer getCustomer(@PathParam("")){
 //		return
 //	}
+	
+	
+	//@GET 
+	//@Path("/{username}") 
+	//@Produces(MediaType.APPLICATION_JSON) 
+	//public Customer deleteCustomer(@PathParam("username") String username)
+	//{
+		//return CustomersDao.findUsername(username);
+		
+	//}
 }

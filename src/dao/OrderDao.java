@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.Order;
+import beans.OrderLine;
 import beans.Customer;
 
 import dao.PaymentsDao;
@@ -35,7 +36,7 @@ public class OrderDao {
 			
 			//Order(int id, String fname, String lname, String email, String pwd)
 			while(res.next()){
-				lu.add(new Order(res.getInt("id"),customer , (res.getString("paid") == "True" || res.getString("paid") == "1")));
+				lu.add(new Order(res.getInt("id"),customer , true));
 						//customer.payments(Integer.parseInt(res.getString("paymentid")))));
 			}
 			
@@ -89,6 +90,9 @@ public class OrderDao {
 			while(res.next()){
 				lu = new Order(res.getInt("id"), customer, res.getBoolean("paid"));
 			}
+			
+			List<OrderLine> lines = OrderLineDao.findAll(lu);
+			lu.setLignes(lines);
 			
 			res.close();
 			ConnectionBDD.getInstance().closeCnx();			

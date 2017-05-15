@@ -24,7 +24,7 @@ public final class DBConnection {
 			//cnx = DriverManager.getConnection(p.getProperty("url"),
 			//		p.getProperty("user"), p.getProperty("pwd"));
 			Class.forName("com.mysql.jdbc.Driver");  
-			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root","123456789"); 			
+			cnx=DriverManager.getConnection("jdbc:mysql://localhost:3306/SR03","root","YASSINE97"); 			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

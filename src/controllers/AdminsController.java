@@ -17,17 +17,24 @@ import com.sun.istack.internal.NotNull;
 import beans.Admin;
 import dao.AdminsDao;
 
-@Path("/customers/{customer_id}/admins") 
+@Path("/admins") 
 
 public class AdminsController 
 {
 	
 	@GET 
-	@Path("") 
 	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Admin> getAddresses(@PathParam("customer_id") int customer_id) throws Exception
+	public List<Admin> getAddresses() throws Exception
 	{ 
-	      return AdminsDao.find(customer_id);
+	      return AdminsDao.findAll();
+	} 
+	
+	@GET 
+	@Path("{id}") 
+	@Produces(MediaType.APPLICATION_JSON) 
+	public Admin getAddresses(@PathParam("id") int id) throws Exception
+	{ 
+	      return AdminsDao.find(id);
 	} 
 	
 	

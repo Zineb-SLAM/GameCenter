@@ -4,12 +4,20 @@ package beans;
 public class Admin
 {
 	int id;
-	Customer customer;
+	String lastname;
+	String firstname;
+	String username;
+	String email;
+	String password;
 	
-	public Admin (int id, Customer cust)
+	public Admin (int id, String f, String l, String u, String e, String p)
 	{
 		this.id = id;
-		this.customer = cust;
+		this.firstname = f;
+		this.lastname = l;
+		this.username = u;
+		this.email = e;
+		this.password = p;
 	}
 	
 	public int getId()
@@ -17,8 +25,24 @@ public class Admin
 		return id;
 	}
 	
-	public Customer getCustomer()
+	public String getFirstname() {
+		return firstname;
+	}
+	public String getLastname() {
+		return lastname;
+	}
+	
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public String getUsername()
 	{
-		return customer;
+		return username;
+	}
+	
+	public String getPwd() {
+		return password;
 	}
 };

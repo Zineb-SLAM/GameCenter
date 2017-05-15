@@ -7,7 +7,7 @@
  
 <body>
 <h2>Customer Input Form</h2>
-<form method="post" action="customers">
+<form method="post" action="http://localhost:8080/GameCenter/web-services/auth/register">
 	<table border="0" width="500" align="center" class="demo-table">
 		<?php if(!empty($success_message)) { ?>	
 		<div class="success-message"><?php if(isset($success_message)) echo $success_message; ?></div>
@@ -21,15 +21,15 @@
 		</tr>
 		<tr>
 			<td>First Name</td>
-			<td><input type="text" class="demoInputBox" name="firstname" ></td>
+			<td><input type="text" class="demoInputBox" name="first_name" ></td>
 		</tr>
 		<tr>
 			<td>Last Name</td>
-			<td><input type="text" class="demoInputBox" name="lastname" ></td>
+			<td><input type="text" class="demoInputBox" name="last_name" ></td>
 		</tr>
 		<tr>
 			<td>Password</td>
-			<td><input type="password" class="demoInputBox" name="password" value=""></td>
+			<td><input type="password" class="demoInputBox" name="pwd" value=""></td>
 		</tr>
 		<tr>
 			<td>Confirm Password</td>

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import beans.OrderLine;
 import beans.Product;
-import beans.Customer;
 import beans.Order;
 import beans.Product;
 public class OrderLineDao {
@@ -24,21 +23,18 @@ public class OrderLineDao {
 
 
 			//Requete
-			String sql = "select o.*, p.name, p.consoleid, p.price as uni_price, p.price * quantity as total from ORDER_LINES o, PRODUCTS p where o.productid = p.id AND orderid = ?;";
+			String sql = "select o.*, p.name, p.consoleid, p.price as uni_price, p.price * o.quantity as total from ORDER_LINES o, PRODUCTS p where o.productid = p.id AND orderid = ?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, order.getId() + ""); // conversion en String
 			
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
 			
-			System.out.println(res);
-			
 			//OrderLine(int id, String fname, String lname, String email, String pwd)
-//			while(res.next()){
-//				lu.add(new OrderLine(res.getInt("id"), res.getString("firstname"), res.getString("lastname"), res.getString("email"),
-//						res.getString("usernmae"), res.getString("password")));
-//			}
-//			
+			while(res.next()){
+				//Product product = ProductsDao.find(res.getInt("id"));
+				lu.add(new OrderLine(res.getInt("o.id"), order, new Product() , res.getInt("o.quantity"), res.getFloat("total")));
+			}
 			res.close();
 			ConnectionBDD.getInstance().closeCnx();			
 		} catch (SQLException e) {

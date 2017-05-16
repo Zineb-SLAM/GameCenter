@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Order implements Serializable{
 
-	private List<OrderLine> lignes;
+	private List<OrderLine> orderlines;
 	private int id;
 	private Customer customer;
 	private boolean paid;
@@ -15,9 +15,7 @@ public class Order implements Serializable{
 	/**
 	 * 
 	 */
-	public Order() {
-		lignes = new ArrayList<OrderLine>();
-	}
+	public Order() {}
 	
 	public Order(int attr_id, Customer attr_customer, boolean attr_paid, Payment attr_payment) {
 		super();
@@ -25,7 +23,6 @@ public class Order implements Serializable{
 		this.customer = attr_customer;
 		this.paid = attr_paid;
 		this.payment = attr_payment;
-		this.lignes = new ArrayList<OrderLine>();
 	}
 	
 	public Order(int attr_id, Customer attr_customer, boolean attr_paid) {
@@ -33,7 +30,6 @@ public class Order implements Serializable{
 		this.id = attr_id;
 		this.customer = attr_customer;
 		this.paid = attr_paid;
-		this.lignes = new ArrayList<OrderLine>();
 	}
 	
 	public Customer getCustomer() {
@@ -48,25 +44,22 @@ public class Order implements Serializable{
 		return paid;
 	}
 
-	public List<OrderLine> getLignes() {
-		return lignes;
+	public List<OrderLine> getOrderLines() {
+		return orderlines;
 	}
 
-	public void setLignes(List<OrderLine> lignes) {
-		this.lignes = lignes;
+	public void setOrderLines(List<OrderLine> lignes) {
+		this.orderlines = lignes;
 	}
 	
-	public double getTotal(){
-		double total = 0;
-	
-		for (OrderLine lc : lignes){
-			total+=lc.getTotal();
-		}
-		//for(int i=0;i<lignes.size();i++){
-		//	total = total + lignes.get(i).getTotal();
-		//}
-		return total;
-	}
+//	public double getTotal(){
+//		double total = 0;
+//	
+//		for (OrderLine lc : orderlines){
+//			total+=lc.getTotal();
+//		}
+//		return total;
+//	}
 
 	public int getId() {
 		// TODO Auto-generated method stub

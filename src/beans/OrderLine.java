@@ -9,6 +9,7 @@ public class OrderLine implements Serializable{
 	private Product prod;
 	private int qte;
 	private Order order;
+	private float total;
 	/**
 	 * @param prod
 	 * @param qte
@@ -20,6 +21,15 @@ public class OrderLine implements Serializable{
 		this.order = order;
 		this.prod = prod;
 		this.qte = qte;
+	}
+	
+	public OrderLine(int id, Order order, Product prod, int qte, float total) {
+		super();
+		this.id = id;
+		this.order = order;
+		this.prod = prod;
+		this.qte = qte;
+		this.total = total;
 	}
 	/**
 	 * 
@@ -41,8 +51,7 @@ public class OrderLine implements Serializable{
 	}
 	public double getTotal(){
 		//bisogna recuperare il costo di un singolo prodotto
-		double prix = prod.getPrice();
-		return (prix*this.qte);
+		return total;
 	}
 	@Override
 	public int hashCode() {

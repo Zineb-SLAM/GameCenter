@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.Order;
+import beans.OrderLine;
 import beans.Customer;
-
-import dao.PaymentsDao;
-import beans.Payment;
 public class OrderDao {
 
 	public static List<Order> findAll(Customer customer) throws Exception 
@@ -21,22 +19,15 @@ public class OrderDao {
 		//try 
 		//{
 			cnx = ConnectionBDD.getInstance().getCnx();
-			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
-
-
-			//Requete
 			String sql = "SELECT * FROM ORDERS WHERE customerid = ?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1, customer.getId());
-			
-			System.out.print("------------------Customer:" + customer.getId() + "---------------------");
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
 			
 			//Order(int id, String fname, String lname, String email, String pwd)
 			while(res.next()){
 				lu.add(new Order(res.getInt("id"),customer , (res.getString("paid") == "True" || res.getString("paid") == "1")));
-						//customer.payments(Integer.parseInt(res.getString("paymentid")))));
 			}
 			
 			res.close();
@@ -44,7 +35,10 @@ public class OrderDao {
 		//} catch (SQLException e) {
 		//	e.printStackTrace();
 		//}
-
+			for(Order order : lu){
+				List<OrderLine> list = OrderLineDao.findAll(order);
+				order.setOrderLines(list);
+			}
 
 		return lu;
 	}

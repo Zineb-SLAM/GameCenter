@@ -15,7 +15,9 @@ import javax.ws.rs.core.MediaType;
 import com.sun.istack.internal.NotNull;
 
 import beans.Address;
+import beans.Customer;
 import dao.AddressesDao;
+import dao.CustomersDao;
 
 @Path("/customers/{customer_id}/addresses") 
 
@@ -27,7 +29,15 @@ public class AddressesController {
 	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Address> getAddresses(@PathParam("customer_id") int customer_id) throws Exception
 	{ 
-	      return AddressesDao.findCustAddresses(customer_id, -1);
+		if(!CustomersDao.exists(customer_id))
+		{
+			throw new Exception("ERROR: Insertion failed, customer not found "+ customer_id);
+		}
+		else
+		{
+			Customer cust = CustomersDao.findId(customer_id);
+	      return AddressesDao.findCustAddresses(cust, -1);
+		}
 	} 
 	
 	
@@ -36,8 +46,15 @@ public class AddressesController {
 	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Address> getAddress(@PathParam("customer_id") int customer_id, @PathParam("id") int id) throws Exception
 	{ 
-		 System.out.print(customer_id + ", " + id);
-	     return AddressesDao.findCustAddresses(customer_id, id);
+		if(!CustomersDao.exists(customer_id))
+		{
+			throw new Exception("ERROR: Insertion failed, customer not found "+ customer_id);
+		}
+		else
+		{
+			Customer cust = CustomersDao.findId(customer_id);
+			return AddressesDao.findCustAddresses(cust, id);
+		}
 	} 
 	
 	
@@ -46,18 +63,37 @@ public class AddressesController {
 	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Address> deleteAddress(@PathParam("customer_id") int customer_id, @PathParam("id") int id) throws Exception
 	{
-		AddressesDao.delete(customer_id, id);
-		return AddressesDao.findCustAddresses(customer_id, -1);
+		if(!CustomersDao.exists(customer_id))
+		{
+			throw new Exception("ERROR: Insertion failed, customer not found "+ customer_id);
+		}
+		else
+		{
+			Customer cust = CustomersDao.findId(customer_id);
+			AddressesDao.delete(cust, id);
+			return AddressesDao.findCustAddresses(cust, -1);
+		}
 	}
 	
 	@POST
 	@Path("/new")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Address> addAddress(@PathParam("id") int idcust,  @NotNull @FormParam("address") String address, @NotNull @FormParam("zipcode") String zipcode, 
-			@NotNull @FormParam("city") String city, @NotNull @FormParam("country") String country, @NotNull @FormParam("type") String type) throws Exception
+	public List<Address> addAddress(@PathParam("id") int idcust,  @NotNull @FormParam("address") 
+			String address, @NotNull @FormParam("zipcode") String zipcode, 
+			@NotNull @FormParam("city") String city, @NotNull @FormParam("country") String country,
+			@NotNull @FormParam("type") String type) throws Exception
 	{	
-		boolean res =  AddressesDao.add(address, zipcode, city, country, type, idcust);
-		return AddressesDao.findCustAddresses(idcust, -1);
+		
+		if(!CustomersDao.exists(idcust))
+		{
+			throw new Exception("ERROR: Insertion failed, customer not found "+ idcust);
+		}
+		else
+		{
+			Customer cust = CustomersDao.findId(idcust);
+			boolean res =  AddressesDao.add(address, zipcode, city, country, type, cust);
+			return AddressesDao.findCustAddresses(cust, -1);
+		}
 	}
 	
 
@@ -69,8 +105,16 @@ public class AddressesController {
 			 @FormParam("address") String address) 
 			throws Exception
 	{	
-		AddressesDao.edit(customer_id, id,address);
-		return AddressesDao.findCustAddresses(customer_id, -1);
+		if(!CustomersDao.exists(customer_id))
+		{
+			throw new Exception("ERROR: Insertion failed, customer not found "+ customer_id);
+		}
+		else
+		{
+			Customer cust = CustomersDao.findId(customer_id);
+			AddressesDao.edit(cust, id,address);
+			return AddressesDao.findCustAddresses(cust, -1);
+		}
 	}
 	
 };

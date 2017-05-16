@@ -60,13 +60,13 @@ public class CustomersDao {
 
 			switch(sort)
 			{
-				case "1":
+				case "firstname":
 					sql = "SELECT * FROM CUSTOMERS WHERE status=1 ORDER BY firstname";
 					break;
-				case "2":
+				case "lastname":
 					sql = "SELECT * FROM CUSTOMERS WHERE status=1 ORDER BY lastname";
 					break;
-				case "3":
+				default: // "username":
 					sql = "SELECT * FROM CUSTOMERS WHERE status=1 ORDER BY username";
 			
 			}

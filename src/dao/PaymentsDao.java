@@ -11,15 +11,8 @@ import java.util.List;
 
 public class PaymentsDao
 {
-	public static List<Payment> findCustPayments(int idcust, int idpay) throws Exception
+	public static List<Payment> findCustPayments(Customer cust, int idpay) throws Exception
 	{
-		if(!CustomersDao.exists(idcust))
-		{
-			throw new Exception("ERROR: customer not found "+ idcust);
-		}
-		
-		Customer customer = CustomersDao.findId(idcust);
-		
 		List<Payment> lu = new ArrayList<Payment>();
 		Connection cnx = null;
 
@@ -31,19 +24,17 @@ public class PaymentsDao
 			
 			if(idpay == -1)
 			{
-				sql = "SELECT * FROM CUSTOMERS c, PAYMENTS p WHERE c.status = 1 AND p.status = 1 "
-						+ "AND c.id = p.customer AND c.id = ?";
+				sql = "SELECT * FROM PAYMENTS WHERE status = 1 AND customer = ?";
 				
 				ps = cnx.prepareStatement(sql);
-				ps.setInt(1, idcust);
+				ps.setInt(1, cust.getId());
 			}
 			else
 			{
-				sql = "SELECT * FROM CUSTOMERS c, PAYMENTS p WHERE c.status = 1 AND p.status = 1 "
-						+ "AND c.id = p.customer AND c.id = ? AND p.id = ?";
+				sql = "SELECT * FROM PAYMENTS WHERE status = 1 AND customer = ? AND id = ?";
 				
 				ps = cnx.prepareStatement(sql);
-				ps.setInt(1, idcust);
+				ps.setInt(1, cust.getId());
 				ps.setInt(2, idpay);
 			}
 			
@@ -54,7 +45,7 @@ public class PaymentsDao
 			{
 				lu.add(new Payment(res.getInt("p.id"), res.getString("p.type"), res.getString("p.pan"), 
 						res.getString("p.cvv"),
-						res.getInt("p.month"), res.getInt("p.year"), customer));
+						res.getInt("p.month"), res.getInt("p.year"), cust));
 			}
 			
 			res.close();
@@ -68,17 +59,8 @@ public class PaymentsDao
 	}
 
 	
-	public static void add(String type, String pan, String cvv, int month, int year, int idcust) throws Exception
+	public static void add(String type, String pan, String cvv, int month, int year, Customer cust) throws Exception
 	{
-		if(!CustomersDao.exists(idcust))
-		{
-			throw new Exception("ERROR: customer not found "+ idcust);
-		}
-		
-		if(year < 2017)
-		{
-			throw new Exception("ERROR: Expired Payment card ");
-		}
 		
 		Connection cnx=null;
 		try
@@ -93,7 +75,7 @@ public class PaymentsDao
 			ps.setString(3, cvv);
 			ps.setInt(4, month);
 			ps.setInt(5, year);
-			ps.setInt(6, idcust);
+			ps.setInt(6, cust.getId());
 			
 			ps.executeUpdate();
 			ps.close();
@@ -108,7 +90,7 @@ public class PaymentsDao
 		return;
 	}
 	
- 	public static void delete (int idcust, int idpay)
+ 	public static void delete (Customer cust, int idpay)
 	{
 	
 		Connection cnx=null;
@@ -118,7 +100,7 @@ public class PaymentsDao
 			String sql = "UPDATE PAYMENTS SET status=0 WHERE customer=? AND id=?";
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setInt(1, idcust );
+			ps.setInt(1, cust.getId() );
 			ps.setInt(2, idpay);
 			ps.executeUpdate();
 			ps.close();
@@ -134,7 +116,7 @@ public class PaymentsDao
 	}
 	
 	
-	public static void editPan(int idcust, int idpay, String pan)
+	public static void editPan(Customer cust, int idpay, String pan)
 	{
 		Connection cnx=null;
 		try
@@ -144,7 +126,7 @@ public class PaymentsDao
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, pan);
-			ps.setInt(2, idcust);
+			ps.setInt(2, cust.getId());
 			ps.setInt(3, idpay);
 			ps.executeUpdate();
 			ps.close();
@@ -159,7 +141,7 @@ public class PaymentsDao
 		return;
 	}
 	
-	public static void editCvv(int idcust, int idpay, String cvv)
+	public static void editCvv(Customer cust, int idpay, String cvv)
 	{
 		Connection cnx=null;
 		try
@@ -169,7 +151,7 @@ public class PaymentsDao
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, cvv);
-			ps.setInt(2, idcust);
+			ps.setInt(2, cust.getId());
 			ps.setInt(3, idpay);
 			ps.executeUpdate();
 			ps.close();
@@ -184,7 +166,7 @@ public class PaymentsDao
 		return;
 	}
 	
-	public static void editExpiration(int idcust, int idpay, int month, int year)
+	public static void editExpiration(Customer cust, int idpay, int month, int year)
 	{
 		Connection cnx=null;
 		try
@@ -195,7 +177,7 @@ public class PaymentsDao
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1, month);
 			ps.setInt(2, year);
-			ps.setInt(3, idcust);
+			ps.setInt(3, cust.getId());
 			ps.setInt(4, idpay);
 			ps.executeUpdate();
 			ps.close();

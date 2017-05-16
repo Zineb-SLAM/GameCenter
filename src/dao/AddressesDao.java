@@ -16,15 +16,9 @@ import java.util.List;
 public class AddressesDao
 {
 	
-	public static List<Address> findCustAddresses(int idcust, int idadd) throws Exception
+	public static List<Address> findCustAddresses(Customer cust, int idadd) throws Exception
 	{
-		if(!CustomersDao.exists(idcust))
-		{
-			throw new Exception("ERROR: Insertion failed, customer not found "+ idcust);
-		}
-		
-		Customer customer = CustomersDao.findId(idcust);
-		
+	
 		List<Address> lu = new ArrayList<Address>();
 		Connection cnx=null;
 		try 
@@ -35,17 +29,15 @@ public class AddressesDao
 			PreparedStatement ps;
 			if(idadd == -1) //find all the addresses of the customer
 			{
-				sql = "SELECT * FROM CUSTOMERS c, ADDRESSES a WHERE c.status=1 AND a.status=1 "
-						+ "AND c.id = a.customer AND c.id = ?";
+				sql = "SELECT * FROM ADDRESSES WHERE status=1 AND customer = ?";
 				ps = cnx.prepareStatement(sql);
-				ps.setInt(1, idcust);
+				ps.setInt(1, cust.getId());
 			}
 			else //find a particular address for the customer
 			{
-				sql = "SELECT * FROM CUSTOMERS c, ADDRESSES a WHERE c.status=1 AND a.status=1"
-						+ " AND c.id = a.customer AND c.id = ? AND a.id = ?";
+				sql = "SELECT * FROM ADDRESSES WHERE status=1 AND customer = ? AND id = ?";
 				ps = cnx.prepareStatement(sql);
-				ps.setInt(1, idcust);
+				ps.setInt(1, cust.getId());
 				ps.setInt(2, idadd);
 			}
 			
@@ -57,7 +49,7 @@ public class AddressesDao
 			{
 				lu.add(new Address(res.getInt("a.id"), res.getString("address"), res.getString("zipcode"), 
 						res.getString("city"), res.getString("country"), res.getString("type"), 
-						res.getBoolean("a.status"), customer));
+						res.getBoolean("a.status"), cust));
 			}
 			
 			res.close();
@@ -70,14 +62,10 @@ public class AddressesDao
 		return lu;
 	}
 	
-	public static boolean add(String address, String zipcode, String city, String country, String type, int idcust) throws Exception
+	public static boolean add(String address, String zipcode, String city, String country,
+			String type, Customer cust) throws Exception
 	{
 		Connection cnx = null;
-
-		if(!CustomersDao.exists(idcust))
-		{
-			throw new Exception("ERROR: Insertion failed, customer not found "+ idcust);
-		}
 		
 		missing_exception(address, "address");
 		missing_exception(zipcode, "zipcode");
@@ -100,7 +88,7 @@ public class AddressesDao
 			ps.setString(3, city);
 			ps.setString(4, country);
 			ps.setString(5, type);
-			ps.setInt(6, idcust);
+			ps.setInt(6, cust.getId());
 			int res = ps.executeUpdate();
 			
 			
@@ -121,7 +109,7 @@ public class AddressesDao
 		return false;
 	}
 	
-	public static void delete(int idcust, int idadd)
+	public static void delete(Customer cust, int idadd)
 	{
 		
 		Connection cnx=null;
@@ -131,7 +119,7 @@ public class AddressesDao
 			String sql = "UPDATE ADDRESSES SET status=0 WHERE customer=? AND id=?";
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setInt(1, idcust );
+			ps.setInt(1, cust.getId() );
 			ps.setInt(2, idadd );
 			ps.executeUpdate();
 			ps.close();
@@ -146,15 +134,11 @@ public class AddressesDao
 	}
 	
 	
-	public static void edit(int idcust, int idadd, String address) throws Exception
+	public static void edit(Customer cust, int idadd, String address) throws Exception
 	{
 		Connection cnx=null;
 		try
 		{
-			if(!AddressesDao.exists(idcust, idadd))
-			{
-				throw new Exception("ERROR: UPDATE failed, address or customer not found "+ idcust);
-			}
 			
 			cnx = ConnectionBDD.getInstance().getCnx();
 	
@@ -162,7 +146,7 @@ public class AddressesDao
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, address );
-			ps.setInt(2, idcust );
+			ps.setInt(2, cust.getId() );
 			ps.setInt(3, idadd );
 	
 			ps.executeUpdate();
@@ -188,37 +172,6 @@ public class AddressesDao
 			String sql = "SELECT * FROM ADDRESSES WHERE status= 1 AND id=?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1, id);
-			
-			ResultSet res = ps.executeQuery();
-			
-			if(res.next())
-				return true;
-			
-			ps.close();
-			
-			
-			ConnectionBDD.getInstance().closeCnx();	
-		}catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
-	
-		return false;
-	}
-
-	public static boolean exists(int idcust, int idadd)
-	{
-		Connection cnx=null;
-
-		try
-		{
-			cnx = ConnectionBDD.getInstance().getCnx();
-			String sql = "SELECT * FROM ADDRESSES a, CUSTOMERS c "
-					+ "WHERE a.status= 1 AND a.id=? AND c.id=? AND c.status=1 AND a.customer = c.id";
-			
-			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setInt(1, idadd);
-			ps.setInt(2, idcust);
 			
 			ResultSet res = ps.executeQuery();
 			

@@ -84,6 +84,9 @@ public class OrderDao {
 				lu = new Order(res.getInt("id"), customer, res.getBoolean("paid"));
 			}
 			
+//			List<OrderLine> lines = OrderLineDao.findAll(lu);
+//			lu.order(lines);
+//			
 			res.close();
 			ConnectionBDD.getInstance().closeCnx();			
 		} catch (SQLException e) 

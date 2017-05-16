@@ -14,7 +14,7 @@ import java.util.List;
 
 public class AdminsDao
 {
-	public static List<Admin> find(int idcust)
+	public static List<Admin> findAll()
 	{
 		List<Admin> lu = new ArrayList<Admin>();
 		
@@ -25,14 +25,15 @@ public class AdminsDao
 			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
 			PreparedStatement ps;
 			
-			String sql = "SELECT * FROM CUSTOMERS c, ADMIN a WHERE c.status=1 AND c.id = a.customer AND c.id = ?";
+			String sql = "SELECT * FROM ADMIN";
 			ps = cnx.prepareStatement(sql);	
-			ps.setInt(1, idcust);
 			ResultSet res = ps.executeQuery();
 
 			while(res.next())
 			{
-				lu.add(new Admin(res.getInt("a.id"),  CustomersDao.findId(res.getInt("a.customer"))));
+				// Admin (int id, String f, String l, String u, String e, String p)
+				lu.add(new Admin(res.getInt("id"), res.getString("firstname"), res.getString("lastname"),
+						res.getString("username"), res.getString("email"), res.getString("password")));
 			}
 			
 			res.close();
@@ -46,7 +47,39 @@ public class AdminsDao
 		
 	}
 	
-	public boolean isAdmin(int idcust)
+	public static Admin find(int id)
+	{
+		
+		Admin lu= null;
+		Connection cnx=null;
+		try 
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+
+			PreparedStatement ps;
+			String sql = "SELECT * FROM ADMIN WHERE id = ?";
+			ps = cnx.prepareStatement(sql);	
+			ps.setInt(1, id);
+			ResultSet res = ps.executeQuery();
+
+			while(res.next())
+			{
+				lu = new Admin(res.getInt("id"), res.getString("firstname"), res.getString("lastname"),
+						res.getString("username"), res.getString("email"), res.getString("password"));
+			}
+			
+			res.close();
+			ConnectionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+
+		return lu;
+		
+	}
+	
+	public boolean isAdmin(int id)
 	{
 		boolean isadmin = true;
 		Connection cnx=null;
@@ -56,10 +89,10 @@ public class AdminsDao
 			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
 			PreparedStatement ps;
 			
-			String sql = "SELECT * FROM CUSTOMERS c, ADMIN a WHERE c.status=1 AND c.customer = ? ";
+			String sql = "SELECT * FROM  ADMIN WHERE id =? ";
 			
 			ps = cnx.prepareStatement(sql);
-			ps.setInt(1, idcust);
+			ps.setInt(1, id);
 			ResultSet res = ps.executeQuery();
 			
 			if(!res.next())

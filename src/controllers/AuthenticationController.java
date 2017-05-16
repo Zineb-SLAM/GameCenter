@@ -5,9 +5,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces; 
-import javax.ws.rs.core.MediaType;  
+import javax.ws.rs.core.MediaType;
+
+import org.json.simple.JSONObject;
+
 import beans.Customer;
 import dao.CustomersDao;
+import services.AES;
 
 @Path("/auth")
 public class AuthenticationController {
@@ -28,18 +32,27 @@ public class AuthenticationController {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@POST
 	@Path("/login") // To be tested
 	@Produces(MediaType.APPLICATION_JSON)
-	public Customer login(@FormParam("username") String username, @FormParam("email") String email, @FormParam("pwd") String pwd){
+	public JSONObject login(@FormParam("username") String username, @FormParam("email") String email, @FormParam("pwd") String pwd, @FormParam("to_decrypt") String to_decrypt){
 		try {
 			Customer customer = CustomersDao.findUsername(username);
-			if (customer.getPwd() == pwd)
-				return customer;
+			long timestamp;
+			if (customer.getPwd() == pwd){
+				timestamp = System.currentTimeMillis()/1000;
+				String authenticationToken = username + "-" +timestamp + "-" + (timestamp + 1000);
+				String encryptedAuthToken = AES.encrypt(authenticationToken);
+				JSONObject json = new JSONObject();
+			    json.put("user", customer);
+			    json.put("authentication_token", encryptedAuthToken);
+				return json;
+			}
 			else
-				return new Customer();
+				return new JSONObject();
 		} catch (Exception e) {
-			return new Customer(); // TODO: Set a real error handler
+			return new JSONObject(); // TODO: Set a real error handler
 		}
 		
 	}

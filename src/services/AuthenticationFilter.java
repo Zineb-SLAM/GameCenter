@@ -19,15 +19,32 @@ public class AuthenticationFilter  implements ContainerRequestFilter {
 	
 	@Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-//		JSONObject json = new JSONObject();
-//	    json.put("error", "You are not authorized with this service");
-//	    json.put("error_description", "");
-//	    
-//		System.out.print("-------------------------Within Filter-----------------------------");
-//		String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-//			if (authorizationHeader == null)
-//				requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity(json.toString()).type(MediaType.APPLICATION_JSON).build());
-//			else
-//				requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity(json.toString()).type(MediaType.APPLICATION_JSON).build());
+		String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+		JSONObject json = new JSONObject();
+		try {
+	    
+			System.out.print("-------------------------Within Filter-----------------------------");
+			
+		    String decryptedToken = AES.decrypt(authorizationHeader);
+		    String[] token_parts = decryptedToken.split("-");
+		    if (authorizationHeader == null)
+				requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity(json.toString()).type(MediaType.APPLICATION_JSON).build());
+		    else
+			    if (token_parts.length < 3 || (Integer.parseInt(token_parts[2]) < (System.currentTimeMillis()/1000))){
+				    json.put("error", "You are not authorized with this service");
+				    json.put("error_description", "You are not authorized to this service");
+				    requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity(json.toString()).type(MediaType.APPLICATION_JSON).build());
+			    }
+		    // Else, everything seems fine ^^
+		} catch (Exception e){
+			try {
+				throw new Exception("BOOM!!!!!!!!!!!!!!!!!: "+ authorizationHeader);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			//System.out.println("--------------------------Decode: " + decryptedToken +"------------------");
+		}
+	    
     }
 }

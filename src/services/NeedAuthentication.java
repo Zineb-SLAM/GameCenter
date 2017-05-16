@@ -6,3 +6,4 @@ import javax.ws.rs.NameBinding;
 public @interface NeedAuthentication {
 
 }
+

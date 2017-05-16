@@ -35,7 +35,7 @@ public class CustomersDao {
 			while(res.next()){
 				lu.add(new Customer(res.getInt("id"), res.getString("firstname"),
 						res.getString("lastname"), res.getString("gender"), res.getString("email"),
-						res.getString("username"), res.getString("password")));
+						res.getString("username"), "-----------secret------------"));
 			}
 			
 			res.close();
@@ -81,7 +81,7 @@ public class CustomersDao {
 			//public Customer(int id, String fname, String lname, String email, String username, String pwd)
 			while(res.next()){
 				lu.add(new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"), res.getString("gender"),
-						res.getString("email"), res.getString("username"), res.getString("password")));
+						res.getString("email"), res.getString("username"), "-----------secret------------"));
 			}
 			
 			res.close();
@@ -93,8 +93,11 @@ public class CustomersDao {
 		return lu;
 	}
 	
+	public static Customer findId(int id){
+		return findId(id, false);
+	}
 
-	public static Customer findId(int id) 
+	public static Customer findId(int id, boolean with_password) 
 	{
 
 		Customer lu = null;
@@ -111,8 +114,13 @@ public class CustomersDao {
 			ResultSet res = ps.executeQuery();
 			//public Customer(int id, String fname, String lname, String email, String username, String pwd)
 			while(res.next()){
+				String password;
+				if (with_password)
+					password = res.getString("password");
+				else
+					password = "-----------secret------------";
 				lu = new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"),res.getString("gender"), 
-					     res.getString("email"), res.getString("username"),res.getString("password"));
+					     res.getString("email"), res.getString("username"),password);
 			}
 			
 			res.close();

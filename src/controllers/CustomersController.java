@@ -6,13 +6,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces; 
 import javax.ws.rs.core.MediaType;
-
-import beans.Address;
 import beans.Customer;
-import dao.AddressesDao;
 import dao.CustomersDao;
 import services.NeedAuthentication;
-import controllers.GameCenterServer;
 
 @Path("/customers") 
 public class CustomersController {
@@ -28,15 +24,15 @@ public class CustomersController {
 	} 
 	
 
-		@GET 
-		@Path("/{sort}") 
-		@Produces(MediaType.APPLICATION_JSON) 
-		public List<Customer> getCustomers(@PathParam("sort") String sort)
-		{ 
+	@GET 
+	@Path("/{sort}") 
+	@Produces(MediaType.APPLICATION_JSON) 
+	public List<Customer> getCustomers(@PathParam("sort") String sort)
+	{ 
 
-				return CustomersDao.findAll(sort);
-				
-		} 
+			return CustomersDao.findAll(sort);
+			
+	} 
 		
 	@GET 
 	@Path("/{id}") 

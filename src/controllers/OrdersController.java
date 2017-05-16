@@ -10,11 +10,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import beans.Order;
-import beans.OrderLine;
 import beans.Customer;
 import dao.CustomersDao;
 import dao.OrderDao;
-import dao.OrderLineDao;
 
 @Path("/customers/{customer_id}/orders")
 
@@ -43,5 +41,13 @@ public class OrdersController {
 		Customer customer = CustomersDao.findId(customer_id);
 		Order order = OrderDao.findOrCreateCart(customer, false);
 		return OrderDao.payOrder(customer, order, payment_id);
+	}
+	@GET // TODO: Mettre en POST
+	@Path("/current_cart")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Order getCart(@PathParam("customer_id") int customer_id, @FormParam("payment_id") int payment_id) throws Exception{
+		Customer customer = CustomersDao.findId(customer_id);
+		Order order = OrderDao.findOrCreateCart(customer, false);
+		return order;
 	}
 }

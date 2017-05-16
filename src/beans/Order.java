@@ -52,14 +52,14 @@ public class Order implements Serializable{
 		this.orderlines = lignes;
 	}
 	
-//	public double getTotal(){
-//		double total = 0;
-//	
-//		for (OrderLine lc : orderlines){
-//			total+=lc.getTotal();
-//		}
-//		return total;
-//	}
+	public double getTotal(){
+		double total = 0;
+	
+		for (OrderLine lc : orderlines){
+			total+=lc.getTotal();
+		}
+		return Math.floor(total * 100) / 100;
+	}
 
 	public int getId() {
 		// TODO Auto-generated method stub

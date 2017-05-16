@@ -37,6 +37,22 @@ public class Product implements Serializable, Comparable<Product>
 		this.description = desc;
 	}
 	
+	public Product(int id, String name, String genre, Publisher publ, int agemin, ConsoleType console,
+			String date, float price, int qtty, String desc)
+	{
+		super();
+		this.id = id;
+		this.name = name;
+		this.maingenre = genre;
+		this.publisher = publ;
+		this.agemin = agemin;
+		this.console = console;
+		this.releasedate = date;
+		this.price = price;
+		this.quantity = qtty;
+		this.description = desc;
+	}
+	
 	public Product(int id, String name, float price){
 		this.id = id;
 		this.name = name;
@@ -81,24 +97,31 @@ public class Product implements Serializable, Comparable<Product>
 	
 	public String getConsole()
 	{
-		return this.console.getName();
-		
+		if(this.console != null)
+			return this.console.getName();
+		else 
+			return null;
 	}
 	
 	public void setConsole(String console)
 	{
-		this.console.setName(console);
+		if(this.console != null)
+			this.console.setName(console);
 		
 	}
 	
 	public String getPublisher()
 	{
-		return this.publisher.getName();
+		if(this.publisher != null)
+			return this.publisher.getName();
+		else
+			return null;
 	}
 	
 	public void setPublisher(String publisher)
 	{
-		this.publisher.setName(publisher);
+		if(this.publisher != null)
+			this.publisher.setName(publisher);
 	}
 	
 	
@@ -119,7 +142,7 @@ public class Product implements Serializable, Comparable<Product>
 		this.description = description;
 	}
 	public double getPrice() {
-		return price;
+		return Math.floor(price * 100) / 100;
 	}
 	public void setPrice(float price) {
 		this.price = price;

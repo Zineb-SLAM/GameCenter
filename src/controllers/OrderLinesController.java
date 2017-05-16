@@ -15,10 +15,9 @@ import beans.Order;
 import beans.OrderLine;
 import dao.OrderLineDao;
 
-@Path("/customers/{customer_id}/orders/current_cart")
+@Path("/customers/{customer_id}/current_cart")
 
 public class OrderLinesController {
-
 	
 	@POST // TODO: Mettre en POST
 	@Path("/add_to_cart")

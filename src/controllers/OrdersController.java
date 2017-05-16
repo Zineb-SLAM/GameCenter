@@ -10,9 +10,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import beans.Order;
+import beans.OrderLine;
 import beans.Customer;
 import dao.CustomersDao;
 import dao.OrderDao;
+import dao.OrderLineDao;
 
 @Path("/customers/{customer_id}/orders")
 
@@ -42,5 +44,4 @@ public class OrdersController {
 		Order order = OrderDao.findOrCreateCart(customer, false);
 		return OrderDao.payOrder(customer, order, payment_id);
 	}
-	
 }

@@ -51,7 +51,7 @@ public class OrderLine implements Serializable{
 	}
 	public double getTotal(){
 		//bisogna recuperare il costo di un singolo prodotto
-		return total;
+		return Math.floor(total * 100) / 100;
 	}
 	@Override
 	public int hashCode() {

@@ -134,7 +134,7 @@ public class Customer implements Serializable, Comparable<Customer>
 		
 		public Payment payments(int payment_id) {
 			try {
-				return PaymentsDao.findCustPayments(this.id, payment_id).get(0);
+				return PaymentsDao.findCustPayments(this, payment_id).get(0);
 			} catch (Exception e){
 				e.printStackTrace();
 				return null;

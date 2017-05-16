@@ -9,6 +9,7 @@ import java.util.List;
 
 import beans.Order;
 import beans.OrderLine;
+import beans.Payment;
 import beans.Customer;
 public class OrderDao {
 
@@ -27,7 +28,7 @@ public class OrderDao {
 			
 			//Order(int id, String fname, String lname, String email, String pwd)
 			while(res.next()){
-				lu.add(new Order(res.getInt("id"),customer , (res.getString("paid") == "True" || res.getString("paid") == "1")));
+				lu.add(new Order(res.getInt("id"),customer , (res.getString("paid") == "True" || res.getString("paid") == "1"), new Payment(0, "-------------secret-----------", "-------------secret-----------", "-------------secret-----------", 0,0, customer)));
 			}
 			
 			res.close();

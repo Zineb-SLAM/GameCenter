@@ -4,10 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import beans.OrderLine;
 import beans.Product;
+import beans.Publisher;
+import beans.ConsoleType;
 import beans.Order;
 import beans.Product;
 public class OrderLineDao {
@@ -23,17 +26,19 @@ public class OrderLineDao {
 
 
 			//Requete
-			String sql = "select o.*, p.name, p.consoleid, p.price as uni_price, p.price * o.quantity as total from ORDER_LINES o, PRODUCTS p where o.productid = p.id AND orderid = ?";
+			String sql = "select o.*, p.name product_name, p.maingenre, p.publisherid, p.agemin, p.consoleid, p.releasedate, p.quantity as stock_quantity, p.description, p.price as uni_price, c.name console_name, pub.name as pub_name, p.price * o.quantity as total from ORDER_LINES o, PRODUCTS p, CONSOLTYPES c, PUBLISHERS pub where o.productid = p.id AND orderid = ? and c.id = consoleid AND pub.id = publisherid";
 			PreparedStatement ps = cnx.prepareStatement(sql);
+			
 			ps.setString(1, order.getId() + ""); // conversion en String
 			
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
-			
+			DecimalFormat df = new DecimalFormat("##.##");
 			//OrderLine(int id, String fname, String lname, String email, String pwd)
 			while(res.next()){
 				//Product product = ProductsDao.find(res.getInt("id"));
-				lu.add(new OrderLine(res.getInt("o.id"), order, new Product() , res.getInt("o.quantity"), res.getFloat("total")));
+				lu.add(new OrderLine(res.getInt("o.id"), order, new Product(res.getInt("productid"), res.getString("product_name"), res.getString("maingenre"), new Publisher(res.getInt("publisherid"), res.getString("pub_name")), res.getInt("agemin"), 
+						new ConsoleType(res.getInt("consoleid"), res.getString("console_name")), res.getString("releasedate"), res.getFloat("uni_price"), res.getInt("stock_quantity"), res.getString("description")) , res.getInt("o.quantity"), res.getFloat("total")));
 			}
 			res.close();
 			ConnectionBDD.getInstance().closeCnx();			

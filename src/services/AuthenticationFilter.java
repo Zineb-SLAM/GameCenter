@@ -1,5 +1,4 @@
 package services;
-import javax.inject.Named;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
@@ -10,7 +9,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import org.json.simple.JSONObject;
 
-@Named
 @Provider
 
 public class AuthenticationFilter  implements ContainerRequestFilter {

@@ -43,9 +43,9 @@ public class PaymentsDao
 			String lname, String gender, String email, String username, String pwd)*/
 			while(res.next())
 			{
-				lu.add(new Payment(res.getInt("p.id"), res.getString("p.type"), res.getString("p.pan"), 
-						res.getString("p.cvv"),
-						res.getInt("p.month"), res.getInt("p.year"), cust));
+				lu.add(new Payment(res.getInt("id"), res.getString("type"), res.getString("pan"), 
+						res.getString("cvv"),
+						res.getInt("month"), res.getInt("year"), cust));
 			}
 			
 			res.close();

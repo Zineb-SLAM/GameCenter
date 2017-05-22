@@ -1,14 +1,11 @@
 package controllers;
 
-//import org.json.simple.JSONObject;
+import org.json.simple.JSONObject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces; 
 import javax.ws.rs.core.MediaType;
-
-import org.json.simple.JSONObject;
-
 import beans.Customer;
 import dao.CustomersDao;
 import services.AES;

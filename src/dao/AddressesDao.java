@@ -47,9 +47,9 @@ public class AddressesDao
 			//int idc, String fname, String lname, String gender, String email, String username, String pwd, boolean status
 			while(res.next())
 			{
-				lu.add(new Address(res.getInt("a.id"), res.getString("address"), res.getString("zipcode"), 
+				lu.add(new Address(res.getInt("id"), res.getString("address"), res.getString("zipcode"), 
 						res.getString("city"), res.getString("country"), res.getString("type"), 
-						res.getBoolean("a.status"), cust));
+						res.getBoolean("status"), cust));
 			}
 			
 			res.close();

@@ -41,12 +41,12 @@ public class PaymentsController
 	}	
 	
 	@GET
-	@Path("/{id}")
+	@Path("/{idpay}")
 	@Produces(MediaType.APPLICATION_JSON)
 	/*Payment(int id, String t, String nb, String c, int idcust, String fname, String lname, 
 	 * String gender, String email, String username, String pwd)*/
 	public List<Payment> getPayments(@NotNull @PathParam("customer_id") int customer_id, 
-			@NotNull @PathParam("idp") int payment_id)
+			@NotNull @PathParam("idpay") int payment_id)
 	throws Exception
 	{
 		
@@ -66,7 +66,7 @@ public class PaymentsController
 	
 
 	@DELETE 
-	@Path("{id}") 
+	@Path("{idpay}") 
 	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Payment> deletePayment(@NotNull @PathParam("id") int idcust, @NotNull @PathParam("idpay") int idpay) throws Exception
 	{
@@ -88,7 +88,7 @@ public class PaymentsController
 	
 	
 	@PUT
-	@Path("{id}")
+	@Path("{idpay}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Payment> editPayment(@NotNull @PathParam("id") int idcust, @NotNull @FormParam("idpay") int idpay, 
 			@FormParam("pan") String pan, @NotNull @FormParam("cvv") String cvv,

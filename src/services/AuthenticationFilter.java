@@ -9,8 +9,8 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import org.json.simple.JSONObject;
 
-@Provider
 
+@Provider
 public class AuthenticationFilter  implements ContainerRequestFilter {
 	
 	@SuppressWarnings("unchecked")
@@ -56,3 +56,22 @@ public class AuthenticationFilter  implements ContainerRequestFilter {
 	    
     }
 }
+//@Named
+//@Provider
+//@PreMatching
+//public class AuthenticationFilter  implements ContainerRequestFilter {
+	
+	//@Override
+    //public void filter(ContainerRequestContext requestContext) throws IOException {
+	//	JSONObject json = new JSONObject();
+	//    json.put("error", "You are not authorized with this service");
+	//    json.put("error_description", "");
+	    
+	//	System.out.print("-------------------------Within Filter-----------------------------");
+	//	String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+	//		if (authorizationHeader == null)
+	//			requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity(json.toString()).type(MediaType.APPLICATION_JSON).build());
+	//		else
+	//			requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity(json.toString()).type(MediaType.APPLICATION_JSON).build());
+    //}
+//}

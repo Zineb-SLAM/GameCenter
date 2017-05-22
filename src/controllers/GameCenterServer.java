@@ -13,7 +13,7 @@ public class GameCenterServer extends Application {
 	private Set<Object> singletons = new HashSet<>();
 
     public GameCenterServer() {
-        singletons.add(new AuthenticationFilter());
+       // singletons.add(new AuthenticationFilter());
         singletons.add(new CustomersController());
         singletons.add(new AdminsController());
         singletons.add(new OrderLinesController());

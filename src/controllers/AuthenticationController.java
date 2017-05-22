@@ -54,9 +54,7 @@ public class AuthenticationController {
 	
 	@SuppressWarnings("unchecked")
 	private JSONObject makeToken(Customer customer){
-		long timestamp = System.currentTimeMillis()/1000;
-		String authenticationToken = customer.getUsername()+ "-" +timestamp + "-" + (timestamp + 1000);
-		String encryptedAuthToken = AES.encrypt(authenticationToken);
+		String encryptedAuthToken = AES.makeToken(customer.getUsername(), false);
 		JSONObject json = new JSONObject();
 	    json.put("user", customer);
 	    json.put("authentication_token", encryptedAuthToken);

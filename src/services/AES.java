@@ -8,6 +8,8 @@ import java.util.Base64;
  
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.json.simple.JSONObject;
  
 public class AES {
  
@@ -70,5 +72,15 @@ public class AES {
     
     public static String decrypt(String strToDecrypt) {
     	return decrypt(strToDecrypt, secret);
+    }
+    
+    public static String makeToken(String username, boolean is_admin) {
+        long timestamp = System.currentTimeMillis()/1800;
+        String authenticationToken = username+ "-" +timestamp + "-" + (timestamp + 1000);
+        if (is_admin) {
+            authenticationToken = authenticationToken + "-admin";
+        }
+        String encryptedAuthToken = AES.encrypt(authenticationToken);
+        return encryptedAuthToken;
     }
 }

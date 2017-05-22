@@ -6,6 +6,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import services.AuthenticationFilter;
+import services.AuthenticationResponseFilter;
 
 @ApplicationPath("web-services")
 public class GameCenterServer extends Application {
@@ -22,7 +23,7 @@ public class GameCenterServer extends Application {
         singletons.add(new GamesController());
         singletons.add(new PaymentsController());
         singletons.add(new ProductsController());
-        
+        singletons.add(new AuthenticationResponseFilter());
     }
 
     @Override

@@ -28,14 +28,14 @@ public class AuthenticationFilter  implements ContainerRequestFilter {
 		JSONObject json = new JSONObject();
 		try {
 			
-			System.out.print("-------------------------Within Filter-----------------------------");
+			System.out.print("-------------------------Within Request Filter-----------------------------");
 			
 		    String decryptedToken = AES.decrypt(authorizationHeader);
 		    String[] token_parts = decryptedToken.split("-");
 		    if (authorizationHeader == null)
 				requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity(json.toString()).type(MediaType.APPLICATION_JSON).build());
 		    else
-			    if (token_parts.length < 3 || (Integer.parseInt(token_parts[2]) < (System.currentTimeMillis()/1000))){
+			    if (token_parts.length < 3 || (Integer.parseInt(token_parts[2]) < (System.currentTimeMillis()/1800))){
 				    json.put("error", "You are not authorized with this service");
 				    json.put("error_description", "You are not authorized to this service");
 				    requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity(json.toString()).type(MediaType.APPLICATION_JSON).build());

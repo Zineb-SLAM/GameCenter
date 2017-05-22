@@ -12,7 +12,7 @@ import services.NeedAuthentication;
 //import controllers.GameCenterServer;
 
 
-@Path("/customers") 
+@Path("customers") 
 public class CustomersController {
 	@GET 
 	@Path("")

@@ -40,7 +40,7 @@ public class AuthenticationController {
 	public JSONObject login(@FormParam("username") String username, @FormParam("email") String email, @FormParam("pwd") String pwd, @FormParam("to_decrypt") String to_decrypt){
 		try {
 			Customer customer = CustomersDao.findUsername(username);
-			if (customer.getPwd() == pwd){
+			if (customer.getPwd().equals(pwd)){
 
 				return makeToken(customer);
 			}

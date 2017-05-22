@@ -132,8 +132,10 @@ public class CustomersDao {
 		return lu;
 	}
 	
-	
-	public static Customer findUsername(String username) 
+	public static Customer findUsername(String username) {
+		return findUsername(username, true);
+	}
+	public static Customer findUsername(String username, boolean with_password) 
 	{
 		Customer lu = null;
 		
@@ -143,7 +145,7 @@ public class CustomersDao {
 			cnx = ConnectionBDD.getInstance().getCnx();
 
 			// Remplacer par un switch
-			String sql = "SELECT id, lastname, firstname, gender, username, email, status FROM CUSTOMERS WHERE username=?";
+			String sql = "SELECT id, lastname, firstname, gender, username, email, password, status FROM CUSTOMERS WHERE username=?";
 			
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
@@ -152,8 +154,13 @@ public class CustomersDao {
 			ResultSet res = ps.executeQuery();
 			//public Customer(int id, String fname, String lname, String email, String username, String pwd)
 			while(res.next()){
+				String password;
+				if (with_password)
+					password = res.getString("password");
+				else
+					password = "-----------secret------------";
 				lu = new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"),res.getString("gender"), 
-					     res.getString("email"), res.getString("username"));
+					     res.getString("email"), res.getString("username"),password);
 			}
 			
 			res.close();

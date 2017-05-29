@@ -14,27 +14,16 @@ import services.NeedAuthentication;
 
 @Path("customers") 
 public class CustomersController {
-	@GET 
-	@Path("")
-	@NeedAuthentication
-	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Customer> getCustomers()
-	{ 
-	      return CustomersDao.findAll();
 
-			
-	} 
-	
-
-	@GET 
-	@Path("/{sort}") 
-	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Customer> getCustomers(@PathParam("sort") String sort)
-	{ 
-
-			return CustomersDao.findAll(sort);
-			
-	} 
+//	@GET 
+//	@Path("/{sort}") 
+//	@Produces(MediaType.APPLICATION_JSON) 
+//	public List<Customer> getCustomers(@PathParam("sort") String sort)
+//	{ 
+//
+//			return CustomersDao.findAll(sort);
+//			
+//	} 
 		
 	@GET 
 	@Path("/{id}") 

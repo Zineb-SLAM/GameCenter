@@ -23,7 +23,7 @@ public class AuthenticationController {
 			@FormParam("pwd") String pwd) {
 		try {
 				Customer customer = CustomersDao.create(gender, first_name, last_name, email, username, pwd);
-				return makeToken(customer);
+				return makeToken(customer, false);
 		}
 		catch (Exception e) {
 			return new JSONObject();	
@@ -38,8 +38,8 @@ public class AuthenticationController {
 		try {
 			Customer customer = CustomersDao.findUsername(username);
 			if (customer.getPwd().equals(pwd)){
-
-				return makeToken(customer);
+				customer.setPwd("-----------secret-----------");
+				return makeToken(customer, customer.isAdmin());
 			}
 			else
 				return new JSONObject();
@@ -50,8 +50,8 @@ public class AuthenticationController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private JSONObject makeToken(Customer customer){
-		String encryptedAuthToken = AES.makeToken(customer.getUsername(), false);
+	private JSONObject makeToken(Customer customer, boolean admin){
+		String encryptedAuthToken = AES.makeToken(customer.getUsername(), admin);
 		JSONObject json = new JSONObject();
 	    json.put("user", customer);
 	    json.put("authentication_token", encryptedAuthToken);

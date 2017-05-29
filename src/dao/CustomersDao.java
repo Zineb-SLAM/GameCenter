@@ -133,9 +133,9 @@ public class CustomersDao {
 	}
 	
 	public static Customer findUsername(String username) {
-		return findUsername(username, true);
+		return findUsername(username, true, true);
 	}
-	public static Customer findUsername(String username, boolean with_password) 
+	public static Customer findUsername(String username, boolean with_password, boolean with_admin) 
 	{
 		Customer lu = null;
 		
@@ -147,7 +147,9 @@ public class CustomersDao {
 			// Remplacer par un switch
 			String sql = "SELECT id, lastname, firstname, gender, username, email, password, status FROM CUSTOMERS WHERE username=?";
 			
-			
+			if (with_admin) {
+				sql = "SELECT c.id, c.lastname, c.firstname, c.gender, c.username, c.email, c.password, c.status, a.id as is_admin FROM CUSTOMERS c LEFT JOIN ADMIN a ON a.customer = c.id where username=?";
+			}
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, username);
 			
@@ -159,8 +161,13 @@ public class CustomersDao {
 					password = res.getString("password");
 				else
 					password = "-----------secret------------";
+				
+				int is_admin = 0;
+				if (with_admin)
+					is_admin = res.getInt("is_admin");
+				
 				lu = new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"),res.getString("gender"), 
-					     res.getString("email"), res.getString("username"),password);
+					     res.getString("email"), res.getString("username"),password, is_admin == 1);
 			}
 			
 			res.close();

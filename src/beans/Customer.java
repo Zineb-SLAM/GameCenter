@@ -1,12 +1,5 @@
 package beans;
 import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.List;
-
-import dao.OrderDao;
-import dao.PaymentsDao;
-
-
 
 public class Customer implements Serializable, Comparable<Customer>
 {
@@ -18,6 +11,7 @@ public class Customer implements Serializable, Comparable<Customer>
 		private String username;
 		private String pwd;
 		private boolean status;
+		private boolean is_admin;
 		
 		public Customer(){}
 		
@@ -46,7 +40,7 @@ public class Customer implements Serializable, Comparable<Customer>
 			this.status = true; 
 		}
 		
-		public Customer(int id, String fname, String lname, String gender,  String email, String username, String pwd, boolean stat) 
+		public Customer(int id, String fname, String lname, String gender, String email, String username, String pwd, boolean is_admin) 
 		{
 			super();
 			this.id = id;
@@ -56,8 +50,22 @@ public class Customer implements Serializable, Comparable<Customer>
 			this.email = email;
 			this.username = username;
 			this.pwd = pwd;
-			this.status = stat; 
+			this.is_admin = is_admin;
+			this.status = true; 
 		}
+		
+//		public Customer(int id, String fname, String lname, String gender,  String email, String username, String pwd, boolean stat) 
+//		{
+//			super();
+//			this.id = id;
+//			this.firstname = fname;
+//			this.lastname = lname;
+//			this.gender = gender;
+//			this.email = email;
+//			this.username = username;
+//			this.pwd = pwd;
+//			this.status = stat; 
+//		}
 		
 		public Customer(Customer cust)
 		{
@@ -82,7 +90,7 @@ public class Customer implements Serializable, Comparable<Customer>
 			return lastname;
 		}
 		
-		public String getGender(){
+		public String getGender() {
 			return gender;
 		}
 		
@@ -99,56 +107,18 @@ public class Customer implements Serializable, Comparable<Customer>
 			return pwd;
 		}
 		
+		public void setPwd(String password) {
+			pwd = password;
+		}
+		
 		public boolean getStatus()
 		{
 			return status;
 		}
-		
-		public void setFirstname(String name) {
-			this.firstname = name;
+		public boolean isAdmin() {
+			return is_admin;
 		}
 		
-		public void setLastname(String name) {
-			this.lastname = name;
-		}
-		
-		
-		public void setEmail(String email) {
-			this.email = email;
-		}
-		
-		
-		public void setUsername(String username)
-		{
-			this.username = username;
-		}
-		
-		
-		
-		public void setPwd(String pwd) throws Exception {
-			if(pwd.length()<4)
-				throw new Exception("Erreur : longeur de mot de passe <4");
-			else
-				this.pwd = pwd;
-		}
-		
-		public Payment payments(int payment_id) {
-			try {
-				return PaymentsDao.findCustPayments(this, payment_id).get(0);
-			} catch (Exception e){
-				e.printStackTrace();
-				return null;
-				
-			}
-				
-		}
-		
-//		public List<Order> getOrders() {
-//			return OrderDao.findAll(this);
-//		}
-		
-	
-
 		@Override
 		public int compareTo(Customer o) {
 			return this.lastname.compareTo(o.lastname);

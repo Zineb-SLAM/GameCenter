@@ -77,7 +77,7 @@ public class OrderLineDao {
 	
 	// TODO: FIX this method to use objects and not raw attributes
 	
-	public static String addToCart(Order order, int product_id, int quantity) throws Exception {
+	public static Order addToCart(Order order, int product_id, int quantity) throws Exception {
 		Connection cnx=null;
 		
 		cnx = ConnectionBDD.getInstance().getCnx();
@@ -91,11 +91,13 @@ public class OrderLineDao {
 		if (res.next()){
 			String sql = "UPDATE ORDER_LINES SET quantity = ? WHERE id = ?";
 			ps = cnx.prepareStatement(sql);
-			ps.setInt(1, quantity);
+			ps.setInt(1, quantity + res.getInt("quantity"));
 			ps.setInt(2, res.getInt("id"));
 			int res_update = ps.executeUpdate();
-			if (res_update == 1)
-				return "updated";
+			if (res_update == 1){
+				Order new_order = OrderDao.findOrCreateCart(order.getCustomer(), false);
+				return new_order;
+			}
 			else
 				throw new Exception("DataBase Update Error with order: " + order);
 		}
@@ -106,8 +108,10 @@ public class OrderLineDao {
 		ps.setInt(2, product_id);
 		ps.setInt(3, quantity);
 		int res_created = ps.executeUpdate();
-		if (res_created == 1)
-			return "created";
+		if (res_created == 1){
+			Order new_order = OrderDao.findOrCreateCart(order.getCustomer(), false);
+			return new_order;
+		}
 		else
 			throw new Exception("DataBase Insertion Error with order: " + order);
 
@@ -115,7 +119,7 @@ public class OrderLineDao {
 	
 
 	
-	public static String removeOrderLine(OrderLine order_line, Order order) throws Exception {
+	public static Order removeOrderLine(OrderLine order_line, Order order) throws Exception {
 		Connection cnx=null;
 		
 		cnx = ConnectionBDD.getInstance().getCnx();
@@ -129,8 +133,10 @@ public class OrderLineDao {
 		
 		
 		System.out.println("Cart Updated: " + res);
-		if (res == 1)
-			return "deleted";
+		if (res == 1){
+			Order new_order = OrderDao.findOrCreateCart(order.getCustomer(), false);
+			return new_order;
+		}
 		else
 			throw new Exception("DataBase Delete Error with orderline: " + order_line);
 	}

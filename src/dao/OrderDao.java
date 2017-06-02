@@ -124,6 +124,8 @@ public class OrderDao {
 					throw new Exception("Your cart is empty");
 			}
 		}
+		List<OrderLine> list = OrderLineDao.findAll(lu);
+		lu.setOrderLines(list);
 		System.out.print("Found : " + lu.getId());
 		return lu;
 	}

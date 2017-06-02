@@ -35,17 +35,21 @@ public class AuthenticationController {
 	@Path("/login") // To be tested
 	@Produces(MediaType.APPLICATION_JSON)
 	public JSONObject login(@FormParam("username") String username, @FormParam("email") String email, @FormParam("pwd") String pwd, @FormParam("to_decrypt") String to_decrypt){
+		JSONObject json = new JSONObject();
+		json.put("error", "authentication mismatch");
 		try {
 			Customer customer = CustomersDao.findUsername(username);
 			if (customer.getPwd().equals(pwd)){
 				customer.setPwd("-----------secret-----------");
 				return makeToken(customer, customer.isAdmin());
 			}
-			else
-				return new JSONObject();
+			else{
+				return json;
+			}
 		} catch (Exception e) {
-			return new JSONObject(); // TODO: Set a real error handler
+			e.printStackTrace();; // TODO: Set a real error handler
 		}
+		return json;
 		
 	}
 	

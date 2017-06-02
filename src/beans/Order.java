@@ -54,7 +54,8 @@ public class Order implements Serializable{
 	
 	public double getTotal(){
 		double total = 0;
-	
+		if(this.orderlines == null || this.orderlines.size() == 0)
+			return total;
 		for (OrderLine lc : orderlines){
 			total+=lc.getTotal();
 		}

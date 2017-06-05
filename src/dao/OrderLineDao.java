@@ -77,9 +77,8 @@ public class OrderLineDao {
 	
 	// TODO: FIX this method to use objects and not raw attributes
 	
-	public static Order addToCart(Order order, int product_id, int quantity) throws Exception {
+	public static Order setOrderlines(Order order, int product_id, int quantity) throws Exception {
 		Connection cnx=null;
-		
 		cnx = ConnectionBDD.getInstance().getCnx();
 		String sql_exists = "SELECT * FROM ORDER_LINES WHERE orderid = ? AND productid = ?";
 		PreparedStatement ps = cnx.prepareStatement(sql_exists);
@@ -91,7 +90,7 @@ public class OrderLineDao {
 		if (res.next()){
 			String sql = "UPDATE ORDER_LINES SET quantity = ? WHERE id = ?";
 			ps = cnx.prepareStatement(sql);
-			ps.setInt(1, quantity + res.getInt("quantity"));
+			ps.setInt(1, quantity);
 			ps.setInt(2, res.getInt("id"));
 			int res_update = ps.executeUpdate();
 			if (res_update == 1){
@@ -101,9 +100,17 @@ public class OrderLineDao {
 			else
 				throw new Exception("DataBase Update Error with order: " + order);
 		}
+		return null;
+	}
+	
+	public static Order addToCart(Order order, int product_id, int quantity) throws Exception {
+		Connection cnx=null;
+		Order try_update = setOrderlines(order, product_id, quantity);
+		if(try_update != null)
+			return try_update;
 		
 		String sql = "INSERT INTO ORDER_LINES (orderid,productid,quantity) VALUES (?,?,?)";
-		ps = cnx.prepareStatement(sql);
+		PreparedStatement ps = cnx.prepareStatement(sql);
 		ps.setInt(1, order.getId());
 		ps.setInt(2, product_id);
 		ps.setInt(3, quantity);
@@ -142,6 +149,45 @@ public class OrderLineDao {
 	}
 	
 	
-
+	public static Order removeLineOrderByProduct(Order order, Product product) throws Exception {
+		Connection cnx=null;
+		cnx = ConnectionBDD.getInstance().getCnx();
+		String sql_exists = "SELECT * FROM ORDER_LINES WHERE orderid = ? AND productid = ?";
+		PreparedStatement ps = cnx.prepareStatement(sql_exists);
+		ps.setInt(1, order.getId());
+		ps.setInt(2, product.getId());
+		ResultSet res = ps.executeQuery();
+		
+		
+		if (res.next()){
+			String sql = "DELETE FROM ORDER_LINES WHERE id = ? AND orderid = ?";
+			ps = cnx.prepareStatement(sql);
+			ps.setInt(1, res.getInt("id"));
+			ps.setInt(2, res.getInt("orderid"));
+			int res_update = ps.executeUpdate();
+			if (res_update == 1){
+				Order new_order = OrderDao.findOrCreateCart(order.getCustomer(), false);
+				return new_order;
+			}
+			else
+				throw new Exception("DataBase Delete orderline Error with order: " + order);
+		}
+		return null;
+	}
+	
+	public static Order clear_cart(Order order) throws Exception {
+		Connection cnx=null;
+		cnx = ConnectionBDD.getInstance().getCnx();
+		String sql = "DELETE FROM ORDER_LINES WHERE orderid = ?";
+		PreparedStatement ps = cnx.prepareStatement(sql);
+		ps.setInt(1, order.getId());
+		int res_update = ps.executeUpdate();
+		if (res_update == 1){
+			Order new_order = OrderDao.findOrCreateCart(order.getCustomer(), false);
+			return new_order;
+		}
+		else
+			throw new Exception("DataBase Clear Cart Error with order: " + order);
+	}
 		
 }

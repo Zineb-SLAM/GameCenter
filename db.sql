@@ -4,7 +4,7 @@ DROP TABLE PUBLISHERS;
 DROP TABLE CUSTOMERS;
 
 CREATE TABLE CUSTOMERS (id int NOT NULL AUTO_INCREMENT, 
-                        lastname varchar(30) UNIQUE NOT NULL, 
+                        lastname varchar(30)  NOT NULL, 
                         firstname varchar(30) NOT NULL , 
                         gender varchar(1) NOT NULL, 
                         username varchar(30) NOT NULL UNIQUE,               

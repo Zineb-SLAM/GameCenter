@@ -148,7 +148,8 @@ public class CustomersDao {
 			String sql = "SELECT id, lastname, firstname, gender, username, email, password, status FROM CUSTOMERS WHERE username=?";
 			
 			if (with_admin) {
-				sql = "SELECT c.id, c.lastname, c.firstname, c.gender, c.username, c.email, c.password, c.status, a.id as is_admin FROM CUSTOMERS c LEFT JOIN ADMIN a ON a.customer = c.id where username=?";
+				sql = "SELECT c.id, c.lastname, c.firstname, c.gender, c.username, c.email, c.password, c.status, a.id as is_admin "
+						+ "FROM CUSTOMERS c LEFT JOIN ADMIN a ON a.customer = c.id where c.username=?";
 			}
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, username);

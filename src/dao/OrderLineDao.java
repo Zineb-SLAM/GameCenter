@@ -105,6 +105,7 @@ public class OrderLineDao {
 	
 	public static Order addToCart(Order order, int product_id, int quantity) throws Exception {
 		Connection cnx=null;
+		cnx = ConnectionBDD.getInstance().getCnx();
 		Order try_update = setOrderlines(order, product_id, quantity);
 		if(try_update != null)
 			return try_update;

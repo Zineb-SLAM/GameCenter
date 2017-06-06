@@ -1,6 +1,7 @@
 package dao;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -146,11 +147,7 @@ public class CustomersDao {
 
 			// Remplacer par un switch
 			String sql = "SELECT id, lastname, firstname, gender, username, email, password, status FROM CUSTOMERS WHERE username=?";
-			
-			if (with_admin) {
-				sql = "SELECT c.id, c.lastname, c.firstname, c.gender, c.username, c.email, c.password, c.status, a.id as is_admin "
-						+ "FROM CUSTOMERS c LEFT JOIN ADMIN a ON a.customer = c.id where c.username=?";
-			}
+
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, username);
 			
@@ -164,8 +161,8 @@ public class CustomersDao {
 					password = "-----------secret------------";
 				
 				int is_admin = 0;
-				if (with_admin)
-					is_admin = res.getInt("is_admin");
+//				if (with_admin)
+//					is_admin = res.getInt("is_admin");
 				
 				lu = new Customer(res.getInt("id"), res.getString("firstname"), res.getString("lastname"),res.getString("gender"), 
 					     res.getString("email"), res.getString("username"),password, is_admin == 1);
@@ -195,24 +192,15 @@ public class CustomersDao {
 		missing_exception(email, "email");
 		missing_exception(pwd, "pwd");
 
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(pwd.getBytes());
-
-        byte byteData[] = md.digest();
-
-        //convert the byte to hex format method 1
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < byteData.length; i++) {
-         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-        }
-
-        System.out.println("Digest(in hex format):: " + sb.toString());
+        String hashed_pwd = hash_password(pwd);
+		
+        System.out.println("Digest(in hex format):: " + hashed_pwd);
 		ps.setString(1, last_name);
 		ps.setString(2, first_name);
 		ps.setString(3, gender);
 		ps.setString(4, username);
 		ps.setString(5, email);
-		ps.setString(6, sb.toString());
+		ps.setString(6, hashed_pwd);
 		//Execution et traitement de la réponse
         System.out.println(ps);
 
@@ -273,10 +261,28 @@ public class CustomersDao {
 	
 		return false;
 	}
-
+	
+	public static boolean authenticate(Customer customer, String password) throws NoSuchAlgorithmException {
+		String hashed_password = hash_password(password);
+		return hashed_password.equals(customer.getPwd());
+	}
 	
 	private static void missing_exception(String param, String param_name) throws Exception {
 		if(param == null)
 			throw new Exception("Missing Parameter: " + param_name);
+	}
+	
+	private static String hash_password(String password) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+
+        byte byteData[] = md.digest();
+
+        //convert the byte to hex format method 1
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+		return sb.toString();
 	}
 }

@@ -26,6 +26,7 @@ public class AuthenticationController {
 				return makeToken(customer, false);
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return new JSONObject();	
 		}
 	}
@@ -39,7 +40,7 @@ public class AuthenticationController {
 		json.put("error", "authentication mismatch");
 		try {
 			Customer customer = CustomersDao.findUsername(username);
-			if (customer.getPwd().equals(pwd)){
+			if (CustomersDao.authenticate(customer, pwd)){
 				customer.setPwd("-----------secret-----------");
 				return makeToken(customer, customer.isAdmin());
 			}

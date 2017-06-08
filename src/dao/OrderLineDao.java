@@ -76,8 +76,10 @@ public class OrderLineDao {
 	}
 	
 	// TODO: FIX this method to use objects and not raw attributes
-	
 	public static Order setOrderlines(Order order, int product_id, int quantity) throws Exception {
+		return setOrderlines(order, product_id, quantity, false);
+	}
+	public static Order setOrderlines(Order order, int product_id, int quantity, boolean add) throws Exception {
 		Connection cnx=null;
 		cnx = ConnectionBDD.getInstance().getCnx();
 		String sql_exists = "SELECT * FROM ORDER_LINES WHERE orderid = ? AND productid = ?";
@@ -90,7 +92,10 @@ public class OrderLineDao {
 		if (res.next()){
 			String sql = "UPDATE ORDER_LINES SET quantity = ? WHERE id = ?";
 			ps = cnx.prepareStatement(sql);
-			ps.setInt(1, quantity);
+			int new_quantity = quantity;
+			if (add)
+				new_quantity = new_quantity + res.getInt("quantity");
+			ps.setInt(1, new_quantity);
 			ps.setInt(2, res.getInt("id"));
 			int res_update = ps.executeUpdate();
 			if (res_update == 1){
@@ -106,7 +111,7 @@ public class OrderLineDao {
 	public static Order addToCart(Order order, int product_id, int quantity) throws Exception {
 		Connection cnx=null;
 		cnx = ConnectionBDD.getInstance().getCnx();
-		Order try_update = setOrderlines(order, product_id, quantity);
+		Order try_update = setOrderlines(order, product_id, quantity, true);
 		if(try_update != null)
 			return try_update;
 		

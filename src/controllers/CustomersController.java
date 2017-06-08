@@ -6,7 +6,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces; 
 import javax.ws.rs.core.MediaType;
+
+import beans.Admin;
 import beans.Customer;
+import dao.AdminsDao;
 import dao.CustomersDao;
 import services.NeedAuthentication;
 //import controllers.GameCenterServer;
@@ -33,6 +36,14 @@ public class CustomersController {
 		return CustomersDao.findId(id);
 		
 	}
+	
+	@GET 
+	@Path("/customers/{id}") 
+	@Produces(MediaType.APPLICATION_JSON) 
+	public Customer getAddresses(@PathParam("id") int id) throws Exception
+	{ 
+	      return CustomersDao.findId(id);
+	} 
 	
 //	@GET 
 //	@Path("/{id}") 

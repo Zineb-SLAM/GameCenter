@@ -34,14 +34,6 @@ public class AdminsController
 	} 
 	
 	@GET 
-	@Path("/customers/{id}") 
-	@Produces(MediaType.APPLICATION_JSON) 
-	public Admin getAddresses(@PathParam("id") int id) throws Exception
-	{ 
-	      return AdminsDao.find(id);
-	} 
-	
-	@GET 
 	@Path("/customers")
 	@Produces(MediaType.APPLICATION_JSON) 
 	public List<Customer> getCustomers()

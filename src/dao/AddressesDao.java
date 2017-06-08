@@ -16,7 +16,7 @@ import java.util.List;
 public class AddressesDao
 {
 	
-	public static List<Address> findCustAddresses(Customer cust, int idadd) throws Exception
+	public static List<Address> findCustAddresses(Customer cust, int idadd, String type) throws Exception
 	{
 	
 		List<Address> lu = new ArrayList<Address>();
@@ -30,15 +30,19 @@ public class AddressesDao
 			if(idadd == -1) //find all the addresses of the customer
 			{
 				sql = "SELECT * FROM ADDRESSES WHERE status=1 AND customer = ?";
+				sql = sql + " AND (type = '" + type + "' OR type = 'both')";
 				ps = cnx.prepareStatement(sql);
 				ps.setInt(1, cust.getId());
+				System.out.print(sql);
 			}
 			else //find a particular address for the customer
 			{
 				sql = "SELECT * FROM ADDRESSES WHERE status=1 AND customer = ? AND id = ?";
+				sql = sql + " AND (type = '" + type + "' OR type = 'both')";
 				ps = cnx.prepareStatement(sql);
 				ps.setInt(1, cust.getId());
 				ps.setInt(2, idadd);
+				System.out.print(sql);
 			}
 			
 			ResultSet res = ps.executeQuery();

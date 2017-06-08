@@ -40,7 +40,7 @@ public class CustomersController {
 	@GET 
 	@Path("/customers/{id}") 
 	@Produces(MediaType.APPLICATION_JSON) 
-	public Customer getAddresses(@PathParam("id") int id) throws Exception
+	public Customer getCustomer(@PathParam("id") int id) throws Exception
 	{ 
 	      return CustomersDao.findId(id);
 	} 

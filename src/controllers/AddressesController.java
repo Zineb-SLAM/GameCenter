@@ -12,6 +12,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces; 
 import javax.ws.rs.core.MediaType;
 
+import org.json.simple.JSONObject;
+
 import com.sun.istack.internal.NotNull;
 
 import beans.Address;
@@ -72,60 +74,60 @@ public class AddressesController {
 	}
 //	
 //	
-//	@GET 
-//	@Path("/{id}") 
-//	@Produces(MediaType.APPLICATION_JSON) 
-//	public List<Address> getAddress(@PathParam("customer_id") int customer_id, @PathParam("id") int id) throws Exception
-//	{ 
-//		if(!CustomersDao.exists(customer_id))
-//		{
-//			throw new Exception("ERROR: customer not found "+ customer_id);
-//		}
-//		else
-//		{
-//			Customer cust = CustomersDao.findId(customer_id);
-//			return AddressesDao.findCustAddresses(cust, id);
-//		}
-//	} 
+	@GET 
+	@Path("/{id}") 
+	@Produces(MediaType.APPLICATION_JSON) 
+	public Address getAddress(@PathParam("customer_id") int customer_id, @PathParam("id") int id) throws Exception
+	{ 
+		if(!CustomersDao.exists(customer_id))
+		{
+			throw new Exception("ERROR: customer not found "+ customer_id);
+		}
+		else
+		{
+			Customer cust = CustomersDao.findId(customer_id);
+			return AddressesDao.findCustAddresses(cust, id, "ignore_type").get(0);
+		}
+	} 
 	
 	
-//	@DELETE 
-//	@Path("{id}") 
-//	@Produces(MediaType.APPLICATION_JSON) 
-//	public List<Address> deleteAddress(@PathParam("customer_id") int customer_id, @PathParam("id") int id) throws Exception
-//	{
-//		if(!CustomersDao.exists(customer_id))
-//		{
-//			throw new Exception("ERROR: Insertion failed, customer not found "+ customer_id);
-//		}
-//		else
-//		{
-//			Customer cust = CustomersDao.findId(customer_id);
-//			AddressesDao.delete(cust, id);
-//			return AddressesDao.findCustAddresses(cust, -1);
-//		}
-//	}
+	@DELETE 
+	@Path("{id}") 
+	@Produces(MediaType.APPLICATION_JSON) 
+	public JSONObject deleteAddress(@PathParam("customer_id") int customer_id, @PathParam("id") int id) throws Exception
+	{
+		if(!CustomersDao.exists(customer_id))
+		{
+			throw new Exception("ERROR: Insertion failed, customer not found "+ customer_id);
+		}
+		else
+		{
+			Customer cust = CustomersDao.findId(customer_id);
+			JSONObject json = new JSONObject();
+			json.put("deleted", AddressesDao.delete(cust, id));
+			return json;
+		}
+	}
 	
-//	@POST
-//	@Path("/new")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public List<Address> addAddress(@PathParam("id") int idcust,  @NotNull @FormParam("address") 
-//			String address, @NotNull @FormParam("zipcode") String zipcode, 
-//			@NotNull @FormParam("city") String city, @NotNull @FormParam("country") String country,
-//			@NotNull @FormParam("type") String type) throws Exception
-//	{	
-//		
-//		if(!CustomersDao.exists(idcust))
-//		{
-//			throw new Exception("ERROR: Insertion failed, customer not found "+ idcust);
-//		}
-//		else
-//		{
-//			Customer cust = CustomersDao.findId(idcust);
-//			boolean res =  AddressesDao.add(address, zipcode, city, country, type, cust);
-//			return AddressesDao.findCustAddresses(cust, -1, type);
-//		}
-//	}
+	@POST
+	@Path("/create")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Address addAddress(@PathParam("customer_id") int idcust,  @NotNull @FormParam("address") 
+			String address, @NotNull @FormParam("zipcode") String zipcode, 
+			@NotNull @FormParam("city") String city, @NotNull @FormParam("country") String country,
+			@NotNull @FormParam("type") String type) throws Exception
+	{	
+		
+		if(!CustomersDao.exists(idcust))
+		{
+			throw new Exception("ERROR: Insertion failed, customer not found "+ idcust);
+		}
+		else
+		{
+			Customer cust = CustomersDao.findId(idcust);
+			return AddressesDao.add(address, zipcode, city, country, type, cust);
+		}
+	}
 //	
 //
 //	

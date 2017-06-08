@@ -30,7 +30,8 @@ public class AddressesDao
 			if(idadd == -1) //find all the addresses of the customer
 			{
 				sql = "SELECT * FROM ADDRESSES WHERE status=1 AND customer = ?";
-				sql = sql + " AND (type = '" + type + "' OR type = 'both')";
+				if(type != "ignore_type")
+					sql = sql + " AND (type = '" + type + "' OR type = 'both')";
 				ps = cnx.prepareStatement(sql);
 				ps.setInt(1, cust.getId());
 				System.out.print(sql);
@@ -38,7 +39,8 @@ public class AddressesDao
 			else //find a particular address for the customer
 			{
 				sql = "SELECT * FROM ADDRESSES WHERE status=1 AND customer = ? AND id = ?";
-				sql = sql + " AND (type = '" + type + "' OR type = 'both')";
+				if(type != "ignore_type")
+					sql = sql + " AND (type = '" + type + "' OR type = 'both')";
 				ps = cnx.prepareStatement(sql);
 				ps.setInt(1, cust.getId());
 				ps.setInt(2, idadd);
@@ -66,7 +68,7 @@ public class AddressesDao
 		return lu;
 	}
 	
-	public static boolean add(String address, String zipcode, String city, String country,
+	public static Address add(String address, String zipcode, String city, String country,
 			String type, Customer cust) throws Exception
 	{
 		Connection cnx = null;
@@ -96,9 +98,24 @@ public class AddressesDao
 			int res = ps.executeUpdate();
 			
 			
-			if(res == 1)
-				return true;
-			
+			if(res == 1){
+				String res_sql = "SELECT * FROM ADDRESSES WHERE address = ? AND zipcode = ? AND city = ? AND country = ? AND type = ? AND customer = ? AND status = 1";
+				ps = cnx.prepareStatement(res_sql);
+				ps.setString(1, address);
+				ps.setString(2, zipcode);
+				ps.setString(3, city);
+				ps.setString(4, country);
+				ps.setString(5, type);
+				ps.setInt(6, cust.getId());
+				
+				ResultSet res_fetch = ps.executeQuery();
+				res_fetch.next();
+				Address new_address = new Address(res_fetch.getInt("id"), res_fetch.getString("address"), res_fetch.getString("zipcode"), 
+						res_fetch.getString("city"), res_fetch.getString("country"), res_fetch.getString("type"), 
+						res_fetch.getBoolean("status"), cust);
+				
+				return new_address;
+			}
 			ps.close();
 			
 			System.out.println("Inserted: " + res);
@@ -110,10 +127,10 @@ public class AddressesDao
 		} 	
 		
 		
-		return false;
+		return null;
 	}
 	
-	public static void delete(Customer cust, int idadd)
+	public static boolean delete(Customer cust, int idadd)
 	{
 		
 		Connection cnx=null;
@@ -125,15 +142,17 @@ public class AddressesDao
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1, cust.getId() );
 			ps.setInt(2, idadd );
-			ps.executeUpdate();
+			int res = ps.executeUpdate();
 			ps.close();
-			
-			
 			ConnectionBDD.getInstance().closeCnx();	
+
+			return res == 1;
+				
 		}catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
+		return false;
 		
 	}
 	

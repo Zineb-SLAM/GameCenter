@@ -27,7 +27,8 @@ public class GameCenterServer extends Application {
     }
 
     @Override
-    public Set<Object> getSingletons() {
+    public Set<Object> getSingletons() 
+    {
         return singletons;
     }
     

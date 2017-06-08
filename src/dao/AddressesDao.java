@@ -157,7 +157,8 @@ public class AddressesDao
 	}
 	
 	
-	public static void edit(Customer cust, int idadd, String address) throws Exception
+	public static Address update(Customer cust, int idadd, String address, String zipcode, String city, String country,
+			String type) throws Exception
 	{
 		Connection cnx=null;
 		try
@@ -165,24 +166,31 @@ public class AddressesDao
 			
 			cnx = ConnectionBDD.getInstance().getCnx();
 	
-			String sql = "UPDATE ADDRESSES SET address=? WHERE customer=? AND id=?";
+			String sql = "UPDATE ADDRESSES SET address=?, zipcode=?, city=?, country=?, type=? WHERE customer=? AND id=?";
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setString(1, address );
-			ps.setInt(2, cust.getId() );
-			ps.setInt(3, idadd );
+			ps.setString(1, address);
+			ps.setString(2, zipcode);
+			ps.setString(3, city);
+			ps.setString(4, country);
+			ps.setString(5, type);
+			
+			ps.setInt(6, cust.getId());
+			ps.setInt(7, idadd);
 	
-			ps.executeUpdate();
+			int res = ps.executeUpdate();
 			ps.close();
-			
-			
 			ConnectionBDD.getInstance().closeCnx();	
+			
+			if(res==1){
+				return AddressesDao.findCustAddresses(cust, idadd, type).get(0);
+			}
+			
 		}catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
-		
-		return;
+		return null;
 	}
 	
 	public static boolean exists(int id)

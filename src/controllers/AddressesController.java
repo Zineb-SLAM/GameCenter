@@ -131,23 +131,24 @@ public class AddressesController {
 //	
 //
 //	
-//	@PUT 
-//	@Path("/{id}/edit") 
-//	@Produces(MediaType.APPLICATION_JSON) 
-//	public List<Address> editAddress(@NotNull @PathParam("customer_id") int customer_id, @NotNull @FormParam("id") int id,
-//			 @FormParam("address") String address) 
-//			throws Exception
-//	{	
-//		if(!CustomersDao.exists(customer_id))
-//		{
-//			throw new Exception("ERROR: Insertion failed, customer not found "+ customer_id);
-//		}
-//		else
-//		{
-//			Customer cust = CustomersDao.findId(customer_id);
-//			AddressesDao.edit(cust, id,address);
-//			return AddressesDao.findCustAddresses(cust, -1, type);
-//		}
-//	}
+	@PUT 
+	@Path("/{id}/update") 
+	@Produces(MediaType.APPLICATION_JSON) 
+	public Address editAddress(@PathParam("customer_id") int customer_id, @NotNull @PathParam("id") int id, @NotNull @FormParam("address") 
+	String address, @NotNull @FormParam("zipcode") String zipcode, 
+	@NotNull @FormParam("city") String city, @NotNull @FormParam("country") String country,
+	@NotNull @FormParam("type") String type)
+			throws Exception
+	{	
+		if(!CustomersDao.exists(customer_id))
+		{
+			throw new Exception("ERROR: customer not found "+ customer_id);
+		}
+		else
+		{
+			Customer cust = CustomersDao.findId(customer_id);
+			return AddressesDao.update(cust, id ,address, zipcode, city, country, type);
+		}
+	}
 	
 };

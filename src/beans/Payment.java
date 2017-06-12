@@ -7,14 +7,14 @@ public class Payment implements Serializable, Comparable<Payment>
 {
 	//public enum CardType {visa, Mastercard, american_express, discover}
 
-	int id;
-	String type;
-	String pan;
-	String cvv;
-	int month;
-	int year;
-	Customer customer;
-	boolean status;
+	private int id;
+	private String type;
+	private String pan;
+	private String cvv;
+	private int month;
+	private int year;
+	private Customer customer;
+	private boolean status;
 	
 	
 	public Payment(int id, String t, String nb, String c, int m,int y, Customer cust)
@@ -70,6 +70,10 @@ public class Payment implements Serializable, Comparable<Payment>
 	{
 		return year;
 		
+	}
+	
+	public Customer getCustomer() {
+		return customer;
 	}
 	
 	public void disableCard()

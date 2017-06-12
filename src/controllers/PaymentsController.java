@@ -45,7 +45,7 @@ public class PaymentsController
 	@Produces(MediaType.APPLICATION_JSON)
 	/*Payment(int id, String t, String nb, String c, int idcust, String fname, String lname, 
 	 * String gender, String email, String username, String pwd)*/
-	public List<Payment> getPayments(@NotNull @PathParam("customer_id") int customer_id, 
+	public Payment getPayments(@NotNull @PathParam("customer_id") int customer_id, 
 			@NotNull @PathParam("idpay") int payment_id)
 	throws Exception
 	{
@@ -57,7 +57,7 @@ public class PaymentsController
 		else
 		{
 			Customer cust = CustomersDao.findId(customer_id);
-			return PaymentsDao.findCustPayments(cust, payment_id);
+			return PaymentsDao.findCustPayments(cust, payment_id).get(0);
 		}
 		
 		

@@ -84,12 +84,12 @@ public class OrderDao {
 			while(res.next()){
 				lu = new Order(res.getInt("id"), customer, res.getBoolean("paid"));
 			}
-			
-//			List<OrderLine> lines = OrderLineDao.findAll(lu);
-//			lu.order(lines);
 //			
 			res.close();
-			ConnectionBDD.getInstance().closeCnx();			
+			ConnectionBDD.getInstance().closeCnx();	
+			
+			List<OrderLine> lines = OrderLineDao.findAll(lu);
+			lu.setOrderLines(lines);
 		} catch (SQLException e) 
 		{
 			e.printStackTrace();

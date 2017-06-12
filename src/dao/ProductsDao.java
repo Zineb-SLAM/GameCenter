@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.Product;
+import beans.Publisher;
+import beans.ConsoleType;
 import beans.Customer;
 
 public class ProductsDao {
@@ -386,12 +388,45 @@ public class ProductsDao {
 		return maingenre;
 	}
 	
+//	public static Product update(Product product, String name, int quantity, double price, String maingenre, int agemin,  console, String description)
+//	{
+//		Connection cnx=null;
+//		try
+//		{
+//			cnx = ConnectionBDD.getInstance().getCnx();
+//			String sql = "UPDATE PAYMENTS SET name=?, quantity=?, price=?, maingenre=?, agemin=? consoleid=? description=? WHERE customer=? AND id=?";
+//			
+//			PreparedStatement ps = cnx.prepareStatement(sql);
+//			ps.setString(1, name);
+//			ps.setInt(2, quantity);
+//			ps.setDouble(3, price);
+//			ps.setString(4, maingenre);
+//			ps.setInt(5, agemin);
+//			ps.setInt(6, console.getId());
+//			ps.setString(7, description);
+//			ps.setInt(8, product.getId());
+//			int res = ps.executeUpdate();
+//			if (res == 1) {
+//				return ProductsDao.find(product.getId());
+//			}
+//			ps.close();
+//			
+//			
+//			ConnectionBDD.getInstance().closeCnx();	
+//		}catch (SQLException e) 
+//		{
+//			e.printStackTrace();
+//		}
+//		
+//		return null;
+//	}
+	
 	public static void add(String name, String genre, String publisher, int agemin, String console, String date,
-			float price, int quantity, String description)
+			float price, int quantity, String description) throws SQLException
 	{
 		Connection cnx=null;
-		try
-		{
+//		try
+//		{
 			
 			 int idpub = getIdPublisher(name);
 			 if(idpub == -1)
@@ -422,7 +457,7 @@ public class ProductsDao {
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, name);
 			ps.setString(2, genre);
-			ps.setInt   (3,  idpub);
+			ps.setInt   (3, idpub);
 			ps.setInt   (4, agemin);
 			ps.setInt   (5, idconsole);
 			ps.setString(6, date);
@@ -434,10 +469,10 @@ public class ProductsDao {
 			ConnectionBDD.getInstance().closeCnx();		
 			
 			
-		}catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
+//		}catch (SQLException e) 
+//		{
+//			e.printStackTrace();
+//		}
 	}
 	
 	

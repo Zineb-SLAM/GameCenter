@@ -15,9 +15,11 @@ import javax.ws.rs.core.MediaType;
 import com.sun.istack.internal.NotNull;
 
 import beans.Admin;
+import beans.ConsoleType;
 import beans.Customer;
 import beans.Product;
 import dao.AdminsDao;
+import dao.ConsoleTypeDao;
 import dao.CustomersDao;
 import dao.ProductsDao;
 
@@ -54,7 +56,7 @@ public class AdminsController
 	@POST
 	@Path("/products/create")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Product> addAddress(@FormParam("name") String name, @FormParam("genre") String genre, 
+	public List<Product> addProduct(@FormParam("name") String name, @FormParam("genre") String genre, 
 			@FormParam("publisher") String publisher,
 			@FormParam("agemin") int agemin, @FormParam("console") String console, 
 			@FormParam("day") String day, @FormParam("month") String month, @FormParam("year") String year,
@@ -68,45 +70,17 @@ public class AdminsController
 		return ProductsDao.findAll();
 	}
 	
-	@PUT
-	@Path("/products/update")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Product> editPrice(@NotNull @FormParam("id") int id, @FormParam("name") String name,
-			@FormParam("quantity") int quantity, @FormParam("price") int price, 
-			@FormParam("maingenre") String maingenre, @FormParam("agemin") int agemin, 
-			@FormParam("console") String console, @FormParam("publisher") String publisher,  
-			@FormParam("description") String description )
-	{
-		
-		if(name != null)
-		{
-			ProductsDao.editName(id, name);
-		}
-		if(quantity >= 0)
-		{
-			ProductsDao.editQuantity(id, quantity);
-		}
-		if(price > 0)
-		{
-			ProductsDao.editPrice(id, price);
-		}
-		if(maingenre != null)
-		{
-			ProductsDao.editMaingenre(id, maingenre);		
-		}
-		if(agemin > 0)
-		{
-			ProductsDao.editAgemin(id, agemin);
-		}
-		if(console != null)
-		{
-			ProductsDao.editConsole(id, console);
-		}
-		if(publisher != null)
-		{
-			ProductsDao.editPublisher(id, publisher);
-		}
-			
-		return ProductsDao.findAll();
-	}
+//	@PUT
+//	@Path("/products/update")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public List<Product> editPrice(@NotNull @FormParam("id") int id, @FormParam("name") String name,
+//			@FormParam("quantity") int quantity, @FormParam("price") double price, 
+//			@FormParam("maingenre") String maingenre, @FormParam("agemin") int agemin, 
+//			@FormParam("console_name") String console_name, @FormParam("publisher") String publisher,  
+//			@FormParam("description") String description )
+//	{
+//		Product product = ProductsDao.find(id);	
+//		int console = ConsoleTypeDao.getId(console_name);
+//		return ProductsDao.update(product, name, quantity, price, maingenre, agemin, console, description);
+//	}
 }

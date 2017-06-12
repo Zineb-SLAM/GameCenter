@@ -59,7 +59,7 @@ public class PaymentsDao
 	}
 
 	
-	public static void add(String type, String pan, String cvv, int month, int year, Customer cust) throws Exception
+	public static Payment add(String type, String pan, String cvv, int month, int year, Customer cust) throws Exception
 	{
 		
 		Connection cnx=null;
@@ -77,7 +77,10 @@ public class PaymentsDao
 			ps.setInt(5, year);
 			ps.setInt(6, cust.getId());
 			
-			ps.executeUpdate();
+			int res = ps.executeUpdate();
+			if(res == 1)
+				return findByPan(cust, pan);
+				
 			ps.close();
 			
 			ConnectionBDD.getInstance().closeCnx();	
@@ -87,7 +90,33 @@ public class PaymentsDao
 		}
 		
 		
-		return;
+		return null;
+	}
+	
+	public static Payment findByPan(Customer cust, String pan) {
+		Connection cnx=null;
+		try
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+			String sql = "SELECT * FROM PAYMENTS WHERE status=1 AND customer=? AND pan=?";
+			
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, cust.getId() );
+			ps.setString(2, pan);
+			ResultSet res = ps.executeQuery();
+			res.next();
+			Payment payment = new Payment(res.getInt("id"), res.getString("type"), res.getString("pan"), res.getString("cvv"), res.getInt("month"),res.getInt("year"), cust);
+			ps.close();
+			
+			
+			ConnectionBDD.getInstance().closeCnx();	
+			return payment;
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
  	public static void delete (Customer cust, int idpay)
@@ -139,6 +168,38 @@ public class PaymentsDao
 		}
 		
 		return;
+	}
+	
+	public static Payment update(Customer cust, int id, String type, String pan, String cvv, int month, int year) throws Exception
+	{
+		Connection cnx=null;
+		try
+		{
+			cnx = ConnectionBDD.getInstance().getCnx();
+			String sql = "UPDATE PAYMENTS SET type=?, pan=?, cvv=?, month=?, year=? WHERE customer=? AND id=?";
+			
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setString(1, type);
+			ps.setString(2, pan);
+			ps.setString(3, cvv);
+			ps.setInt(4, month);
+			ps.setInt(5, year);
+			ps.setInt(6, cust.getId());
+			ps.setInt(7, id);
+			int res = ps.executeUpdate();
+			if (res == 1) {
+				return PaymentsDao.findCustPayments(cust, id).get(0);
+			}
+			ps.close();
+			
+			
+			ConnectionBDD.getInstance().closeCnx();	
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	public static void editCvv(Customer cust, int idpay, String cvv)

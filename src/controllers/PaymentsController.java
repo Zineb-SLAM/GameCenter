@@ -68,7 +68,7 @@ public class PaymentsController
 	@DELETE 
 	@Path("{idpay}") 
 	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Payment> deletePayment(@NotNull @PathParam("id") int idcust, @NotNull @PathParam("idpay") int idpay) throws Exception
+	public List<Payment> deletePayment(@NotNull @PathParam("customer_id") int idcust, @NotNull @PathParam("idpay") int idpay) throws Exception
 	{
 		
 		if(!CustomersDao.exists(idcust))
@@ -88,10 +88,10 @@ public class PaymentsController
 	
 	
 	@PUT
-	@Path("{idpay}")
+	@Path("{idpay}/update")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Payment> editPayment(@NotNull @PathParam("id") int idcust, @NotNull @FormParam("idpay") int idpay, 
-			@FormParam("pan") String pan, @NotNull @FormParam("cvv") String cvv,
+	public Payment editPayment(@NotNull @PathParam("customer_id") int idcust, @NotNull @PathParam("idpay") int idpay, 
+			@FormParam("pan") String pan, @NotNull @FormParam("cvv") String cvv, @NotNull @FormParam("type") String type,
 			@NotNull @FormParam("month") int month, @NotNull @FormParam("year") int year) throws Exception
 	{
 		if(!CustomersDao.exists(idcust))
@@ -101,20 +101,7 @@ public class PaymentsController
 		else
 		{
 			Customer cust = CustomersDao.findId(idcust);
-			if(pan != null)
-			{
-				PaymentsDao.editPan(cust, idpay, pan);
-			}
-			if(cvv != null)
-			{
-				PaymentsDao.editCvv(cust, idpay, cvv);
-			}
-			if(month<12 && year!=9999 && year>2017 && month>0)
-			{
-				PaymentsDao.editExpiration(cust, idpay, month, year);
-			}
-			
-			return PaymentsDao.findCustPayments(cust, -1);
+			return PaymentsDao.update(cust, idpay, type, pan, cvv, month, year);
 		}
 		
 		
@@ -124,11 +111,11 @@ public class PaymentsController
 	
 
 	@POST
-	@Path("/new")
+	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Payment> addPayment(@NotNull @PathParam("id") int idcust, 
+	public Payment addPayment(@NotNull @PathParam("customer_id") int idcust, 
 			@FormParam("type") String type, @FormParam("pan") String pan,
-			@FormParam("cvv") String cvv, @FormParam("day") String day, 
+			@FormParam("cvv") String cvv,
 			@FormParam("month") int month, @FormParam("year") int year) throws Exception
 	{
 		if(!CustomersDao.exists(idcust))
@@ -139,10 +126,7 @@ public class PaymentsController
 		{
 			Customer cust = CustomersDao.findId(idcust);
 			
-			PaymentsDao.add(type, pan, cvv, month, year, cust);
-			
-			return PaymentsDao.findCustPayments(cust, -1);
-			
+			return PaymentsDao.add(type, pan, cvv, month, year, cust);			
 		}
 		
 		

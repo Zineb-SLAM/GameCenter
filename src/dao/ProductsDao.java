@@ -422,13 +422,14 @@ public class ProductsDao {
 //	}
 	
 	public static void add(String name, String genre, String publisher, int agemin, String console, String date,
-			float price, int quantity, String description) throws SQLException
+			float price, int quantity, String description)
 	{
 		Connection cnx=null;
-//		try
-//		{
+		try
+		{
 			
 			 int idpub = getIdPublisher(name);
+			 System.out.println("------------------------ idpub:" + idpub + "---------------------------");
 			 if(idpub == -1)
 			 {
 				 idpub = PublisherDao.getId(publisher);
@@ -469,10 +470,10 @@ public class ProductsDao {
 			ConnectionBDD.getInstance().closeCnx();		
 			
 			
-//		}catch (SQLException e) 
-//		{
-//			e.printStackTrace();
-//		}
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	

@@ -66,7 +66,8 @@ public class AdminsController
 		//add(String name, String genre, String publisher, int agemin, String console, String date,
 		//float price, int quantity, String description)
 		String date = year + "-" + month + "-" + day;
-		 ProductsDao.add(name, genre, publisher, agemin, console, date, price, quantity, description);
+		System.out.println(date);
+		ProductsDao.add(name, genre, publisher, agemin, console, date, price, quantity, description);
 		return ProductsDao.findAll();
 	}
 	

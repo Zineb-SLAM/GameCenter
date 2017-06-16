@@ -20,7 +20,7 @@ public class OrderDao {
 		//try 
 		//{
 			cnx = ConnectionBDD.getInstance().getCnx();
-			String sql = "SELECT * FROM ORDERS WHERE customerid = ?";
+			String sql = "SELECT * FROM ORDERS WHERE customerid = ? AND paid = 1";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1, customer.getId());
 			//Execution et traitement de la réponse
@@ -28,7 +28,8 @@ public class OrderDao {
 			
 			//Order(int id, String fname, String lname, String email, String pwd)
 			while(res.next()){
-				lu.add(new Order(res.getInt("id"),customer , (res.getString("paid") == "True" || res.getString("paid") == "1"), new Payment(0, "-------------secret-----------", "-------------secret-----------", "-------------secret-----------", 0,0, customer)));
+				System.out.println("SERVER DAO --- ORDER PAID? ----" + (res.getString("paid").equals("1")));
+				lu.add(new Order(res.getInt("id"),customer , res.getString("paid").equals("1"), new Payment(0, "-------------secret-----------", "-------------secret-----------", "-------------secret-----------", 0,0, customer)));
 			}
 			
 			res.close();
@@ -135,7 +136,7 @@ public class OrderDao {
 		
 		cnx = ConnectionBDD.getInstance().getCnx();
 		
-		String sql = "UPDATE ORDERS SET paid = 1, paymentid = ? WHERE id = ?";
+		String sql = "UPDATE ORDERS SET paid = 1, paymentid = ? WHERE id = ? AND paid = 0";
 		PreparedStatement ps = cnx.prepareStatement(sql);
 
 		ps.setInt(1, payment_id);

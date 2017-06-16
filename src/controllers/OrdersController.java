@@ -34,6 +34,23 @@ public class OrdersController {
 		
 	}
 	
+	@GET 
+	@Path("{id}") 
+	@Produces(MediaType.APPLICATION_JSON) 
+	public Order getOrder(@PathParam("customer_id") int customer_id, @PathParam("id") int id)
+	{ 
+		Customer customer = CustomersDao.findId(customer_id);
+		System.out.print("Customer: ------------ " + customer.getFirstname() + "--------------");
+	    try {
+	    	Order order = OrderDao.findId(customer, id);
+	    	return order;
+	    } catch (Exception e){
+	    	e.printStackTrace();
+	    	return null;
+	    }
+		
+	}
+	
 	@POST // TODO: Mettre en POST
 	@Path("/pay")
 	@Produces(MediaType.APPLICATION_JSON)

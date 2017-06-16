@@ -90,26 +90,25 @@ public class ProductsDao {
 	public static List<Product> findGenre(String genre) 
 	{
 
-		List<Product> lu = null;
+		List<Product> lu = new ArrayList<Product>();
 		
 		Connection cnx=null;
 		try 
 		{
 			cnx = ConnectionBDD.getInstance().getCnx();
 
-			String sql = "SELECT * FROM PRODUCTS pr , PUBLISHERS pb, CONSOLTYPES c"
-					+ "WHERE pr.consoleid = c.id AND pr.publisherid = pb.id AND pr.maingenre = ?";
+			String sql = "SELECT pr.*, c.name as console_name, pb.name as publisher_name FROM PRODUCTS pr , PUBLISHERS pb, CONSOLTYPES c WHERE pr.consoleid = c.id AND pr.publisherid = pb.id AND pr.maingenre = ?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, genre);
 			
 			ResultSet res = ps.executeQuery();
 			
 			while(res.next()){
-				lu.add(new Product(res.getInt("id"), res.getString("name"), 
-					     res.getString("genre"), res.getString("publisher"), res.getInt("agemin"),
-            			 res.getString("cosnsole"), res.getDate("releasedate").toString(),
-            			 res.getFloat("price"), res.getInt("quantity"), res.getString("description")
-            			 )); 
+				lu.add( new Product(res.getInt("id"), res.getString("name"), 
+					     res.getString("maingenre"), res.getString("publisher_name"), res.getInt("agemin"),
+           			 res.getString("console_name"), res.getDate("releasedate").toString(),
+           			 res.getFloat("price"), res.getInt("quantity"), res.getString("description")
+           			 ));
 			}
 			
 			res.close();
@@ -132,7 +131,7 @@ public class ProductsDao {
 
 			
 			//Requete
-			String sql = "SELECT * FROM PRODUCTS pr , PUBLISHERS pb, CONSOLTYPES c "
+			String sql = "SELECT pr.*, c.name as console_name, pb.name as publisher_name FROM PRODUCTS pr , PUBLISHERS pb, CONSOLTYPES c "
 					+ "WHERE pr.consoleid = c.id AND pr.publisherid = pb.id AND pr.name LIKE ? ";
 			
 			PreparedStatement ps = cnx.prepareStatement(sql);
@@ -146,9 +145,9 @@ public class ProductsDao {
 			while (res.next()) 
 			{
 
-					lu.add( new Product(res.getInt("pr.id"), res.getString("pr.name"), 
-						     res.getString("pr.maingenre"), res.getString("pb.name"), res.getInt("agemin"),
-	            			 res.getString("c.name"), res.getDate("releasedate").toString(),
+					lu.add( new Product(res.getInt("id"), res.getString("name"), 
+						     res.getString("maingenre"), res.getString("publisher_name"), res.getInt("agemin"),
+	            			 res.getString("console_name"), res.getDate("releasedate").toString(),
 	            			 res.getFloat("price"), res.getInt("quantity"), res.getString("description")
 	            			 ));
 

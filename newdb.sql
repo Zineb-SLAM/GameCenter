@@ -1,26 +1,17 @@
-DROP TABLE PRODUCTS;
-DROP TABLE CONSOLTYPES;
-DROP TABLE PUBLISHERS;
-DROP TABLE CUSTOMERS;
+DROP TABLE ORDER_LINES, ORDERS;
+DROP TABLE ADDRESSES, PAYMENTS;
+DROP TABLE CUSTOMERS, ADMIN;
 
 CREATE TABLE CUSTOMERS (id int NOT NULL AUTO_INCREMENT, 
+						username varchar(30) NOT NULL UNIQUE, 
                         lastname varchar(30)  NOT NULL, 
                         firstname varchar(30) NOT NULL , 
-                        gender varchar(1) NOT NULL, 
-                        username varchar(30) NOT NULL UNIQUE,               
+                        gender varchar(1) NOT NULL,                        
                         email varchar(100) NOT NULL UNIQUE, 
                         password varchar(255) NOT NULL,
                         status boolean,
                         PRIMARY KEY (id));
-                        
-
-INSERT INTO CUSTOMERS (lastname, firstname, gender, username, email, password, status)
-	VALUES ("michelle","obama","f","firstlady","first.lady@gov.org","youwish", 1),
-			("barack","obama","m","president","barack.obama@gov.org","youwish", 1);
-
-
-
-
+                       
 CREATE TABLE ADDRESSES        ( id int NOT NULL  AUTO_INCREMENT,
 							  address varchar(50) NOT NULL,
 							  zipcode varchar(5) NOT NULL,
@@ -33,39 +24,31 @@ CREATE TABLE ADDRESSES        ( id int NOT NULL  AUTO_INCREMENT,
 							  FOREIGN KEY (customer) REFERENCES CUSTOMERS(id));
 
 
-INSERT INTO ADDRESSES (address, zipcode, city, country, type, customer, status)
-	VALUES ("white house","20001","washington dc","USA","both",1, 1),
-			("white house","20001","washington dc","USA","billing", 2, 1),
-			("green house","20001","washington dc","USA","shipping", 2, 1);
-
-
 CREATE TABLE PAYMENTS( id int NOT NULL AUTO_INCREMENT,
-					  type ENUM('visa', 'mastercard', 'american_express', 'discover') NOT NULL,
-					  cardnumber varchar(16) NOT NULL UNIQUE,
-					  code varchar(3) NOT NULL,
+					  type ENUM('visa', 'mastercard', 'americanexpress', 'discover') NOT NULL,
+					  pan varchar(16) NOT NULL,
+					  cvv varchar(3) NOT NULL,
+					  month  INT NOT NULL check (month between 1 and 12),
+					  year INT NOT NULL check (year between 2017 and 2080),
 					  customer int NOT NULL,
-					  status boolean,
+					  status boolean NOT NULL,
 					  PRIMARY KEY (id),
+					  CONSTRAINT  PAYMENTS_CONST UNIQUE(customer,type, pan),
 			   		  FOREIGN KEY (customer) REFERENCES CUSTOMERS(id));
-
-
 
 
 CREATE TABLE CONSOLTYPES (id int NOT NULL AUTO_INCREMENT, 
 						name varchar(50) NOT NULL, 
 						PRIMARY KEY (id));
 						
-INSERT INTO CONSOLTYPES (name)
-	VALUES ("wii"), ("wiiu"), ("xbox"), ("psp"), ("playstation"), ("game cube");
 
 
 
 CREATE TABLE PUBLISHERS (id int NOT NULL AUTO_INCREMENT, 
-				name varchar(50) NOT NULL, 
-				PRIMARY KEY (id));
+						name varchar(50) NOT NULL, 
+						PRIMARY KEY (id)
+);
 
-INSERT INTO PUBLISHERS (name)
-	VALUES ("ubisoft"), ("nintendo"), ("activisation blizzard"), ("electronic arts");
 
 
 CREATE TABLE PRODUCTS ( id 			int NOT NULL AUTO_INCREMENT, 
@@ -80,9 +63,49 @@ CREATE TABLE PRODUCTS ( id 			int NOT NULL AUTO_INCREMENT,
                         description varchar(1000) NOT NULL ,            
                         PRIMARY KEY (id),
                         FOREIGN KEY (consoleid) REFERENCES CONSOLTYPES(id),
-                        FOREIGN KEY (publisherid) REFERENCES PUBLISHERS(id));
+                        FOREIGN KEY (publisherid) REFERENCES PUBLISHERS(id)
+ );
+
+CREATE TABLE ORDERS (
+						id INT AUTO_INCREMENT,
+						customerid INT NOT NULL,
+						paid BOOLEAN NOT NULL,
+						paymentid INT,
+						PRIMARY KEY(id),
+						FOREIGN KEY(customerid) REFERENCES CUSTOMERS(id),
+						FOREIGN KEY(paymentid) REFERENCES PAYMENTS(id));
+		
+CREATE TABLE ORDER_LINES (
+						id INT AUTO_INCREMENT,
+						orderid INT NOT NULL,
+						productid INT NOT NULL,
+						quantity INT NOT NULL,
+						PRIMARY KEY (id),
+						FOREIGN KEY (productid) REFERENCES PRODUCTS(id),
+						FOREIGN KEY (orderid) REFERENCES ORDERS(id)
+);
+
+
+CREATE TABLE ADMIN(
+					id INT AUTO_INCREMENT,
+					username varchar(30) NOT NULL UNIQUE, 
+					email varchar(100) NOT NULL UNIQUE, 
+                    lastname varchar(30)  NOT NULL, 
+                    firstname varchar(30) NOT NULL,
+                    password varchar(255) NOT NULL,
+                    PRIMARY KEY (id) 
+
+);
 
  
+ INSERT INTO CONSOLTYPES (name)
+	VALUES ("wii"), ("wiiu"), ("xbox"), ("psp"), ("playstation"), ("game cube");
+
+
+INSERT INTO PUBLISHERS (name)
+	VALUES ("ubisoft"), ("nintendo"), ("activisation blizzard"), ("electronic arts");
+
+
 INSERT INTO PRODUCTS (name, maingenre, publisherid, agemin, consoleid, releasedate, price, quantity, description)
 VALUES  ("Assassin's Creed", "action", 1, 18, 3, '2015-12-27', 55.99, 12, "Assassin's Creed is an action-adventure video game in which the player primarily assumes the role of Altaïr, as experienced by protagonist Desmond Miles. The primary goal of the game is to carry out a series of assassinations  ordered by Al Mualim, the leader of the Assassins."),
 		("Assassin's Creed", "action", 1, 18, 4, '2015-12-27', 55.99, 10, "Assassin's Creed is an action-adventure video game in which the player primarily assumes the role of Altaïr, as experienced by protagonist Desmond Miles. The primary goal of the game is to carry out a series of assassinations ordered by Al Mualim, the leader of the Assassins."),
@@ -101,31 +124,8 @@ VALUES  ("Assassin's Creed", "action", 1, 18, 3, '2015-12-27', 55.99, 12, "Assas
 		("Just Dance 2 ", "dancing", 1, 3, 1, '2017-12-07', 60, 2, "Rhythm, Dance. ... Just Dance is a dance video game developed by Ubisoft Milan and Ubisoft Paris and published by Ubisoft.");
 		
 		
-		INSERT INTO PAYMENTS (type,cardnumber,code,customer, status) VALUES
-			('visa', "1234567891234560", "487", 1, TRUE),
-			('visa', "9234567891234569", "467", 1, FALSE),
-			('visa', "9234567789234569", "777", 1, TRUE);
-			
 		
-		CREATE TABLE ORDERS (
-			id INT AUTO_INCREMENT,
-			customerid INT NOT NULL,
-			paid BOOLEAN NOT NULL,
-			paymentid INT,
-			PRIMARY KEY(id),
-			FOREIGN KEY(customerid) REFERENCES CUSTOMERS(id),
-			FOREIGN KEY(paymentid) REFERENCES PAYMENTS(id)
-		);
 		
-		CREATE TABLE ORDER_LINES (
-			id INT AUTO_INCREMENT,
-			orderid INT NOT NULL,
-			productid INT NOT NULL,
-			quantity INT NOT NULL,
-			PRIMARY KEY (id),
-			FOREIGN KEY (productid) REFERENCES PRODUCTS(id),
-			FOREIGN KEY (orderid) REFERENCES ORDERS(id)
-		);
 
 		INSERT INTO ORDERS (customerid, paid, paymentid) VALUES 
 			(1, true, 1),

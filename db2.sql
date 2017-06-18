@@ -5,7 +5,7 @@ CREATE TABLE CUSTOMERS (id int NOT NULL AUTO_INCREMENT,
                         gender varchar(1) NOT NULL, 
                         username varchar(30) NOT NULL UNIQUE,               
                         email varchar(100) NOT NULL UNIQUE, 
-                        password varchar(50) NOT NULL,
+                        password varchar(255) NOT NULL,
                         status boolean,
                         PRIMARY KEY (id));
                        
@@ -23,7 +23,12 @@ INSERT INTO CUSTOMERS (lastname,firstname,gender,username,password,email,status)
 
 
 CREATE TABLE ADMIN (id int NOT NULL AUTO_INCREMENT,
-customer int NOT NULL,
+					username varchar(30) NOT NULL UNIQUE,               
+                    email varchar(100) NOT NULL UNIQUE, 
+					lastname varchar(30) NOT NULL, 
+                     firstname varchar(30) NOT NULL , 
+                    password varchar(255) NOT NULL,
+                    PRIMARY KEY (id));
 PRIMARY KEY (id),
 FOREIGN KEY (customer) REFERENCES CUSTOMERS(id));
 

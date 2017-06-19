@@ -142,9 +142,13 @@ VALUES  ("Assassin's Creed", "action", 1, 18, 3, '2015-12-27', 55.99, 12, "Assas
 			customerid INT NOT NULL,
 			paid BOOLEAN NOT NULL,
 			paymentid INT,
+			shipping_address_id int,
+			billing_address_id int,
 			PRIMARY KEY(id),
 			FOREIGN KEY(customerid) REFERENCES CUSTOMERS(id),
-			FOREIGN KEY(paymentid) REFERENCES PAYMENTS(id)
+			FOREIGN KEY(paymentid) REFERENCES PAYMENTS(id),
+			FOREIGN KEY(shipping_address_id) REFERENCES ADDRESSES(id),
+			FOREIGN KEY(billing_address_id) REFERENCES ADDRESSES(id)
 		);
 		
 		CREATE TABLE ORDER_LINES (

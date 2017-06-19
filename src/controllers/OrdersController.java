@@ -52,6 +52,16 @@ public class OrdersController {
 	}
 	
 	@POST // TODO: Mettre en POST
+	@Path("/setAddresses")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Order setAddresses(@PathParam("customer_id") int customer_id, @FormParam("shipping_address_id") int shipping_address_id, 
+			@FormParam("billing_address_id") int billing_address_id) throws Exception{
+		Customer customer = CustomersDao.findId(customer_id);
+		Order order = OrderDao.findOrCreateCart(customer, false);
+		return OrderDao.setAddresses(customer, order, shipping_address_id, billing_address_id);
+	}
+	
+	@POST // TODO: Mettre en POST
 	@Path("/pay")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Order createOrder(@PathParam("customer_id") int customer_id, @FormParam("payment_id") int payment_id) throws Exception{

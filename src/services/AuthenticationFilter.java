@@ -11,7 +11,9 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import org.json.simple.JSONObject;
 
+import beans.Admin;
 import beans.Customer;
+import dao.AdminsDao;
 import dao.CustomersDao;
 import static java.lang.Thread.sleep;
 
@@ -68,6 +70,12 @@ public class AuthenticationFilter  implements ContainerRequestFilter {
 		    				if (!customer.getUsername().equals(token_parts[0]))
 		    					requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity(json.toString()).type(MediaType.APPLICATION_JSON).build());
 		    			}
+		    	}
+		    	
+		    	if (token_parts.length == 4) {
+		    		Admin admin = AdminsDao.findUsername(token_parts[0]);
+		    		if (admin == null)
+		    			requestContext.abortWith(Response.status(Status.UNAUTHORIZED).entity(json.toString()).type(MediaType.APPLICATION_JSON).build());
 		    	}
 		    	
 		    // Else, everything seems fine ^^

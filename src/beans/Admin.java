@@ -45,4 +45,9 @@ public class Admin
 	public String getPwd() {
 		return password;
 	}
+
+	public void setPwd(String string) {
+		// TODO Auto-generated method stub
+		password = string;
+	}
 };

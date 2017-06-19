@@ -28,12 +28,12 @@ import dao.ProductsDao;
 public class AdminsController 
 {
 	
-	@GET 
-	@Produces(MediaType.APPLICATION_JSON) 
-	public List<Admin> getAddresses() throws Exception
-	{ 
-	      return AdminsDao.findAll();
-	} 
+//	@GET 
+//	@Produces(MediaType.APPLICATION_JSON) 
+//	public List<Admin> getAddresses() throws Exception
+//	{ 
+//	      return AdminsDao.findAll();
+//	} 
 	
 	@GET 
 	@Path("/customers")

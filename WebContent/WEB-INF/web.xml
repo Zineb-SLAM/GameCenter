@@ -13,7 +13,7 @@
 <servlet-name>controllers.GameCenterServer</servlet-name>
 	<init-param>
    		<param-name>
-    	  javax.ws.rs.Application
+    	  javax.ws.rs.core.Application
    		</param-name>
    		<param-value>
       		controllers.GameCenterServer

@@ -57,7 +57,7 @@ public class AuthenticationResponseFilter implements ContainerResponseFilter {
 		    //if(admin)
 		    String new_auth_token = AES.makeToken(token_parts[0], admin);
 		    
-		    responseContext.getHeaders().add("authenticiation_token", new_auth_token);
+		    responseContext.getHeaders().add("authentication_token", new_auth_token);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
